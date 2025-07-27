@@ -1332,6 +1332,7 @@ GameObject:
   m_Component:
   - component: {fileID: 974650972}
   - component: {fileID: 974650973}
+  - component: {fileID: 974650974}
   m_Layer: 0
   m_Name: DialogRoot
   m_TagString: Untagged
@@ -1368,11 +1369,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: ebdba5347bae6744889bce6182ed0c61, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: cef31c0ec97db5a4eb83dd628a0b1e4a, type: 3}
   m_SortingOrder: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
+--- !u!114 &974650974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974650971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09bb395e13277b645a9cf07dd3e8775b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  areaContextMenuTemplate: {fileID: 9197481963319205126, guid: 3ed02f0dece0e9c43bb094e725c703ce, type: 3}
+  areaEditorTemplate: {fileID: 9197481963319205126, guid: a50148e543315fa47b8f3ee8af371d2d, type: 3}
 --- !u!1001 &976354712
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -27,7 +27,7 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 public class SingletonDocument<T> : SingletonMonoBehaviour<T> where T : MonoBehaviour
 {
     protected UIDocument doc;
-    protected VisualElement root => doc.rootVisualElement;
+    public VisualElement root => doc.rootVisualElement;
 
     protected virtual void Awake()
     {

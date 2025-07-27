@@ -1,0 +1,13 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; max-width: 150px;">
+        <ui:Button text="Cancel" name="CancelButton" />
+        <ui:Button text="Edit&#10;" name="EditButton" />
+        <ui:VisualElement>
+            <ui:Button text="Conquer" name="ConquerButton" />
+            <ui:Button text="Raid" name="RaidButton" />
+            <ui:Button text="Trade" name="TradeButton" />
+            <ui:Button text="Colonization" name="ColonizationButton" />
+            <ui:Button text="Counter Influence" name="CounterInfluenceButton" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

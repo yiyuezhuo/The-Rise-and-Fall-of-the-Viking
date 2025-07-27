@@ -17,6 +17,7 @@ namespace GameCore
         public int baseMaxResources = 50;
         public bool isColony;
         public string lord;
+        public List<string> neighborIds = new();
 
         public IEnumerable<IObjectIdLabeled> GetSubObjects()
         {

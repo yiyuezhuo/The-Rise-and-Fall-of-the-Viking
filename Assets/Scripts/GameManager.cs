@@ -3,6 +3,8 @@ using UnityEngine;
 using Unity.Properties;
 using System.Collections;
 using UnityEngine.Networking;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
@@ -26,8 +28,37 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
-        
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                var cam = PlaneCameraController.Instance.cam;
+                var worldPoint = cam.ScreenToWorldPoint(Input.mousePosition);
+
+                var hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+                if (hit.collider != null)
+                {
+                    Debug.Log($"Hit: {hit.collider} {hit.point}");
+
+                    var areaViewer = hit.collider.GetComponent<AreaViewer>();
+                    if (areaViewer != null)
+                    {
+                        Debug.Log($"Clicked areaViewer={areaViewer}");
+
+                        if (areaViewer.areaObjectId == selectedObjectId) // double click to enter command
+                        {
+                            Debug.Log("Popuping...");
+                            DialogRoot.Instance.PopupAreaContextMenu();
+                        }
+                        else // re-select
+                        {
+                            selectedObjectId = areaViewer.areaObjectId;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
