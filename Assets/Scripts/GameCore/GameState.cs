@@ -9,6 +9,15 @@ namespace GameCore
         DoingAction,
     }
 
+    public partial class CardReference
+    {
+        public string objectId;
+        public Card GetCard()
+        {
+            return EntityManager.current.Get<Card>(objectId);
+        }
+    }
+
     public class GameState
     {
         public int beginYear = 793;
@@ -24,9 +33,9 @@ namespace GameCore
         public List<Area> areas = new();
         public List<Card> cards = new();
 
-        public List<string> deckCardIds = new();
-        public List<string> handCardIds = new();
-        public List<string> discardCardIds = new();
+        public List<CardReference> deckCardReferences = new();
+        public List<CardReference> handCardReferences = new();
+        public List<CardReference> discardCardReferences = new();
 
         public void NextPhase()
         {

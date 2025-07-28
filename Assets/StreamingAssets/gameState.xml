@@ -741,8 +741,60 @@
    <objectId>2d412f19-f21d-4399-8763-4c453bd7b315</objectId>
   </Area>
  </areas>
- <cards />
- <deckCardIds />
- <handCardIds />
- <discardCardIds />
+ <cards>
+  <Card>
+   <cardClassId>Action</cardClassId>
+   <objectId>4241ef77-8d8a-408b-afda-2613d774d819</objectId>
+  </Card>
+  <Card>
+   <cardClassId>Action</cardClassId>
+   <objectId>9b00bece-5084-4fcb-bd5c-e880fa3611fe</objectId>
+  </Card>
+  <Card>
+   <cardClassId>Action</cardClassId>
+   <objectId>75ef3702-6055-41e3-aa34-a86bd26b4369</objectId>
+  </Card>
+  <Card>
+   <cardClassId>Action</cardClassId>
+   <objectId>61564f55-47b7-44db-af07-58ad937370ba</objectId>
+  </Card>
+  <Card>
+   <cardClassId>Action</cardClassId>
+   <objectId>9ac3c3bc-cd35-4c5f-9fb7-3ea4234dbd5a</objectId>
+  </Card>
+  <Card>
+   <cardClassId>Action</cardClassId>
+   <objectId>6ac935e8-0b90-4072-bd61-c95cbd356741</objectId>
+  </Card>
+  <Card>
+   <cardClassId>Action</cardClassId>
+   <objectId>30fd9a9c-83fd-4aac-a6e4-643c5b7eb1e4</objectId>
+  </Card>
+ </cards>
+ <deckCardReferences>
+  <CardReference>
+   <objectId>6ac935e8-0b90-4072-bd61-c95cbd356741</objectId>
+  </CardReference>
+  <CardReference>
+   <objectId>30fd9a9c-83fd-4aac-a6e4-643c5b7eb1e4</objectId>
+  </CardReference>
+ </deckCardReferences>
+ <handCardReferences>
+  <CardReference>
+   <objectId>4241ef77-8d8a-408b-afda-2613d774d819</objectId>
+  </CardReference>
+  <CardReference>
+   <objectId>9b00bece-5084-4fcb-bd5c-e880fa3611fe</objectId>
+  </CardReference>
+  <CardReference>
+   <objectId>75ef3702-6055-41e3-aa34-a86bd26b4369</objectId>
+  </CardReference>
+  <CardReference>
+   <objectId>61564f55-47b7-44db-af07-58ad937370ba</objectId>
+  </CardReference>
+  <CardReference>
+   <objectId>9ac3c3bc-cd35-4c5f-9fb7-3ea4234dbd5a</objectId>
+  </CardReference>
+ </handCardReferences>
+ <discardCardReferences />
 </GameState>

@@ -4,7 +4,7 @@ namespace GameCore
 {
     public class Card : IObjectIdLabeled
     {
-        public string objectId{ get; set; }
+        public string objectId { get; set; }
         public string cardClassId;
 
         public IEnumerable<IObjectIdLabeled> GetSubObjects()

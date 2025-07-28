@@ -1,0 +1,8 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Textures/card_template.png?fileID=2800000&amp;guid=31b1854e136a4704ca8a5574ddda6627&amp;type=3#card_template&quot;); -unity-background-scale-mode: scale-to-fit; width: 343px; height: 489px;">
+        <ui:Label text="Long Boat" name="CardNameLabel" style="position: absolute; top: 18px; left: 81px; font-size: 24px; height: 50px; width: 238px; -unity-text-align: middle-left; white-space: normal;" />
+        <ui:Label text="1" name="ActionPointLabel" style="position: absolute; top: 18px; left: 20px; color: rgb(255, 255, 255); font-size: 36px; height: 53px; width: 46px; -unity-text-align: middle-center;" />
+        <ui:VisualElement name="CardImage" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Textures/No_Image_Fallback.png?fileID=2800000&amp;guid=1b98a6b7601155545bc68ddb8bc17cde&amp;type=3#No_Image_Fallback&quot;); -unity-background-scale-mode: scale-to-fit; position: absolute; height: 278px; width: 306px; top: 84px; left: 17px;" />
+        <ui:Label text="Card&#10;114514" name="CardDescriptionLabel" style="position: absolute; height: 101px; width: 304px; top: 370px; left: 16px; white-space: normal;" />
+    </ui:VisualElement>
+</ui:UXML>

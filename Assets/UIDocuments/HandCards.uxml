@@ -1,0 +1,11 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="Card" src="project://database/Assets/UIDocuments/Card.uxml?fileID=9197481963319205126&amp;guid=494fa526025e00e409c8c54b8a475d80&amp;type=3#Card" />
+    <ui:VisualElement style="flex-grow: 1;">
+        <ui:ScrollView>
+            <ui:VisualElement style="flex-grow: 1; flex-direction: row; height: 500px; width: 1000px;">
+                <ui:Instance template="Card" style="scale: 1 1;" />
+                <ui:Instance template="Card" style="scale: 0.5 0.5;" />
+            </ui:VisualElement>
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>
