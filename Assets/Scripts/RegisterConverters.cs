@@ -31,7 +31,7 @@ public static class RegisteredConverters
         Register("object to DisplayStyle", (ref object obj) => (StyleEnum<DisplayStyle>)(obj != null ? DisplayStyle.Flex : DisplayStyle.Flex));
         Register("object to DisplayStyle (Not)", (ref object obj) => (StyleEnum<DisplayStyle>)(obj == null ? DisplayStyle.Flex : DisplayStyle.None));
 
-        Register("object id to Area name", (ref string id) => EntityManager.current.Get<Area>(id)?.name ?? "[Not specified or invalid]");
+        // Register("object id to Area name", (ref string id) => EntityManager.current.Get<Area>(id)?.name ?? "[Not specified or invalid]");
     }
 
     // static ShipClass GetShipClassOfShipLog(NavalCombatCore.ShipLog shipLog)

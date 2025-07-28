@@ -33,7 +33,7 @@ namespace GameCore
 
         }
 
-        public static GameState current => GameManager.Instance.state;
+        public static GameState current => CoreManager.Instance.state;
 
         public void ResetAndRegisterAll()
         {

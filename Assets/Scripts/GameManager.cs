@@ -5,6 +5,7 @@ using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
@@ -13,8 +14,18 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     string initGameStatePath = "gameState.xml";
 
+    public enum State
+    {
+        Idle,
+        SelectingAreaForCallback
+    }
+
+    public State state = State.Idle;
+
+    public Action<Area> oneShotAreaSelectingCallback;
+
     [CreateProperty]
-    public GameState state => CoreManager.Instance.state; // Data binding helper
+    public GameState gameState => CoreManager.Instance.state; // Data binding helper
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -47,18 +58,38 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
                     {
                         Debug.Log($"Clicked areaViewer={areaViewer}");
 
-                        if (areaViewer.areaObjectId == selectedObjectId) // double click to enter command
+                        if (state == State.Idle)
                         {
-                            Debug.Log("Popuping...");
-                            DialogRoot.Instance.PopupAreaContextMenu();
+                            if (areaViewer.areaObjectId == selectedObjectId) // double click to enter command
+                            {
+                                Debug.Log("Popuping...");
+                                DialogRoot.Instance.PopupAreaContextMenu();
+                            }
+                            else // re-select
+                            {
+                                selectedObjectId = areaViewer.areaObjectId;
+                            }
                         }
-                        else // re-select
+                        else if (state == State.SelectingAreaForCallback)
                         {
-                            selectedObjectId = areaViewer.areaObjectId;
+                            state = State.Idle;
+                            var callback = oneShotAreaSelectingCallback;
+                            oneShotAreaSelectingCallback = null;
+                            if (callback != null)
+                            {
+                                callback(EntityManager.current.Get<Area>(areaViewer.areaObjectId));
+                            }
+                            
                         }
                     }
                 }
             }
         }
+    }
+
+    public void PrepareSelectingAreaCallback(Action<Area> callback)
+    {
+        oneShotAreaSelectingCallback = callback;
+        state = State.SelectingAreaForCallback;
     }
 }

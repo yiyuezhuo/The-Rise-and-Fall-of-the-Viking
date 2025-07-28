@@ -2,6 +2,15 @@ using System.Collections.Generic;
 
 namespace GameCore
 {
+    public partial class AreaReference
+    {
+        public string objectId;
+        public Area GetArea()
+        {
+            return CoreManager.Instance.entityManager.Get<Area>(objectId);
+        }
+    }
+
     public class Area : IObjectIdLabeled
     {
         public string objectId { get; set; }
@@ -16,8 +25,8 @@ namespace GameCore
         public float christianizationCoef = 1f;
         public int baseMaxResources = 50;
         public bool isColony;
-        public string lord;
-        public List<string> neighborIds = new();
+        public AreaReference lord = new();
+        public List<AreaReference> neighborReferences = new();
 
         public IEnumerable<IObjectIdLabeled> GetSubObjects()
         {

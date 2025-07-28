@@ -53,12 +53,15 @@
                         <ui:DataBinding property="value" data-source-path="isColony" binding-mode="TwoWay" />
                     </Bindings>
                 </ui:Toggle>
-                <ui:TextField label="Lord" enabled="false" />
-                <ui:VisualElement style="flex-direction: row; flex-shrink: 0;">
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+                    <ui:TextField enabled="false" style="flex-grow: 1;">
+                        <Bindings>
+                            <ui:DataBinding property="value" data-source-path="lord.name" binding-mode="ToTarget" />
+                        </Bindings>
+                    </ui:TextField>
                     <ui:Button text="Set Lord" name="SetLordButton" />
-                    <ui:Button text="Clear Lord" name="ClearLordButton" />
                 </ui:VisualElement>
-                <ui:MultiColumnListView binding-source-selection-mode="AutoAssign" show-add-remove-footer="true" header-title="Neighbors" show-foldout-header="true" data-source-path="neighborIds" name="NeighborsMultiColumnListView" style="flex-shrink: 0;">
+                <ui:MultiColumnListView binding-source-selection-mode="AutoAssign" show-add-remove-footer="true" header-title="Neighbors" show-foldout-header="true" data-source-path="neighborReferences" name="NeighborsMultiColumnListView" style="flex-shrink: 0;">
                     <ui:Columns>
                         <ui:Column width="75%" cell-template="project://database/Assets/UIDocuments/templates/neighborName.uxml?fileID=9197481963319205126&amp;guid=e6b6fc13746c62945bfb5f7ec4aabcf0&amp;type=3#neighborName" title="Name" name="name" />
                         <ui:Column name="setNeighborButton" title="Set Neighbor" cell-template="project://database/Assets/UIDocuments/templates/neighborButton.uxml?fileID=9197481963319205126&amp;guid=bab56afb9dbac8349a7edfa39e6d1884&amp;type=3#neighborButton" width="25%" />

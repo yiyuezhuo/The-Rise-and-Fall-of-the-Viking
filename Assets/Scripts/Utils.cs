@@ -4,8 +4,10 @@ using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using Unity.Properties;
 
 using GameCore;
+using Unity.VisualScripting;
 
 public static class Utils
 {
@@ -94,12 +96,15 @@ public static class Utils
         el.style.position = Position.Absolute;
         el.style.left = new Length(px * 100, LengthUnit.Percent); // Pixel mode is subject to scale mode
         el.style.top = new Length(py * 100, LengthUnit.Percent);
-        // el.style.translate = new StyleTranslate(
-        //     new Translate(
-        //         new Length(-50, LengthUnit.Percent),
-        //         new Length(-50, LengthUnit.Percent)
-        //     )
-        // );
+        // if (centering)
+        // {
+        //     el.style.translate = new StyleTranslate(
+        //         new Translate(
+        //             new Length(-50, LengthUnit.Percent),
+        //             new Length(-50, LengthUnit.Percent)
+        //         )
+        //     );
+        // }
     }
 
     public static void SetMousePosition(VisualElement el)
@@ -113,5 +118,17 @@ public static class Utils
         SetAbsoluteXY(el, pos.x, pos.y);
         // SetAbsoluteXY(el, 100, 100);
         // SetAbsoluteXY(el, Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+    }
+
+    public static bool TryResolveCurrentValueForBinding<T>(VisualElement el, out T ret) where T: class
+    {
+        var ctx = el.GetHierarchicalDataSourceContext();
+        var succ = PropertyContainer.TryGetValue(ctx.dataSource, ctx.dataSourcePath, out ret);
+        if (!succ && ctx.dataSourcePath.Length == 0)
+        {
+            ret = (T)ctx.dataSource;
+            succ = true;
+        }
+        return succ;
     }
 }

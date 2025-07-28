@@ -1,7 +1,7 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Label>
+    <ui:Label data-source-type="GameCore.AreaReference, Assembly-CSharp">
         <Bindings>
-            <ui:DataBinding property="text" binding-mode="ToTarget" source-to-ui-converters="object id to Area name" />
+            <ui:DataBinding property="text" data-source-path="name" binding-mode="ToTarget" />
         </Bindings>
     </ui:Label>
 </ui:UXML>
