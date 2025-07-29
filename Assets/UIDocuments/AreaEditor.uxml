@@ -8,11 +8,6 @@
                         <ui:DataBinding property="value" data-source-path="name" binding-mode="TwoWay" />
                     </Bindings>
                 </ui:TextField>
-                <ui:Toggle label="Viking Zone Created">
-                    <Bindings>
-                        <ui:DataBinding property="value" data-source-path="vikingZoneCreated" binding-mode="TwoWay" />
-                    </Bindings>
-                </ui:Toggle>
                 <ui:Toggle label="Viking Homeland">
                     <Bindings>
                         <ui:DataBinding property="value" data-source-path="isVikingHomeland" binding-mode="TwoWay" />

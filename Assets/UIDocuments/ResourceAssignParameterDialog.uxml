@@ -1,0 +1,20 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="FromToAreaField" src="project://database/Assets/UIDocuments/FromToAreaField.uxml?fileID=9197481963319205126&amp;guid=99dee109f40e0f849b8412bd52e21ae7&amp;type=3#FromToAreaField" />
+    <ui:VisualElement data-source-type="GameCore.ResourceAssignParameter, Assembly-CSharp" class="panel-dialog" style="height: auto;">
+        <ui:Label text="Title" name="TitleLabel" class="title" />
+        <ui:Instance template="FromToAreaField" />
+        <ui:VisualElement style="flex-direction: row;">
+            <ui:Label text="Assigned Resource" />
+            <ui:SliderInt value="42" high-value="100" fill="true" show-input-field="true" style="flex-grow: 1;">
+                <Bindings>
+                    <ui:DataBinding property="highValue" data-source-path="assignResourceLimit" binding-mode="ToTarget" />
+                    <ui:DataBinding property="value" data-source-path="assignResource" binding-mode="TwoWay" />
+                </Bindings>
+            </ui:SliderInt>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-direction: row;">
+            <ui:Button text="Confirm" name="ConfirmButton" style="flex-grow: 1; flex-basis: 50px;" />
+            <ui:Button text="Cancel" name="CancelButton" style="flex-grow: 1; flex-basis: 50px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

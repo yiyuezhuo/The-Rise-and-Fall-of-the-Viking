@@ -5486,57 +5486,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5235797588591086922, guid: e16ea971b5c479b40937928568139795, type: 3}
   m_PrefabInstance: {fileID: 606735592}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &630044670
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 630044671}
-  - component: {fileID: 630044672}
-  m_Layer: 5
-  m_Name: HandCards
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &630044671
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 630044670}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1858982129}
-  m_Father: {fileID: 829915184}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &630044672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 630044670}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0976015de49bad04197900f3b67ee9e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cardContainer: {fileID: 1858982129}
-  cardViewerPrefab: {fileID: 6873625939331413568, guid: e086e4aed16cf714b8b5cc1f2ee77fc6, type: 3}
 --- !u!1001 &685715360
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6644,7 +6593,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 630044671}
+  - {fileID: 1858982129}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6781,7 +6730,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   areaContextMenuTemplate: {fileID: 9197481963319205126, guid: 3ed02f0dece0e9c43bb094e725c703ce, type: 3}
+  cardContextMenuTemplate: {fileID: 9197481963319205126, guid: a5b741cafca154449a3a862776034c1d, type: 3}
   areaEditorTemplate: {fileID: 9197481963319205126, guid: a50148e543315fa47b8f3ee8af371d2d, type: 3}
+  messageDialogTemplate: {fileID: 9197481963319205126, guid: 01a5c827cad9ce240812d31085b0114e, type: 3}
+  fromToAreaReferenceParameterTemplate: {fileID: 9197481963319205126, guid: 69cbd242cdea3a34dbca86482b3197a2, type: 3}
+  resourceAssignParameterTemplate: {fileID: 9197481963319205126, guid: b80f6b5815e9fc7468a302d40179571d, type: 3}
 --- !u!1001 &976354712
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12300,7 +12253,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedObjectId: 
-  isInEditMode: 1
   state: 0
   editMode: 0
 --- !u!4 &1739657234
@@ -13338,6 +13290,7 @@ GameObject:
   - component: {fileID: 1858982129}
   - component: {fileID: 1858982130}
   - component: {fileID: 1858982131}
+  - component: {fileID: 1858982132}
   m_Layer: 5
   m_Name: HBox
   m_TagString: Untagged
@@ -13362,11 +13315,11 @@ RectTransform:
   - {fileID: 1369144329}
   - {fileID: 1744130931}
   - {fileID: 776594568}
-  m_Father: {fileID: 630044671}
+  m_Father: {fileID: 829915184}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -318}
+  m_AnchoredPosition: {x: 0, y: 122.5}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1858982130
@@ -13409,6 +13362,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &1858982132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858982128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0976015de49bad04197900f3b67ee9e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardContainer: {fileID: 1858982129}
+  cardViewerPrefab: {fileID: 6873625939331413568, guid: e086e4aed16cf714b8b5cc1f2ee77fc6, type: 3}
 --- !u!1 &1915366947
 GameObject:
   m_ObjectHideFlags: 0

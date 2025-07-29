@@ -1,5 +1,5 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement data-source-type="GameManager, Assembly-CSharp" style="background-color: rgb(204, 204, 204); right: 255px; left: 0; position: absolute;">
+    <ui:VisualElement data-source-type="GameManager, Assembly-CSharp" style="background-color: rgb(204, 204, 204); right: 205px; left: 0; position: absolute;">
         <ui:TabView>
             <ui:Tab label="Game">
                 <ui:VisualElement style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;">
@@ -18,20 +18,6 @@
                             <ui:DataBinding property="value" data-source-path="gameState.endYear" binding-mode="ToTarget" />
                         </Bindings>
                     </ui:IntegerField>
-                    <ui:Label text="AP" />
-                    <ui:IntegerField>
-                        <Bindings>
-                            <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
-                            <ui:DataBinding property="value" data-source-path="gameState.availableActionPoints" binding-mode="TwoWay" />
-                        </Bindings>
-                    </ui:IntegerField>
-                    <ui:Label text="VP" />
-                    <ui:IntegerField>
-                        <Bindings>
-                            <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
-                            <ui:DataBinding property="value" data-source-path="gameState.victroyPoint" binding-mode="TwoWay" />
-                        </Bindings>
-                    </ui:IntegerField>
                     <ui:Label text="Phase" />
                     <ui:EnumField value="Center" type="GameCore.GamePhase, Assembly-CSharp">
                         <Bindings>
@@ -39,6 +25,27 @@
                             <ui:DataBinding property="value" data-source-path="gameState.phase" binding-mode="TwoWay" />
                         </Bindings>
                     </ui:EnumField>
+                    <ui:Label text="Victory Pt" />
+                    <ui:IntegerField>
+                        <Bindings>
+                            <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
+                            <ui:DataBinding property="value" data-source-path="gameState.victroyPoint" binding-mode="TwoWay" />
+                        </Bindings>
+                    </ui:IntegerField>
+                    <ui:Label text="Act Pt" />
+                    <ui:IntegerField>
+                        <Bindings>
+                            <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
+                            <ui:DataBinding property="value" data-source-path="gameState.availableActionPoints" binding-mode="TwoWay" />
+                        </Bindings>
+                    </ui:IntegerField>
+                    <ui:Label text="Cards playable" />
+                    <ui:IntegerField>
+                        <Bindings>
+                            <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
+                            <ui:DataBinding property="value" data-source-path="gameState.availableCardPlay" binding-mode="TwoWay" />
+                        </Bindings>
+                    </ui:IntegerField>
                 </ui:VisualElement>
             </ui:Tab>
             <ui:Tab label="File">
@@ -48,7 +55,7 @@
                     <ui:Button text="Exit" name="ExitButton" />
                 </ui:VisualElement>
             </ui:Tab>
-            <ui:Tab label="Debug &amp; Editor">
+            <ui:Tab label="Edit &amp; Debug">
                 <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
                     <ui:Label text="In Edit Mode" />
                     <ui:Toggle name="EditModeToggle">
@@ -56,11 +63,31 @@
                             <ui:DataBinding property="value" data-source-path="editMode" binding-mode="TwoWay" />
                         </Bindings>
                     </ui:Toggle>
+                    <ui:Label text="Card Limit" />
+                    <ui:IntegerField>
+                        <Bindings>
+                            <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
+                            <ui:DataBinding property="value" data-source-path="gameState.cardLimit" binding-mode="TwoWay" />
+                        </Bindings>
+                    </ui:IntegerField>
+                    <ui:Label text="Turn Len (Year)" />
+                    <ui:IntegerField>
+                        <Bindings>
+                            <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
+                            <ui:DataBinding property="value" data-source-path="gameState.turnLengthYear" binding-mode="TwoWay" />
+                        </Bindings>
+                    </ui:IntegerField>
+                </ui:VisualElement>
+            </ui:Tab>
+            <ui:Tab label="Help">
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+                    <ui:Button text="Help" name="HelpButton" />
+                    <ui:Button text="Open Source Repo" name="OpenSourceRepoButton" />
                 </ui:VisualElement>
             </ui:Tab>
         </ui:TabView>
     </ui:VisualElement>
-    <ui:VisualElement data-source-type="GameManager, Assembly-CSharp" style="flex-grow: 1; position: absolute; right: 0; width: 250px; background-color: rgb(204, 204, 204);">
+    <ui:VisualElement data-source-type="GameManager, Assembly-CSharp" style="flex-grow: 1; position: absolute; right: 0; width: 200px; background-color: rgb(204, 204, 204);">
         <ui:VisualElement style="flex-grow: 1;">
             <ui:VisualElement data-source-path="selectedArea" style="flex-grow: 1;">
                 <ui:TextField readonly="true" value="Area name">

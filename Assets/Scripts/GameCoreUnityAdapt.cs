@@ -25,6 +25,14 @@ namespace GameCore
     {
         [CreateProperty]
         public CardClass cardClassProp => cardClass;
+    }
 
+    public partial class GameState
+    {
+        [CreateProperty]
+        public bool isInPlayingCardPhase => phase == GamePhase.PlayingCard;
+
+        [CreateProperty]
+        public bool isInDoingActionPhase => phase == GamePhase.DoingAction;
     }
 }

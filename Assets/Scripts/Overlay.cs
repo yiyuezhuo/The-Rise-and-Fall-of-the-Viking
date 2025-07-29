@@ -34,5 +34,15 @@ public class Overlay : SingletonDocument<Overlay>
 
             CoreManager.Instance.state.NextPhase();
         };
+
+        root.Q<Button>("OpenSourceRepoButton").clicked += () =>
+        {
+            Application.OpenURL("https://github.com/yiyuezhuo/The-Rise-and-Fall-of-the-Viking");
+        };
+
+        root.Q<Button>("HelpButton").clicked += () =>
+        {
+            DialogRoot.Instance.PopupMessageDialog("Help WIP \n 114514");
+        };
     }
 }

@@ -10,7 +10,7 @@ public class UnityLogService : ILoggerService
 
     public void LogWarning(string message) => Debug.LogWarning(message);
 
-    static UnityLogService instance = new UnityLogService();
+    static UnityLogService instance = new();
     public static UnityLogService Instance => instance;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]

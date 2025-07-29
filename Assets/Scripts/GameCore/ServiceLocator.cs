@@ -24,12 +24,25 @@ namespace GameCore
         }
     }
 
+    public interface IUserMessageService
+    {
+        void ShowMessage(string message, string title="Message");
+    }
+
+    public class FallbackUserMessageService : IUserMessageService
+    {
+        public void ShowMessage(string message, string title = "Message")
+        {
+            System.Console.WriteLine($"title: " + message);
+        }
+    }
+
     public static class ServiceLocator
     {
         static Dictionary<Type, object> services = new()
         {
             {typeof(ILoggerService), new FallbackLogger()},
-            // {typeof(IMaskCheckService), new FallbackMaskChecker()}
+            {typeof(IUserMessageService), new FallbackUserMessageService()}
         };
 
         public static T Get<T>() where T : class

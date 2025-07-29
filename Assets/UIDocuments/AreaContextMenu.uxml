@@ -1,7 +1,11 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement style="flex-grow: 1; max-width: 150px;">
+    <ui:VisualElement data-source-type="GameManager, Assembly-CSharp" style="max-width: 150px;">
         <ui:Button text="Cancel" name="CancelButton" />
-        <ui:Button text="Edit&#10;" name="EditButton" />
+        <ui:Button text="Edit" name="EditButton">
+            <Bindings>
+                <ui:DataBinding property="style.display" data-source-path="editMode" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
+            </Bindings>
+        </ui:Button>
         <ui:VisualElement>
             <ui:Button text="Conquer" name="ConquerButton" />
             <ui:Button text="Raid" name="RaidButton" />

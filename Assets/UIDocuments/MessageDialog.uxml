@@ -1,0 +1,7 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement class="panel-dialog" style="height: auto;">
+        <ui:Label text="Message Dialog" name="TitleLabel" class="title" />
+        <ui:TextField name="ContentTextField" value="Content" multiline="true" vertical-scroller-visibility="Auto" style="min-height: 50px; white-space: normal; max-height: 250px;" />
+        <ui:Button text="Confirm" name="ConfirmButton" />
+    </ui:VisualElement>
+</ui:UXML>

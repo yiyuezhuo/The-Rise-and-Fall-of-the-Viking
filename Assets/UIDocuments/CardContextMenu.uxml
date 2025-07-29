@@ -1,0 +1,15 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement data-source-type="GameManager, Assembly-CSharp" style="width: 200px;">
+        <ui:Button text="Cancel" name="CancelButton" />
+        <ui:Button text="Play Card for Action Point" name="PlayActionPointButton">
+            <Bindings>
+                <ui:DataBinding property="enabledSelf" data-source-path="gameState.isInPlayingCardPhase" binding-mode="ToTarget" />
+            </Bindings>
+        </ui:Button>
+        <ui:Button text="Play Card for Event Effect" name="PlayEventEffectButton">
+            <Bindings>
+                <ui:DataBinding property="enabledSelf" data-source-path="gameState.isInPlayingCardPhase" binding-mode="ToTarget" />
+            </Bindings>
+        </ui:Button>
+    </ui:VisualElement>
+</ui:UXML>

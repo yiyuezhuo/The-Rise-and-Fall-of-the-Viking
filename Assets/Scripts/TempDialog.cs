@@ -28,9 +28,18 @@ public class TempDialog
     public bool draggable = false;
 
     public PositionMode positionMode = PositionMode.Centering;
-    public bool singleton = false;
 
+    public bool singleton = false;
     static Dictionary<VisualTreeAsset, TempDialog> singletonMap = new();
+
+    public enum SingletonTag
+    {
+        None,
+        ContextMenu
+    }
+
+    public SingletonTag singletonTag = SingletonTag.None;
+    static Dictionary<SingletonTag, TempDialog> singletonTagMap = new();
 
     public void Popup()
     {
@@ -109,6 +118,15 @@ public class TempDialog
             }
             singletonMap[template] = this;
         }
+
+        if (singletonTag != SingletonTag.None)
+        {
+            if (singletonTagMap.TryGetValue(singletonTag, out var oldDialog))
+            {
+                oldDialog.RemoveSelf();
+            }
+            singletonTagMap[singletonTag] = this;
+        }
     }
 
     public void RemoveSelf()
@@ -120,10 +138,17 @@ public class TempDialog
             // Debug.Log($"px={px},py={py},el.style.left.value.value={el.style.left.value.value},el.style.top.value.value={el.style.top.value.value}");
             memorizedLeftTop[template] = (el.style.left, el.style.top);
         }
+
         if (singleton && singletonMap.ContainsKey(template))
         {
             singletonMap.Remove(template);
         }
+
+        if (singletonTag != SingletonTag.None && singletonTagMap.ContainsKey(singletonTag))
+        {
+            singletonTagMap.Remove(singletonTag);
+        }
+
         root.Remove(el);
     }
 }

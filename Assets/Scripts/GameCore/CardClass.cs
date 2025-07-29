@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace GameCore
 {
@@ -16,9 +17,9 @@ namespace GameCore
         public int actionPoints;
         public CardClassEventCode eventCode;
 
-        public virtual void DoEvent()
+        public virtual void ApplyEventEffect()
         {
-
+            ServiceLocator.Get<ILoggerService>().Log($"{name} applied event effect");
         }
 
         public static Dictionary<CardClassEventCode, string> eventCodeDescription = new()

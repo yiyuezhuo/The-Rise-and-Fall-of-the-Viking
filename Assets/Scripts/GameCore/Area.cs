@@ -16,7 +16,7 @@ namespace GameCore
         public string objectId { get; set; }
 
         public string name;
-        public bool vikingZoneCreated;
+        public bool vikingZoneCreated => isVikingHomeland || vikingResources > 0;
         public bool isVikingHomeland;
         public int vikingResources;
         public float vikingOccupyingPercent;

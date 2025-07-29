@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="AreaReferenceField" src="project://database/Assets/UIDocuments/AreaReferenceField.uxml?fileID=9197481963319205126&amp;guid=3e5fe0e88dc5b43489422630dd6d6c33&amp;type=3#AreaReferenceField" />
+    <ui:VisualElement data-source-type="GameCore.FromToAreaReferenceParameter, Assembly-CSharp" style="flex-grow: 1;">
+        <ui:Instance template="AreaReferenceField" data-source-path="from" />
+        <ui:Instance template="AreaReferenceField" data-source-path="to">
+            <AttributeOverrides element-name="LabelLabel" text="To" />
+        </ui:Instance>
+    </ui:VisualElement>
+</ui:UXML>

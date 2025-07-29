@@ -10,7 +10,87 @@ using GameCore;
 public class DialogRoot : SingletonDocument<DialogRoot>
 {
     public VisualTreeAsset areaContextMenuTemplate;
+    public VisualTreeAsset cardContextMenuTemplate;
     public VisualTreeAsset areaEditorTemplate;
+    public VisualTreeAsset messageDialogTemplate;
+    public VisualTreeAsset fromToAreaReferenceParameterTemplate;
+    public VisualTreeAsset resourceAssignParameterTemplate;
+
+    public void PopupFromToAreaReferenceParameterDialog(FromToAreaReferenceParameter p, string title, Action<FromToAreaReferenceParameter> callback)
+    {
+        var tempDialog = new TempDialog()
+        {
+            root = root,
+            template = fromToAreaReferenceParameterTemplate,
+            templateDataSource = p,
+            draggable = true
+        };
+
+        tempDialog.onCreated += (sender, el) =>
+        {
+            BindSetButtons(el);
+            el.Q<Label>("TitleLabel").text = title;
+        };
+
+        tempDialog.onConfirmed += (sender, el) => callback(p);
+
+        tempDialog.Popup();
+    }
+
+    void BindSetButtons(VisualElement el)
+    {
+        foreach (var setButton in el.Query<Button>("SetButton").ToList())
+        {
+            GameManager.Instance.PrepareSelectingAreaCallback(area =>
+            {
+                if (Utils.TryResolveCurrentValueForBinding(setButton, out AreaReference areaReference))
+                {
+                    areaReference.objectId = area.objectId;
+                }
+            });
+        }
+    }
+
+    public void PopupResourceAssignParameterTemplate(ResourceAssignParameter p, string title, Action<ResourceAssignParameter> callback)
+    {
+        var tempDialog = new TempDialog()
+        {
+            root = root,
+            template = resourceAssignParameterTemplate,
+            templateDataSource = p,
+            draggable = true
+        };
+
+        // TODO: Bind "Set" buttons
+
+        tempDialog.onCreated += (sender, el) =>
+        {
+            BindSetButtons(el);
+            el.Q<Label>("TitleLabel").text = title;
+        };
+
+        tempDialog.onConfirmed += (sender, el) => callback(p);
+
+        tempDialog.Popup();
+    }
+
+    public void PopupMessageDialog(string message, string title = "Message")
+    {
+        var tempDialog = new TempDialog()
+        {
+            root = root,
+            template = messageDialogTemplate,
+            draggable = true
+        };
+
+        tempDialog.onCreated += (sender, el) =>
+        {
+            el.Q<Label>("TitleLabel").text = title;
+            el.Q<TextField>("ContentTextField").SetValueWithoutNotify(message);
+        };
+
+        tempDialog.Popup();
+    }
 
     public void PopupAreaContextMenu()
     {
@@ -20,15 +100,96 @@ public class DialogRoot : SingletonDocument<DialogRoot>
             template = areaContextMenuTemplate,
             templateDataSource = GameManager.Instance, // GameManager.Instance
             positionMode = TempDialog.PositionMode.MousePosition,
-            singleton = true
+            singletonTag = TempDialog.SingletonTag.ContextMenu
         };
 
         tempDialog.onCreated += (sender, el) =>
         {
             el.Q<Button>("EditButton").clicked += () =>
             {
-                PopupAreaEditor();
                 ((TempDialog)sender).RemoveSelf();
+
+                PopupAreaEditor();
+            };
+
+            el.Q<Button>("CounterInfluenceButton").clicked += () =>
+            {
+                ((TempDialog)sender).RemoveSelf();
+
+                var selectedArea = GameManager.Instance.selectedArea;
+                if (selectedArea != null)
+                {
+                    GameState.current.DoCounterInfluence(selectedArea);
+                }
+            };
+
+            el.Q<Button>("TradeButton").clicked += () =>
+            {
+                ((TempDialog)sender).RemoveSelf();
+
+                GameManager.Instance.PrepareSelectingAreaCallback(area =>
+                {
+                    var selectedArea = GameManager.Instance.selectedArea;
+                    if (selectedArea == null)
+                        return;
+
+                    var p = new FromToAreaReferenceParameter()
+                    {
+                        from = new AreaReference() { objectId = selectedArea.objectId },
+                        to = new AreaReference() { objectId = area.objectId },
+                    };
+
+                    PopupFromToAreaReferenceParameterDialog(p, "Trade", p =>
+                    {
+                        GameState.current.DoTrade(p);
+                    });
+                });
+            };
+
+            el.Q<Button>("ColonizationButton").clicked += () =>
+            {
+                ((TempDialog)sender).RemoveSelf();
+            };
+        };
+
+        tempDialog.Popup();
+    }
+
+    public void PopupCardContextMenu()
+    {
+        var tempDialog = new TempDialog()
+        {
+            root = root,
+            template = cardContextMenuTemplate,
+            templateDataSource = GameManager.Instance, // GameManager.Instance
+            positionMode = TempDialog.PositionMode.MousePosition,
+            singletonTag = TempDialog.SingletonTag.ContextMenu
+        };
+
+        tempDialog.onCreated += (sender, el) =>
+        {
+            el.Q<Button>("PlayActionPointButton").clicked += () =>
+            {
+                ((TempDialog)sender).RemoveSelf();
+
+                var selectedCard = GameManager.Instance.selectedCard;
+                var gameState = GameState.current;
+                if (selectedCard != null)
+                {
+                    gameState.PlayCardForActionPoint(selectedCard);
+                }
+            };
+
+            el.Q<Button>("PlayEventEffectButton").clicked += () =>
+            {
+                ((TempDialog)sender).RemoveSelf();
+
+                var selectedCard = GameManager.Instance.selectedCard;
+                var gameState = GameState.current;
+                if (selectedCard != null)
+                {
+                    gameState.PlayCardForActionPoint(selectedCard);
+                }
             };
         };
 
