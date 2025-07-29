@@ -8,6 +8,8 @@ public class Overlay : SingletonDocument<Overlay>
 {
     public void OnEnable()
     {
+        root.dataSource = GameManager.Instance;
+
         root.Q<Button>("SaveButton").clicked += () =>
         {
             Debug.Log("SaveButton clicked");
@@ -23,6 +25,8 @@ public class Overlay : SingletonDocument<Overlay>
 
             IOManager.Instance.LoadTextFile(CoreManager.Instance.LoadFromXml, "xml");
         };
+
+        root.Q<Button>("ExitButton").clicked += Application.Quit;
 
         root.Q<Button>("NextPhaseButton").clicked += () =>
         {

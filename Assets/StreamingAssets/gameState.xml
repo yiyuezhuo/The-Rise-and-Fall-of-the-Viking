@@ -4,6 +4,8 @@
  <endYear>1066</endYear>
  <currentYear>793</currentYear>
  <turnLengthYear>10</turnLengthYear>
+ <availableCardPlay>0</availableCardPlay>
+ <cardLimit>4</cardLimit>
  <phase>PlayingCard</phase>
  <availableActionPoints>0</availableActionPoints>
  <victroyPoint>0</victroyPoint>
@@ -242,7 +244,7 @@
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
-   <hostResources>0</hostResources>
+   <hostResources>2</hostResources>
    <vikingChristianization>0</vikingChristianization>
    <christianizationCoef>1</christianizationCoef>
    <baseMaxResources>50</baseMaxResources>
@@ -553,7 +555,7 @@
    <hostResources>30</hostResources>
    <vikingChristianization>0</vikingChristianization>
    <christianizationCoef>1</christianizationCoef>
-   <baseMaxResources>50</baseMaxResources>
+   <baseMaxResources>100</baseMaxResources>
    <isColony>false</isColony>
    <lord />
    <neighborReferences>

@@ -10,7 +10,19 @@ using System;
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
     public string selectedObjectId; // May be a card or area at this point
-    public bool isInEditMode = true;
+
+    [CreateProperty]
+    public Area selectedArea => EntityManager.current.Get<Area>(selectedObjectId);
+
+    [CreateProperty]
+    public bool isSelectedAreaAvailable => selectedArea != null;
+
+    [CreateProperty]
+    public Card selectedCard => EntityManager.current.Get<Card>(selectedObjectId);
+
+    [CreateProperty]
+    public bool isSelectedCardAvailable => selectedCard != null;
+
 
     string initGameStatePath = "gameState.xml";
 
@@ -21,6 +33,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     }
 
     public State state = State.Idle;
+
+    public bool editMode = false;
 
     public Action<Area> oneShotAreaSelectingCallback;
 

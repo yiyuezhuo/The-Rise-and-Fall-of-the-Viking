@@ -2,10 +2,11 @@ using System.Collections.Generic;
 
 namespace GameCore
 {
-    public class Card : IObjectIdLabeled
+    public partial class Card : IObjectIdLabeled
     {
         public string objectId { get; set; }
         public string cardClassId;
+        public CardClass cardClass => CardClass.GetByCardClassId(cardClassId);
 
         public IEnumerable<IObjectIdLabeled> GetSubObjects()
         {

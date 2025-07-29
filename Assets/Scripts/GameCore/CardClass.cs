@@ -7,7 +7,7 @@ namespace GameCore
         None,
     }
 
-    public class CardClass
+    public partial class CardClass
     {
         public string name;
         public string imagePath;
@@ -26,7 +26,7 @@ namespace GameCore
             { CardClassEventCode.None, "None" },
         };
 
-        public static Dictionary<string, CardClass> classMap = new()
+        static Dictionary<string, CardClass> classMap = new()
         {
             {"Action", new()
             {
@@ -37,5 +37,7 @@ namespace GameCore
                 eventCode = CardClassEventCode.None
             }}
         };
+
+        public static CardClass GetByCardClassId(string cardClassId) => classMap[cardClassId];
     }
 }
