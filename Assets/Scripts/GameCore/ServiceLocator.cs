@@ -26,15 +26,21 @@ namespace GameCore
 
     public interface IUserMessageService
     {
-        void ShowMessage(string message, string title="Message");
+        void ShowMessage(string message, string title = "Message"); // MessageBox like
+        // void LogMessage(string message); // Log present to user, similar to CMO, CO2, Vassal's log.
     }
 
     public class FallbackUserMessageService : IUserMessageService
     {
         public void ShowMessage(string message, string title = "Message")
         {
-            System.Console.WriteLine($"title: " + message);
+            System.Console.WriteLine("ShowMessage =>" + $"{title}:" + message);
         }
+
+        // public void LogMessage(string message)
+        // {
+        //     Console.WriteLine($"LogMessage => {message}");
+        // }
     }
 
     public static class ServiceLocator

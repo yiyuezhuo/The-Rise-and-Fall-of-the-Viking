@@ -4,7 +4,7 @@
  <endYear>1066</endYear>
  <currentYear>793</currentYear>
  <turnLengthYear>10</turnLengthYear>
- <availableCardPlay>0</availableCardPlay>
+ <availableCardPlay>1</availableCardPlay>
  <cardLimit>4</cardLimit>
  <phase>PlayingCard</phase>
  <availableActionPoints>0</availableActionPoints>
@@ -12,7 +12,6 @@
  <areas>
   <Area>
    <name>Kiev</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -40,7 +39,6 @@
   </Area>
   <Area>
    <name>Luna</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -74,7 +72,6 @@
   </Area>
   <Area>
    <name>Volga Bulgaria</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -102,7 +99,6 @@
   </Area>
   <Area>
    <name>Lyon</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -130,7 +126,6 @@
   </Area>
   <Area>
    <name>Jomsburg</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -152,7 +147,6 @@
   </Area>
   <Area>
    <name>Finland</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -171,7 +165,6 @@
   </Area>
   <Area>
    <name>Greenland</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -190,7 +183,6 @@
   </Area>
   <Area>
    <name>Naples</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -215,7 +207,6 @@
   </Area>
   <Area>
    <name>Iceland</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -240,7 +231,6 @@
   </Area>
   <Area>
    <name>Novgorod</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -262,7 +252,6 @@
   </Area>
   <Area>
    <name>Polotsk</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -284,7 +273,6 @@
   </Area>
   <Area>
    <name>Bjarrmaland</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -312,7 +300,6 @@
   </Area>
   <Area>
    <name>Lisbon</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -340,7 +327,6 @@
   </Area>
   <Area>
    <name>England</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -371,7 +357,6 @@
   </Area>
   <Area>
    <name>Atil</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -396,7 +381,6 @@
   </Area>
   <Area>
    <name>Tunis</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -418,7 +402,6 @@
   </Area>
   <Area>
    <name>Vaencia</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -446,7 +429,6 @@
   </Area>
   <Area>
    <name>Faroe</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -477,7 +459,6 @@
   </Area>
   <Area>
    <name>Sweden</name>
-   <vikingZoneCreated>true</vikingZoneCreated>
    <isVikingHomeland>true</isVikingHomeland>
    <vikingResources>5</vikingResources>
    <vikingOccupyingPercent>1</vikingOccupyingPercent>
@@ -511,7 +492,6 @@
   </Area>
   <Area>
    <name>Denmark</name>
-   <vikingZoneCreated>true</vikingZoneCreated>
    <isVikingHomeland>true</isVikingHomeland>
    <vikingResources>5</vikingResources>
    <vikingOccupyingPercent>1</vikingOccupyingPercent>
@@ -548,7 +528,6 @@
   </Area>
   <Area>
    <name>Constantinople</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -576,7 +555,6 @@
   </Area>
   <Area>
    <name>Irland</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -613,7 +591,6 @@
   </Area>
   <Area>
    <name>France</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -638,7 +615,6 @@
   </Area>
   <Area>
    <name>Prussia</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -657,7 +633,6 @@
   </Area>
   <Area>
    <name>Norway</name>
-   <vikingZoneCreated>true</vikingZoneCreated>
    <isVikingHomeland>true</isVikingHomeland>
    <vikingResources>5</vikingResources>
    <vikingOccupyingPercent>1</vikingOccupyingPercent>
@@ -688,7 +663,6 @@
   </Area>
   <Area>
    <name>Iberian</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>
@@ -725,7 +699,6 @@
   </Area>
   <Area>
    <name>North American</name>
-   <vikingZoneCreated>false</vikingZoneCreated>
    <isVikingHomeland>false</isVikingHomeland>
    <vikingResources>0</vikingResources>
    <vikingOccupyingPercent>0</vikingOccupyingPercent>

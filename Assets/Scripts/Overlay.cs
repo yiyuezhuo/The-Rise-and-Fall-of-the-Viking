@@ -10,6 +10,8 @@ public class Overlay : SingletonDocument<Overlay>
     {
         root.dataSource = GameManager.Instance;
 
+        Utils.BindItemsSourceRecursive(root);
+
         root.Q<Button>("SaveButton").clicked += () =>
         {
             Debug.Log("SaveButton clicked");
@@ -32,7 +34,20 @@ public class Overlay : SingletonDocument<Overlay>
         {
             Debug.Log("NextPhaseButton clicked");
 
-            CoreManager.Instance.state.NextPhase();
+            var gameState = GameState.current;
+
+            if (gameState.phase == GamePhase.PlayingCard && gameState.availableCardPlay > 0)
+            {
+                DialogRoot.Instance.PopupConfirmDialog("It's possible to play more card, confirm to continue?", gameState.NextPhase);
+            }
+            else if (gameState.phase == GamePhase.DoingAction && gameState.availableActionPoints > 0)
+            {
+                DialogRoot.Instance.PopupConfirmDialog("There're unused action point, confirm to continue?", gameState.NextPhase);
+            }
+            else
+            {
+                gameState.NextPhase();
+            }
         };
 
         root.Q<Button>("OpenSourceRepoButton").clicked += () =>
@@ -44,5 +59,28 @@ public class Overlay : SingletonDocument<Overlay>
         {
             DialogRoot.Instance.PopupMessageDialog("Help WIP \n 114514");
         };
+
+        var userLogListView = root.Q<ListView>("UserLogListView");
+
+        root.Q<Button>("ExpandCollapseUserLogButton").clicked += () =>
+        {
+            var displayStyle = userLogListView.style.display;
+            if (displayStyle == DisplayStyle.None)
+            {
+                userLogListView.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                userLogListView.style.display = DisplayStyle.None;
+            }
+        };
+
+        // userLogListView.bindItem = (item, index) =>
+        // {
+        //     var userLogs = GameState.current.userLogs;
+        //     var indexReversed = userLogs.Count - index - 1;
+        //     Debug.Log($"bindItem: {item}, {index}, {indexReversed}");
+        //     item.dataSource = userLogs[indexReversed]; // reverse order binding
+        // };
     }
 }

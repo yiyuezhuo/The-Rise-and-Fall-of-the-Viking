@@ -22,6 +22,7 @@ namespace GameCore
         }
     }
 
+
     public partial class GameState
     {
         public int beginYear = 793;
@@ -35,7 +36,7 @@ namespace GameCore
         public GamePhase phase;
 
         public int availableActionPoints;
-        public int victroyPoint;
+        public int victoryPoint;
 
         public List<Area> areas = new();
         public List<Card> cards = new();
@@ -44,11 +45,19 @@ namespace GameCore
         public List<CardReference> handCardReferences = new();
         public List<CardReference> discardCardReferences = new();
 
+        public List<string> userLogs = new();
+
         // Conquer
         // Raid
         // Trade
         // Colonization
         // Counter Influence
+
+        public void AddUserLog(string message)
+        {
+            userLogs.Insert(0, message); // TODO: Temp Hack to simplify data binding
+            // userLogs.Add(message);
+        }
 
         public void MoveCard(List<CardReference> from, List<CardReference> to, string cardId)
         {
@@ -175,9 +184,11 @@ namespace GameCore
                 // VP Acc
                 if (area.vikingZoneCreated)
                 {
-                    victroyPoint += (int)Math.Round(5 * area.vikingChristianization);
+                    victoryPoint += (int)Math.Round(5 * (1 - area.vikingChristianization));
                 }
             }
+
+            AddUserLog($"{currentYear} Turn End");
         }
 
         public int RollForResourceDelta(int resource, float prob)
@@ -215,7 +226,10 @@ namespace GameCore
             }
 
             availableActionPoints -= 1;
-            area.vikingChristianization = Math.Clamp(area.vikingChristianization - RandomUtils.D100F() * 0.01f, 0, 1);
+
+            var newValue = Math.Clamp(area.vikingChristianization - RandomUtils.D100F() * 0.01f, 0, 1);
+            AddUserLog($"Counter Influence: {area.vikingChristianization} -> {newValue}");
+            area.vikingChristianization = newValue;
         }
 
         public void DoTrade(FromToAreaReferenceParameter p)
@@ -242,6 +256,8 @@ namespace GameCore
 
             fromArea.vikingResources = Math.Clamp(fromArea.vikingResources + add, 0, fromArea.baseMaxResources);
             toArea.hostResources = Math.Clamp(toArea.hostResources + add, 0, toArea.baseMaxResources);
+
+            AddUserLog($"Trade: {fromArea.name} +{add}, {toArea.name} +{add}");
         }
 
         public void DoConquer(ResourceAssignParameter p)
@@ -267,19 +283,22 @@ namespace GameCore
             var fromArea = p.from.GetArea();
             var toArea = p.to.GetArea();
 
-            if (fromArea.hostResources < 2)
+            var transfer = 2;
+
+            if (fromArea.vikingResources < transfer)
             {
                 Propmt("Source area should have at least 2 resource to do Colonization");
                 // TODO: SUpport trade between viking area? (E.X. Colonization?)
                 return;
             }
 
-            fromArea.hostResources -= 2;
             availableActionPoints -= 1;
 
-            fromArea.vikingResources -= 2;
-            toArea.vikingResources += 1;
+            fromArea.vikingResources -= transfer;
+            toArea.vikingResources += transfer;
             // toArea.vikingZoneCreated = true;
+
+            AddUserLog($"Trade: {fromArea.name} -{transfer}, {toArea.name} +{transfer}");
         }
 
         public static GameState current => CoreManager.Instance.state;

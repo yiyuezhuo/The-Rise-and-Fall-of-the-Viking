@@ -41,6 +41,17 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     [CreateProperty]
     public GameState gameState => CoreManager.Instance.state; // Data binding helper
 
+    [CreateProperty]
+    public bool showTopMessage => topMessage != "";
+
+    [CreateProperty]
+    public string topMessage => state switch
+    {
+        State.Idle => "",
+        State.SelectingAreaForCallback => "Select another area",
+        _ => "114514"
+    };
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

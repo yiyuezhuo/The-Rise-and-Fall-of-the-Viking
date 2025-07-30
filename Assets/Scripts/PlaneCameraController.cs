@@ -75,7 +75,7 @@ public class PlaneCameraController : SingletonMonoBehaviour<PlaneCameraControlle
     // Update is called once per frame
     void Update()
     {
-        if(EventSystem.current.IsPointerOverGameObject())
+        if(!dragging && EventSystem.current.IsPointerOverGameObject())
             return;
         
         // Zoom

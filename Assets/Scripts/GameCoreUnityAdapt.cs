@@ -1,6 +1,20 @@
 using Unity.Properties;
 using UnityEngine.UIElements;
 using UnityEngine;
+using System.Xml.Serialization;
+
+using GameCore;
+
+public class ReversedUserLogs : ReversedList<string>
+{
+    public ReversedUserLogs()
+    {
+        originalListProvider = () => GameState.current.userLogs;
+    }
+
+    static ReversedUserLogs _instance = new();
+    public static ReversedUserLogs Instance => _instance;
+}
 
 namespace GameCore
 {
@@ -34,5 +48,8 @@ namespace GameCore
 
         [CreateProperty]
         public bool isInDoingActionPhase => phase == GamePhase.DoingAction;
+
+        // [CreateProperty]
+        // public ReversedUserLogs reversedUserLogs => ReversedUserLogs.Instance;
     }
 }

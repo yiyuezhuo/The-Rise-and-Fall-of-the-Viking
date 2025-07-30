@@ -6733,6 +6733,7 @@ MonoBehaviour:
   cardContextMenuTemplate: {fileID: 9197481963319205126, guid: a5b741cafca154449a3a862776034c1d, type: 3}
   areaEditorTemplate: {fileID: 9197481963319205126, guid: a50148e543315fa47b8f3ee8af371d2d, type: 3}
   messageDialogTemplate: {fileID: 9197481963319205126, guid: 01a5c827cad9ce240812d31085b0114e, type: 3}
+  confirmDialogTemplate: {fileID: 9197481963319205126, guid: ea5c3ea322aa5e14ab8d6da89b190217, type: 3}
   fromToAreaReferenceParameterTemplate: {fileID: 9197481963319205126, guid: 69cbd242cdea3a34dbca86482b3197a2, type: 3}
   resourceAssignParameterTemplate: {fileID: 9197481963319205126, guid: b80f6b5815e9fc7468a302d40179571d, type: 3}
 --- !u!1001 &976354712

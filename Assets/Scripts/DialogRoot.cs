@@ -13,6 +13,7 @@ public class DialogRoot : SingletonDocument<DialogRoot>
     public VisualTreeAsset cardContextMenuTemplate;
     public VisualTreeAsset areaEditorTemplate;
     public VisualTreeAsset messageDialogTemplate;
+    public VisualTreeAsset confirmDialogTemplate;
     public VisualTreeAsset fromToAreaReferenceParameterTemplate;
     public VisualTreeAsset resourceAssignParameterTemplate;
 
@@ -41,13 +42,16 @@ public class DialogRoot : SingletonDocument<DialogRoot>
     {
         foreach (var setButton in el.Query<Button>("SetButton").ToList())
         {
-            GameManager.Instance.PrepareSelectingAreaCallback(area =>
+            setButton.clicked += () =>
             {
-                if (Utils.TryResolveCurrentValueForBinding(setButton, out AreaReference areaReference))
+                GameManager.Instance.PrepareSelectingAreaCallback(area =>
                 {
-                    areaReference.objectId = area.objectId;
-                }
-            });
+                    if (Utils.TryResolveCurrentValueForBinding(setButton, out AreaReference areaReference))
+                    {
+                        areaReference.objectId = area.objectId;
+                    }
+                });
+            };
         }
     }
 
@@ -88,6 +92,26 @@ public class DialogRoot : SingletonDocument<DialogRoot>
             el.Q<Label>("TitleLabel").text = title;
             el.Q<TextField>("ContentTextField").SetValueWithoutNotify(message);
         };
+
+        tempDialog.Popup();
+    }
+
+    public void PopupConfirmDialog(string message, Action confirmCallback, string title = "Confirm")
+    {
+        var tempDialog = new TempDialog()
+        {
+            root = root,
+            template = confirmDialogTemplate,
+            draggable = true,
+        };
+
+        tempDialog.onCreated += (sender, el) =>
+        {
+            el.Q<Label>("TitleLabel").text = title;
+            el.Q<TextField>("ContentTextField").SetValueWithoutNotify(message);
+        };
+
+        tempDialog.onConfirmed += (sender, el) => confirmCallback();
 
         tempDialog.Popup();
     }
@@ -149,6 +173,24 @@ public class DialogRoot : SingletonDocument<DialogRoot>
             el.Q<Button>("ColonizationButton").clicked += () =>
             {
                 ((TempDialog)sender).RemoveSelf();
+
+                GameManager.Instance.PrepareSelectingAreaCallback(area =>
+                {
+                    var selectedArea = GameManager.Instance.selectedArea;
+                    if (selectedArea == null)
+                        return;
+
+                    var p = new FromToAreaReferenceParameter()
+                    {
+                        from = new AreaReference() { objectId = selectedArea.objectId },
+                        to = new AreaReference() { objectId = area.objectId },
+                    };
+
+                    PopupFromToAreaReferenceParameterDialog(p, "Colonization", p =>
+                    {
+                        GameState.current.DoColonization(p);
+                    });
+                });
             };
         };
 

@@ -8,6 +8,12 @@ public class UnityUserMessageService : IUserMessageService
         DialogRoot.Instance.PopupMessageDialog(message, title);
     }
 
+    // public void LogMessage(string message)
+    // {
+    //     DialogRoot.Instance.PopupMessageDialog(message);
+    // }
+
+
     static UnityUserMessageService instance = new();
     public static UnityUserMessageService Instance => instance;
 
