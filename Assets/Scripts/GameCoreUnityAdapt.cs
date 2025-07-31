@@ -5,16 +5,16 @@ using System.Xml.Serialization;
 
 using GameCore;
 
-public class ReversedUserLogs : ReversedList<string>
-{
-    public ReversedUserLogs()
-    {
-        originalListProvider = () => GameState.current.userLogs;
-    }
+// public class ReversedUserLogs : ReversedList<string>
+// {
+//     public ReversedUserLogs()
+//     {
+//         originalListProvider = () => GameState.current.userLogs;
+//     }
 
-    static ReversedUserLogs _instance = new();
-    public static ReversedUserLogs Instance => _instance;
-}
+//     static ReversedUserLogs _instance = new();
+//     public static ReversedUserLogs Instance => _instance;
+// }
 
 namespace GameCore
 {
@@ -48,6 +48,28 @@ namespace GameCore
 
         [CreateProperty]
         public bool isInDoingActionPhase => phase == GamePhase.DoingAction;
+
+        [CreateProperty]
+        public bool isPlayingCardForActionAvaliable => IsPlayingCardForActionPointAvaliable(GameManager.Instance.selectedCard);
+
+        [CreateProperty]
+        public bool isPlayingCardForEventEffectAvailable => IsPlayingCardForEventEffectAvailable(GameManager.Instance.selectedCard);
+
+        [CreateProperty]
+        public bool isTradeAvailable => IsTradeAvailable(GameManager.Instance.selectedArea);
+
+        [CreateProperty]
+        public bool isCounterInfluenceAvailable => IsCounterInfluenceAvailable(GameManager.Instance.selectedArea);
+
+        [CreateProperty]
+        public bool isColonizationAvailable => IsColonizationAvailable(GameManager.Instance.selectedArea);
+
+        [CreateProperty]
+        public bool isRaidAvailable => IsRaidAvailable(GameManager.Instance.selectedArea);
+
+        [CreateProperty]
+        public bool isConquerAvailable => IsConquerAvailable(GameManager.Instance.selectedArea);
+
 
         // [CreateProperty]
         // public ReversedUserLogs reversedUserLogs => ReversedUserLogs.Instance;

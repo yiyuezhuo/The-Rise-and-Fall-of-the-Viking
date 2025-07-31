@@ -163,16 +163,93 @@ namespace GameCore
             }
         }
 
+        public void ProcessGrowth(Area area)
+        {
+            // Reinvestment
+            area.hostResources += RollForResourceDelta(area.hostResources, 0.05f);
+            area.vikingResources += RollForResourceDelta(area.vikingResources, 0.05f);
+
+            // Fixed Growth
+            if (area.isColony)
+            {
+                if (area.vikingZoneCreated)
+                {
+                    area.vikingResources += RandomUtils.RandomRound(0.5f);
+                }
+            }
+            else if (area.isVikingHomeland)
+            {
+                area.vikingResources += 1;
+            }
+            else if (!area.vikingZoneCreated)
+            {
+                area.hostResources += 1;
+            }
+            else
+            {
+                area.hostResources += RandomUtils.RandomRound(1 - area.vikingOccupyingPercent);
+                area.vikingResources += RandomUtils.RandomRound(area.vikingOccupyingPercent);
+            }
+
+            area.hostResources = Math.Clamp(area.hostResources, 0, area.baseMaxResources);
+            area.vikingResources = Math.Clamp(area.vikingResources, 0, area.baseMaxResources);
+        }
+
+        public void ProcessCounterAttackWar(Area area, ref List<string> summary)
+        {
+            if (area.vikingZoneCreated && area.hostResources * 2 >= area.vikingResources)
+            {
+                if (RandomUtils.D100F() <= 50 && RandomUtils.NextFloat() > area.vikingChristianization)
+                {
+                    var attackStrength = area.hostResources;
+                    var defStrength = area.vikingResources;
+                    var attackPower = RandomUtils.RandomRound(attackStrength * RandomUtils.NextFloat());
+                    var defPower = RandomUtils.RandomRound(defStrength * RandomUtils.NextFloat());
+
+                    var summaryHead = $"{area.name} Counter Attack War => Host: {attackStrength} -> {attackPower}, Viking: {defStrength} -> {defPower}";
+                    string summaryBody;
+
+                    var baseLoss = Math.Min(attackPower, defPower);
+                    if (attackPower >= defPower)
+                    {
+                        var vikingDelta = -baseLoss;
+                        var hostDelta = -RandomUtils.RandomRound(baseLoss / 2f);
+
+                        area.vikingResources += vikingDelta;
+                        area.hostResources += hostDelta;
+
+                        var occupyDelta = -Math.Min(RandomUtils.NextFloat(), area.vikingOccupyingPercent);
+                        area.vikingOccupyingPercent += occupyDelta;
+
+                        summaryBody = $" Host Victory => Host: ({hostDelta}), Viking: ({vikingDelta}), Occupy: {occupyDelta}";
+                    }
+                    else
+                    {
+                        var vikingDelta = -RandomUtils.RandomRound(baseLoss / 2f);
+                        var hostDelta = -baseLoss;
+
+                        area.vikingResources += vikingDelta;
+                        area.hostResources += hostDelta;
+
+                        summaryBody = $"Host Defeat => Host: ({hostDelta}), Viking: ({vikingDelta})";
+                    }
+
+                    summary.Add(summaryHead + summaryBody);
+                }
+            }
+        }
+
         public void TurnEndHousekeeping()
         {
+
+            List<string> turnEndSummary = new() { $"Turn Year {currentYear} Housekeeping:" };
+
             // Reinvestment, counter attack war, christianization, VP acc and etc.
             foreach (var area in areas)
             {
-                // Reinvestment
-                area.hostResources = Math.Clamp(area.hostResources + RollForResourceDelta(area.hostResources, 0.05f), 0, area.baseMaxResources);
-                area.vikingResources = Math.Clamp(area.vikingResources + RollForResourceDelta(area.vikingResources, 0.05f), 0, area.baseMaxResources);
+                ProcessGrowth(area);
 
-                // TODO: Counter Attack War
+                ProcessCounterAttackWar(area, ref turnEndSummary);
 
                 // Christianization Update
                 if (area.vikingZoneCreated)
@@ -180,15 +257,40 @@ namespace GameCore
                     var christianizationDelta = (float)area.vikingResources / area.baseMaxResources * 0.1f;
                     area.vikingChristianization = Math.Clamp(area.vikingChristianization + christianizationDelta, 0, 1);
                 }
+            }
 
+            var vpAddedSum = 0;
+
+            foreach (var area in areas)
+            {
                 // VP Acc
                 if (area.vikingZoneCreated)
                 {
-                    victoryPoint += (int)Math.Round(5 * (1 - area.vikingChristianization));
+                    var vpAdded = 0;
+
+                    if (area.isVikingHomeland)
+                    {
+                        vpAdded = RandomUtils.RandomRound(5 * (1 - area.vikingChristianization));
+                    }
+                    else if (area.isColony)
+                    {
+                        vpAdded = RandomUtils.RandomRound(3 * (1 - area.vikingChristianization));
+                    }
+                    else
+                    {
+                        vpAdded = RandomUtils.RandomRound(5 * (1 - area.vikingChristianization) * (0.5f + area.vikingOccupyingPercent * 0.5f));
+                    }
+
+                    vpAddedSum += vpAdded;
+                    turnEndSummary.Add($"{area.name} + {vpAdded} VP");
                 }
             }
 
-            AddUserLog($"{currentYear} Turn End");
+            victoryPoint += vpAddedSum;
+
+            turnEndSummary.Add($"Area VP +{vpAddedSum}");
+
+            Prompt(string.Join("\n", turnEndSummary));
         }
 
         public int RollForResourceDelta(int resource, float prob)
@@ -217,28 +319,41 @@ namespace GameCore
             availableCardPlay = 1;
         }
 
-        public void DoCounterInfluence(Area area)
+        public bool CheckGenericActionCondition()
         {
             if (availableActionPoints == 0)
             {
                 ServiceLocator.Get<IUserMessageService>().ShowMessage("No action point left");
-                return;
+                return false;
             }
+
+            if (phase != GamePhase.DoingAction)
+            {
+                ServiceLocator.Get<IUserMessageService>().ShowMessage("Action can only do in the action phase");
+                return false;
+            }
+
+            return true;
+        }
+
+        public void DoCounterInfluence(Area area)
+        {
+            if (!CheckGenericActionCondition())
+                return;
 
             availableActionPoints -= 1;
 
             var newValue = Math.Clamp(area.vikingChristianization - RandomUtils.D100F() * 0.01f, 0, 1);
-            AddUserLog($"Counter Influence: {area.vikingChristianization} -> {newValue}");
+            Prompt($"Counter Influence: {area.vikingChristianization} -> {newValue}");
             area.vikingChristianization = newValue;
         }
 
         public void DoTrade(FromToAreaReferenceParameter p)
         {
-            if (availableActionPoints == 0)
-            {
-                ServiceLocator.Get<IUserMessageService>().ShowMessage("No action point left");
+            if (!CheckGenericActionCondition())
                 return;
-            }
+
+            availableActionPoints -= 1;
 
             var fromArea = p.from.GetArea();
             var toArea = p.to.GetArea();
@@ -250,35 +365,164 @@ namespace GameCore
                 return;
             }
 
-            availableActionPoints -= 1;
-
             var add = Math.Max(1, Math.Min(fromArea.vikingResources, toArea.hostResources) / 10);
 
             fromArea.vikingResources = Math.Clamp(fromArea.vikingResources + add, 0, fromArea.baseMaxResources);
             toArea.hostResources = Math.Clamp(toArea.hostResources + add, 0, toArea.baseMaxResources);
 
-            AddUserLog($"Trade: {fromArea.name} +{add}, {toArea.name} +{add}");
+            Prompt($"Trade: {fromArea.name} +{add}, {toArea.name} +{add}");
         }
 
         public void DoConquer(ResourceAssignParameter p)
         {
-            // TODO
+            if (!CheckGenericActionCondition())
+                return;
+
+            var fromArea = p.from.GetArea();
+            var toArea = p.to.GetArea();
+
+            if (toArea.vikingZoneCreated && toArea != fromArea)
+            {
+                Prompt("If Viking zone is created, conquer can only launched from the same zone.");
+                return;
+            }
+
+            if (toArea.isVikingHomeland)
+            {
+                Prompt("Cannot conquer viking homeland");
+                return;
+            }
+
+            if (fromArea.GetConquerAssignedResourceLimit() < p.assignResource)
+            {
+                Prompt("Invalid resource assigned to conquer");
+                return;
+            }
+
+            availableActionPoints -= 1;
+
+            var defStrength = RandomUtils.RandomRound(toArea.hostResources * 0.5f);
+            var attackStrength = RandomUtils.RandomRound(p.assignResource);
+            var defPower = RandomUtils.RandomRound(defStrength * RandomUtils.NextFloat());
+            var attackPower = RandomUtils.RandomRound(attackStrength * RandomUtils.NextFloat());
+            
+            var baseLoss = Math.Min(defStrength, attackStrength);
+
+            if (attackPower >= defPower * 2)
+            {
+                // var vikingFromDelta = -RandomUtils.RandomRound(baseLoss / 2f);
+                var vikingFromDelta = -p.assignResource;
+                var vikingToDelta = Math.Max(RandomUtils.RandomRound(p.assignResource - baseLoss / 2), 1);
+                var hostDelta = -baseLoss;
+
+                fromArea.vikingResources += vikingFromDelta;
+                toArea.vikingResources += vikingToDelta;
+                toArea.hostResources += hostDelta;
+                victoryPoint += -hostDelta;
+
+                var occupyDelta = Math.Min(RandomUtils.NextFloat() * 0.25f, 1 - toArea.vikingOccupyingPercent);
+                toArea.vikingOccupyingPercent += occupyDelta;
+
+                Prompt($"Attacker Pwr ({attackStrength} => {attackPower})  vs Def Pwr ({defStrength} => {defPower}) => Critical Success => Attacker: ({vikingFromDelta}, {vikingToDelta}), Host: {hostDelta} Resources, VP: {-hostDelta}, Occupy: {occupyDelta}");
+            }
+            else if (attackPower >= defPower)
+            {
+                // var vikingFromDelta = -baseLoss;
+                var vikingFromDelta = -p.assignResource;
+                var vikingToDelta = Math.Max(p.assignResource - baseLoss, 1);
+                var hostDelta = -baseLoss;
+
+                fromArea.vikingResources += vikingFromDelta;
+                toArea.vikingResources += vikingToDelta;
+                toArea.hostResources += hostDelta;
+                victoryPoint += -hostDelta;
+
+                var occupyDelta = Math.Min(RandomUtils.NextFloat() * 0.25f, 1 - toArea.vikingOccupyingPercent);
+                toArea.vikingOccupyingPercent += occupyDelta;
+
+                Prompt($"Attacker Pwr ({attackStrength} => {attackPower})  vs Def Pwr ({defStrength} => {defPower}) => Success => Attacker: ({vikingFromDelta}, {vikingToDelta}), Host: {hostDelta} Resources, VP: {-hostDelta}, Occupy: {occupyDelta}");
+            }
+            else
+            {
+                var vikingDelta = -baseLoss;
+                var hostDelta = -RandomUtils.RandomRound(baseLoss / 2f);
+
+                fromArea.vikingResources += vikingDelta;
+                toArea.hostResources += hostDelta;
+                victoryPoint += -hostDelta;
+
+                Prompt($"Attacker Pwr ({attackStrength} => {attackPower})  vs Def Pwr ({defStrength} => {defPower}) => Success => Attacker: {vikingDelta}, Host: {hostDelta} Resources, VP: {-hostDelta}");
+            }
         }
 
         public void DoRaid(ResourceAssignParameter p)
         {
-            // TODO
+            if (!CheckGenericActionCondition())
+                return;
+
+            var fromArea = p.from.GetArea();
+            var toArea = p.to.GetArea();
+
+            if (fromArea.GetRaidAssignedResourceLimit() < p.assignResource)
+            {
+                Prompt("Invalid resource assigned to raid");
+                return;
+            }
+
+            if (toArea.isVikingHomeland)
+            {
+                Prompt("Cannot raid viking homeland");
+                return;
+            }
+
+            availableActionPoints -= 1;
+
+            var defStrength = RandomUtils.RandomRound(toArea.hostResources * 0.2f);
+            var raidStrength = RandomUtils.RandomRound(p.assignResource);
+            var defPower = RandomUtils.RandomRound(defStrength * RandomUtils.NextFloat());
+            var raidPower = RandomUtils.RandomRound(raidStrength * RandomUtils.NextFloat());
+
+            if (raidPower >= defPower * 2)
+            {
+                var transfer = Math.Min(p.assignResource * 2, toArea.hostResources);
+                var vikingDelta = transfer - p.assignResource;
+                var hostDelta = -transfer;
+
+                fromArea.vikingResources += vikingDelta;
+                toArea.hostResources += hostDelta;
+                victoryPoint += transfer;
+
+                toArea.lord.objectId = fromArea.objectId;
+
+                Prompt($"Raider Pwr ({raidStrength} => {raidPower})  vs Def Pwr ({defStrength} => {defPower}) => Critical Success => Raider: {vikingDelta}, Host: {hostDelta} Resources, VP: {transfer}");
+            }
+            else if (raidPower >= defPower)
+            {
+                var transfer = Math.Min(p.assignResource * 1, toArea.hostResources);
+                var vikingDelta = transfer - p.assignResource;
+                var hostDelta = -transfer;
+
+                fromArea.vikingResources += vikingDelta;
+                toArea.hostResources += hostDelta;
+                victoryPoint += transfer;
+
+                toArea.lord.objectId = fromArea.objectId;
+
+                Prompt($"Raider Pwr ({raidStrength} => {raidPower})  vs Def Pwr ({defStrength} => {defPower}) => Success => Raider: {vikingDelta}, Host: {hostDelta} Resources, VP: {transfer}");
+            }
+            else
+            {
+                fromArea.vikingResources -= fromArea.vikingResources;
+                Prompt($"Raider Pwr ({raidStrength} => {raidPower})  vs Def Pwr ({defStrength} => {defPower}) => Failure => Raider -{p.assignResource} Resources");
+            }
         }
 
-        void Propmt(string message) => ServiceLocator.Get<IUserMessageService>().ShowMessage(message);
+        void Prompt(string message) => ServiceLocator.Get<IUserMessageService>().ShowMessage(message);
 
         public void DoColonization(FromToAreaReferenceParameter p)
         {
-            if (availableActionPoints == 0)
-            {
-                Propmt("No action point left");
+            if (!CheckGenericActionCondition())
                 return;
-            }
 
             var fromArea = p.from.GetArea();
             var toArea = p.to.GetArea();
@@ -287,7 +531,7 @@ namespace GameCore
 
             if (fromArea.vikingResources < transfer)
             {
-                Propmt("Source area should have at least 2 resource to do Colonization");
+                Prompt("Source area should have at least 2 resource to do Colonization");
                 // TODO: SUpport trade between viking area? (E.X. Colonization?)
                 return;
             }
@@ -298,8 +542,22 @@ namespace GameCore
             toArea.vikingResources += transfer;
             // toArea.vikingZoneCreated = true;
 
-            AddUserLog($"Trade: {fromArea.name} -{transfer}, {toArea.name} +{transfer}");
+            if (toArea.lord.objectId == null || toArea.lord.objectId == "")
+            {
+                toArea.lord.objectId = fromArea.objectId;
+            }
+
+            Prompt($"Trade: {fromArea.name} -{transfer}, {toArea.name} +{transfer}");
         }
+
+        public bool IsPlayingCardForActionPointAvaliable(Card card) => phase == GamePhase.PlayingCard;
+        public bool IsPlayingCardForEventEffectAvailable(Card card) => phase == GamePhase.PlayingCard && card != null && card.cardClass.eventCode != CardClassEventCode.None;
+
+        public bool IsTradeAvailable(Area area) => phase == GamePhase.DoingAction;
+        public bool IsCounterInfluenceAvailable(Area area) => phase == GamePhase.DoingAction;
+        public bool IsColonizationAvailable(Area area) => phase == GamePhase.DoingAction;
+        public bool IsRaidAvailable(Area area) => phase == GamePhase.DoingAction;
+        public bool IsConquerAvailable(Area area) => phase == GamePhase.DoingAction;
 
         public static GameState current => CoreManager.Instance.state;
 

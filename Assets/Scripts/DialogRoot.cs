@@ -55,7 +55,7 @@ public class DialogRoot : SingletonDocument<DialogRoot>
         }
     }
 
-    public void PopupResourceAssignParameterTemplate(ResourceAssignParameter p, string title, Action<ResourceAssignParameter> callback)
+    public void PopupResourceAssignParameterDialog(ResourceAssignParameter p, string title, Action<ResourceAssignParameter> callback)
     {
         var tempDialog = new TempDialog()
         {
@@ -192,7 +192,58 @@ public class DialogRoot : SingletonDocument<DialogRoot>
                     });
                 });
             };
+
+            el.Q<Button>("RaidButton").clicked += () =>
+            {
+                ((TempDialog)sender).RemoveSelf();
+
+                GameManager.Instance.PrepareSelectingAreaCallback(area =>
+                {
+                    var selectedArea = GameManager.Instance.selectedArea;
+                    if (selectedArea == null)
+                        return;
+
+                    var p = new ResourceAssignParameter()
+                    {
+                        from = new AreaReference() { objectId = selectedArea.objectId },
+                        to = new AreaReference() { objectId = area.objectId },
+                        assignResourceLimit = selectedArea.GetRaidAssignedResourceLimit(),
+                        assignResource = selectedArea.GetRaidAssignedResourceLimit()
+                    };
+
+                    PopupResourceAssignParameterDialog(p, "Raid", p =>
+                    {
+                        GameState.current.DoRaid(p);
+                    });
+                });
+            };
+
+            el.Q<Button>("ConquerButton").clicked += () =>
+            {
+                ((TempDialog)sender).RemoveSelf();
+
+                GameManager.Instance.PrepareSelectingAreaCallback(area =>
+                {
+                    var selectedArea = GameManager.Instance.selectedArea;
+                    if (selectedArea == null)
+                        return;
+
+                    var p = new ResourceAssignParameter()
+                    {
+                        from = new AreaReference() { objectId = selectedArea.objectId },
+                        to = new AreaReference() { objectId = area.objectId },
+                        assignResourceLimit = selectedArea.GetConquerAssignedResourceLimit(),
+                        assignResource = selectedArea.GetConquerAssignedResourceLimit()
+                    };
+
+                    PopupResourceAssignParameterDialog(p, "Conquer", p =>
+                    {
+                        GameState.current.DoConquer(p);
+                    });
+                });
+            };
         };
+
 
         tempDialog.Popup();
     }

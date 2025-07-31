@@ -6,12 +6,30 @@
                 <ui:DataBinding property="style.display" data-source-path="editMode" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
             </Bindings>
         </ui:Button>
-        <ui:VisualElement>
-            <ui:Button text="Conquer" name="ConquerButton" />
-            <ui:Button text="Raid" name="RaidButton" />
-            <ui:Button text="Trade" name="TradeButton" />
-            <ui:Button text="Colonization" name="ColonizationButton" />
-            <ui:Button text="Counter Influence" name="CounterInfluenceButton" />
-        </ui:VisualElement>
+        <ui:Button text="Conquer" name="ConquerButton">
+            <Bindings>
+                <ui:DataBinding property="style.display" data-source-path="gameState.isConquerAvailable" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
+            </Bindings>
+        </ui:Button>
+        <ui:Button text="Raid" name="RaidButton">
+            <Bindings>
+                <ui:DataBinding property="style.display" data-source-path="gameState.isRaidAvailable" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
+            </Bindings>
+        </ui:Button>
+        <ui:Button text="Trade" name="TradeButton">
+            <Bindings>
+                <ui:DataBinding property="style.display" data-source-path="gameState.isTradeAvailable" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
+            </Bindings>
+        </ui:Button>
+        <ui:Button text="Colonization" name="ColonizationButton">
+            <Bindings>
+                <ui:DataBinding property="style.display" data-source-path="gameState.isColonizationAvailable" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
+            </Bindings>
+        </ui:Button>
+        <ui:Button text="Counter Influence" name="CounterInfluenceButton">
+            <Bindings>
+                <ui:DataBinding property="style.display" data-source-path="gameState.isCounterInfluenceAvailable" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
+            </Bindings>
+        </ui:Button>
     </ui:VisualElement>
 </ui:UXML>

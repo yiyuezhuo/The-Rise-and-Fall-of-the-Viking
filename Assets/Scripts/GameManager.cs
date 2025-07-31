@@ -36,21 +36,67 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     public bool editMode = false;
 
+    [CreateProperty]
+    public bool isNotEditMode => !editMode;
+
     public Action<Area> oneShotAreaSelectingCallback;
 
     [CreateProperty]
     public GameState gameState => CoreManager.Instance.state; // Data binding helper
 
     [CreateProperty]
-    public bool showTopMessage => topMessage != "";
+    public bool showTopMessage => topMessage != null && topMessage != "";
 
     [CreateProperty]
-    public string topMessage => state switch
+    public string topMessage
     {
-        State.Idle => "",
-        State.SelectingAreaForCallback => "Select another area",
-        _ => "114514"
-    };
+        get
+        {
+            if (state == State.SelectingAreaForCallback)
+                return "Select an area";
+
+            if (state == State.Idle)
+            {
+                var gameState = GameState.current;
+                if (gameState.phase == GamePhase.PlayingCard)
+                {
+                    if (gameState.availableCardPlay > 0)
+                    {
+                        return "Available card to play";
+                    }
+                    else
+                    {
+                        return "No cand to play, proceed to next phase";
+                    }
+                }
+                if (gameState.phase == GamePhase.DoingAction)
+                {
+                    if (gameState.availableActionPoints > 0)
+                    {
+                        return "Available AP to do action";
+                    }
+                    else if (gameState.availableCardPlay == 0 && gameState.availableActionPoints == 0)
+                    {
+                        return "No AP remained, Proceed to next phase";
+                    }
+                }
+            }
+            return "";
+        }
+    }
+
+    [CreateProperty]
+    public GamePhase managedGamePhase
+    {
+        get => gameState.phase;
+        set
+        {
+            if (editMode && value != managedGamePhase)
+            {
+                gameState.phase = value;
+            }
+        }
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

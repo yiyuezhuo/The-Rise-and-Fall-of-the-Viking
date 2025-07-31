@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1b98a6b7601155545bc68ddb8bc17cde
+guid: 3f701b9a93a9f9647982c451415c017d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4306481898118890429
-    second: No_Image_Fallback_0
+      213: -2639837605592926320
+    second: Duchy of Normandy_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: No_Image_Fallback_0
+      name: Duchy of Normandy_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 5
-        width: 552
-        height: 557
+        x: 0
+        y: 0
+        width: 286
+        height: 286
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 34c39f6c78d4c34c0800000000000000
-      internalID: -4306481898118890429
+      spriteID: 0977ae52fa96d5bd0800000000000000
+      internalID: -2639837605592926320
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      No_Image_Fallback_0: -4306481898118890429
+      Duchy of Normandy_0: -2639837605592926320
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

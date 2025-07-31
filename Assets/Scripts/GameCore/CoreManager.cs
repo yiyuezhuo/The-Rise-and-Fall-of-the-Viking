@@ -19,12 +19,20 @@ namespace GameCore
         {
             state = XmlUtils.FromXML<GameState>(xml);
 
-            var forceResetCards = false;
+            // var forceResetCards = false;
+            var forceResetCards = true;
 
             if (forceResetCards)
             {
                 state.cards = new()
                 {
+                    new Card(){cardClassId="Raid on Lindisfarne"},
+                    new Card(){cardClassId="Raid on Luni"},
+                    new Card(){cardClassId="Sack of Thessalonica"},
+                    new Card(){cardClassId="Duchy of Normandy"},
+                    new Card(){cardClassId="Norman conquest of Southern Italy"},
+                    new Card(){cardClassId="Kievan Rus"},
+
                     new Card(){cardClassId="Action"},
                     new Card(){cardClassId="Action"},
                     new Card(){cardClassId="Action"},

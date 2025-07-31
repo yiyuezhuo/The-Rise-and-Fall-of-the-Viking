@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1b98a6b7601155545bc68ddb8bc17cde
+guid: 980a8bc2cee502e4eb12351a4ac70f90
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4306481898118890429
-    second: No_Image_Fallback_0
+      213: -6084857244834392338
+    second: victory_point_star_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: No_Image_Fallback_0
+      name: victory_point_star_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 5
-        width: 552
-        height: 557
+        x: 9
+        y: 19
+        width: 357
+        height: 340
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 34c39f6c78d4c34c0800000000000000
-      internalID: -4306481898118890429
+      spriteID: ee61fa4239e3e8ba0800000000000000
+      internalID: -6084857244834392338
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      No_Image_Fallback_0: -4306481898118890429
+      victory_point_star_0: -6084857244834392338
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

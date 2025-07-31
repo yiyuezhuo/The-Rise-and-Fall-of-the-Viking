@@ -1,104 +1,5 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement data-source-type="GameManager, Assembly-CSharp" picking-mode="Ignore">
-        <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
-            <ui:TabView picking-mode="Ignore" style="background-color: rgb(204, 204, 204); flex-grow: 1;">
-                <ui:Tab label="Game" picking-mode="Ignore">
-                    <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;">
-                        <ui:Button text="Next Phase" name="NextPhaseButton" />
-                        <ui:Label text="Current" />
-                        <ui:IntegerField>
-                            <Bindings>
-                                <ui:DataBinding property="value" data-source-path="gameState.currentYear" binding-mode="TwoWay" />
-                                <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
-                            </Bindings>
-                        </ui:IntegerField>
-                        <ui:Label text="End" />
-                        <ui:IntegerField>
-                            <Bindings>
-                                <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
-                                <ui:DataBinding property="value" data-source-path="gameState.endYear" binding-mode="ToTarget" />
-                            </Bindings>
-                        </ui:IntegerField>
-                        <ui:Label text="Phase" />
-                        <ui:EnumField value="Center" type="GameCore.GamePhase, Assembly-CSharp">
-                            <Bindings>
-                                <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
-                                <ui:DataBinding property="value" data-source-path="gameState.phase" binding-mode="TwoWay" />
-                            </Bindings>
-                        </ui:EnumField>
-                        <ui:Label text="Victory Pt" />
-                        <ui:IntegerField>
-                            <Bindings>
-                                <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
-                                <ui:DataBinding property="value" data-source-path="gameState.victoryPoint" binding-mode="TwoWay" />
-                            </Bindings>
-                        </ui:IntegerField>
-                        <ui:Label text="Act Pt" />
-                        <ui:IntegerField>
-                            <Bindings>
-                                <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
-                                <ui:DataBinding property="value" data-source-path="gameState.availableActionPoints" binding-mode="TwoWay" />
-                            </Bindings>
-                        </ui:IntegerField>
-                        <ui:Label text="Cards playable" />
-                        <ui:IntegerField>
-                            <Bindings>
-                                <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
-                                <ui:DataBinding property="value" data-source-path="gameState.availableCardPlay" binding-mode="TwoWay" />
-                            </Bindings>
-                        </ui:IntegerField>
-                    </ui:VisualElement>
-                </ui:Tab>
-                <ui:Tab label="File">
-                    <ui:VisualElement style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;">
-                        <ui:Button text="Save" name="SaveButton" />
-                        <ui:Button text="Load" name="LoadButton" />
-                        <ui:Button text="Exit" name="ExitButton" />
-                    </ui:VisualElement>
-                </ui:Tab>
-                <ui:Tab label="Edit &amp; Debug">
-                    <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
-                        <ui:Label text="In Edit Mode" />
-                        <ui:Toggle name="EditModeToggle">
-                            <Bindings>
-                                <ui:DataBinding property="value" data-source-path="editMode" binding-mode="TwoWay" />
-                            </Bindings>
-                        </ui:Toggle>
-                        <ui:Label text="Card Limit" />
-                        <ui:IntegerField>
-                            <Bindings>
-                                <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
-                                <ui:DataBinding property="value" data-source-path="gameState.cardLimit" binding-mode="TwoWay" />
-                            </Bindings>
-                        </ui:IntegerField>
-                        <ui:Label text="Turn Len (Year)" />
-                        <ui:IntegerField>
-                            <Bindings>
-                                <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
-                                <ui:DataBinding property="value" data-source-path="gameState.turnLengthYear" binding-mode="TwoWay" />
-                            </Bindings>
-                        </ui:IntegerField>
-                    </ui:VisualElement>
-                </ui:Tab>
-                <ui:Tab label="Help">
-                    <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
-                        <ui:Button text="Help" name="HelpButton" />
-                        <ui:Button text="Open Source Repo" name="OpenSourceRepoButton" />
-                    </ui:VisualElement>
-                </ui:Tab>
-            </ui:TabView>
-            <ui:VisualElement style="flex-basis: 205px;" />
-        </ui:VisualElement>
-        <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; flex-direction: column; align-items: center; margin-top: 20px;">
-            <ui:Label text="Label" picking-mode="Ignore" style="-unity-text-align: upper-center; font-size: 48px; position: relative; background-color: rgba(255, 255, 255, 0.49); padding-left: 20px; padding-top: 10px; padding-right: 20px; padding-bottom: 10px;">
-                <Bindings>
-                    <ui:DataBinding property="style.display" data-source-path="showTopMessage" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
-                    <ui:DataBinding property="text" data-source-path="topMessage" binding-mode="ToTarget" />
-                </Bindings>
-            </ui:Label>
-        </ui:VisualElement>
-    </ui:VisualElement>
-    <ui:VisualElement data-source-type="GameManager, Assembly-CSharp" style="flex-grow: 1; position: absolute; right: 0; width: 200px; background-color: rgb(204, 204, 204);">
+    <ui:VisualElement data-source-type="GameManager, Assembly-CSharp" style="flex-grow: 1; position: absolute; right: 0; width: 200px; background-color: rgb(204, 204, 204); border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px;">
         <ui:VisualElement style="flex-grow: 1;">
             <ui:VisualElement data-source-path="selectedArea" style="flex-grow: 1;">
                 <ui:TextField readonly="true" value="Area name">
@@ -160,7 +61,108 @@
             </Bindings>
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; position: absolute; bottom: 0; left: 0; background-color: rgba(255, 255, 255, 0.2);">
+    <ui:VisualElement data-source-type="GameManager, Assembly-CSharp" picking-mode="Ignore">
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+            <ui:TabView picking-mode="Ignore" style="background-color: rgb(204, 204, 204); flex-grow: 1; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px;">
+                <ui:Tab label="Game" picking-mode="Ignore">
+                    <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;">
+                        <ui:Button text="Next Phase" name="NextPhaseButton" />
+                        <ui:Label text="Current" />
+                        <ui:IntegerField>
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="gameState.currentYear" binding-mode="TwoWay" />
+                                <ui:DataBinding property="isReadOnly" data-source-path="isNotEditMode" binding-mode="ToTarget" />
+                            </Bindings>
+                        </ui:IntegerField>
+                        <ui:Label text="End" />
+                        <ui:IntegerField>
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="gameState.endYear" binding-mode="ToTarget" />
+                                <ui:DataBinding property="isReadOnly" data-source-path="isNotEditMode" binding-mode="ToTarget" />
+                            </Bindings>
+                        </ui:IntegerField>
+                        <ui:Label text="Phase" />
+                        <ui:EnumField value="Center" type="GameCore.GamePhase, Assembly-CSharp">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="managedGamePhase" binding-mode="TwoWay" />
+                            </Bindings>
+                        </ui:EnumField>
+                        <ui:Label text="Victory Pt" style="display: none;" />
+                        <ui:VisualElement tooltip="Victory Point" style="flex-shrink: 0; width: 30px; background-image: url(&quot;project://database/Assets/Textures/victory_point_star.png?fileID=2800000&amp;guid=980a8bc2cee502e4eb12351a4ac70f90&amp;type=3#victory_point_star&quot;); -unity-background-scale-mode: scale-to-fit;" />
+                        <ui:IntegerField>
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="gameState.victoryPoint" binding-mode="TwoWay" />
+                                <ui:DataBinding property="isReadOnly" data-source-path="isNotEditMode" binding-mode="ToTarget" />
+                            </Bindings>
+                        </ui:IntegerField>
+                        <ui:Label text="Act Pt" style="display: none;" />
+                        <ui:VisualElement tooltip="Action Point" style="flex-shrink: 0; width: 30px; background-image: url(&quot;project://database/Assets/Textures/pawn.png?fileID=2800000&amp;guid=b4c85c278a3d515418bd93597a26e592&amp;type=3#pawn&quot;); -unity-background-scale-mode: scale-to-fit;" />
+                        <ui:IntegerField>
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="gameState.availableActionPoints" binding-mode="TwoWay" />
+                                <ui:DataBinding property="isReadOnly" data-source-path="isNotEditMode" binding-mode="ToTarget" />
+                            </Bindings>
+                        </ui:IntegerField>
+                        <ui:Label text="Cards playable" style="display: none;" />
+                        <ui:VisualElement tooltip="Cards Playable" style="flex-shrink: 0; width: 30px; background-image: url(&quot;project://database/Assets/Textures/cards.png?fileID=2800000&amp;guid=05e3874c50493bf4cb92c4f5f2abe716&amp;type=3#cards&quot;); -unity-background-scale-mode: scale-to-fit;" />
+                        <ui:IntegerField>
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="gameState.availableCardPlay" binding-mode="TwoWay" />
+                                <ui:DataBinding property="isReadOnly" data-source-path="isNotEditMode" binding-mode="ToTarget" />
+                            </Bindings>
+                        </ui:IntegerField>
+                    </ui:VisualElement>
+                </ui:Tab>
+                <ui:Tab label="File">
+                    <ui:VisualElement style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;">
+                        <ui:Button text="Save" name="SaveButton" />
+                        <ui:Button text="Load" name="LoadButton" />
+                        <ui:Button text="Exit" name="ExitButton" />
+                    </ui:VisualElement>
+                </ui:Tab>
+                <ui:Tab label="Edit &amp; Debug">
+                    <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+                        <ui:Label text="In Edit Mode" />
+                        <ui:Toggle name="EditModeToggle">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="editMode" binding-mode="TwoWay" />
+                            </Bindings>
+                        </ui:Toggle>
+                        <ui:Label text="Card Limit" />
+                        <ui:IntegerField>
+                            <Bindings>
+                                <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
+                                <ui:DataBinding property="value" data-source-path="gameState.cardLimit" binding-mode="TwoWay" />
+                            </Bindings>
+                        </ui:IntegerField>
+                        <ui:Label text="Turn Len (Year)" />
+                        <ui:IntegerField>
+                            <Bindings>
+                                <ui:DataBinding property="enabledSelf" data-source-path="editMode" binding-mode="ToTarget" />
+                                <ui:DataBinding property="value" data-source-path="gameState.turnLengthYear" binding-mode="TwoWay" />
+                            </Bindings>
+                        </ui:IntegerField>
+                    </ui:VisualElement>
+                </ui:Tab>
+                <ui:Tab label="Help">
+                    <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+                        <ui:Button text="Help" name="HelpButton" />
+                        <ui:Button text="Open Source Repo" name="OpenSourceRepoButton" />
+                    </ui:VisualElement>
+                </ui:Tab>
+            </ui:TabView>
+            <ui:VisualElement style="flex-basis: 205px; flex-shrink: 0;" />
+        </ui:VisualElement>
+        <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; flex-direction: column; align-items: center; margin-top: 0;">
+            <ui:Label text="Label" picking-mode="Ignore" style="-unity-text-align: upper-center; font-size: 24px; position: relative; background-color: rgba(255, 255, 255, 0.49); padding-left: 15px; padding-top: 1px; padding-right: 15px; padding-bottom: 1px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; margin-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 4px;">
+                <Bindings>
+                    <ui:DataBinding property="style.display" data-source-path="showTopMessage" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
+                    <ui:DataBinding property="text" data-source-path="topMessage" binding-mode="ToTarget" />
+                </Bindings>
+            </ui:Label>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; position: absolute; bottom: 0; left: 0; background-color: rgba(255, 255, 255, 0.2); display: none;">
         <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; flex-direction: row;">
             <ui:Label text="User Logs" />
             <ui:Button text="&lt;&gt;" name="ExpandCollapseUserLogButton" />

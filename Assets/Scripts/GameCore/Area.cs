@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace GameCore
@@ -31,6 +32,30 @@ namespace GameCore
         public IEnumerable<IObjectIdLabeled> GetSubObjects()
         {
             yield break;
+        }
+
+        public int GetRaidAssignedResourceLimit()
+        {
+            if (vikingChristianization == 1)
+                return 0;
+
+            return Math.Min(
+                Math.Max(
+                    (int)Math.Round((1 - vikingChristianization) * 0.2f * vikingResources),
+                2),
+            vikingResources);
+        }
+
+        public int GetConquerAssignedResourceLimit()
+        {
+            if (vikingChristianization == 1)
+                return 0;
+
+            return Math.Min(
+                Math.Max(
+                    (int)Math.Round((1 - vikingChristianization) * 0.5f * vikingResources),
+                2),
+            vikingResources);
         }
     }
 }

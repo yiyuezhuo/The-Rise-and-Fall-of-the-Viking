@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1b98a6b7601155545bc68ddb8bc17cde
+guid: 3ae45437dcc7f5e4da83b2b147d06d5f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4306481898118890429
-    second: No_Image_Fallback_0
+      213: 1964749807154367193
+    second: Norman conquest of Southern Italy_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: No_Image_Fallback_0
+      name: Norman conquest of Southern Italy_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 5
-        width: 552
-        height: 557
+        x: 0
+        y: 0
+        width: 466
+        height: 466
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 34c39f6c78d4c34c0800000000000000
-      internalID: -4306481898118890429
+      spriteID: 9da04f73a81344b10800000000000000
+      internalID: 1964749807154367193
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      No_Image_Fallback_0: -4306481898118890429
+      Norman conquest of Southern Italy_0: 1964749807154367193
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
