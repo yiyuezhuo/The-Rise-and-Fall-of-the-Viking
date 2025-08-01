@@ -281,7 +281,7 @@ public class DialogRoot : SingletonDocument<DialogRoot>
                 var gameState = GameState.current;
                 if (selectedCard != null)
                 {
-                    gameState.PlayCardForActionPoint(selectedCard);
+                    gameState.PlayCardForEventEffect(selectedCard);
                 }
             };
         };

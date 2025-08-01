@@ -15,22 +15,22 @@
                 </ui:Toggle>
                 <ui:IntegerField label="Viking Resources">
                     <Bindings>
-                        <ui:DataBinding property="value" data-source-path="vikingResources" binding-mode="TwoWay" />
+                        <ui:DataBinding property="value" data-source-path="vikingResourcesProp" binding-mode="TwoWay" />
                     </Bindings>
                 </ui:IntegerField>
                 <ui:FloatField label="Viking Occupying Percent">
                     <Bindings>
-                        <ui:DataBinding property="value" data-source-path="vikingOccupyingPercent" binding-mode="TwoWay" />
+                        <ui:DataBinding property="value" data-source-path="vikingOccupyingPercentProp" binding-mode="TwoWay" />
                     </Bindings>
                 </ui:FloatField>
                 <ui:IntegerField label="Host Resources">
                     <Bindings>
-                        <ui:DataBinding property="value" data-source-path="hostResources" binding-mode="TwoWay" />
+                        <ui:DataBinding property="value" data-source-path="hostResourcesProp" binding-mode="TwoWay" />
                     </Bindings>
                 </ui:IntegerField>
                 <ui:FloatField label="Viking Christianization">
                     <Bindings>
-                        <ui:DataBinding property="value" data-source-path="vikingChristianization" binding-mode="TwoWay" />
+                        <ui:DataBinding property="value" data-source-path="vikingChristianizationProp" binding-mode="TwoWay" />
                     </Bindings>
                 </ui:FloatField>
                 <ui:FloatField label="Christianization Coef">

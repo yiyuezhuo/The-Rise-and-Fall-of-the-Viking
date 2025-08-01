@@ -12,17 +12,54 @@ namespace GameCore
         }
     }
 
-    public class Area : IObjectIdLabeled
+    public partial class Area : IObjectIdLabeled
     {
         public string objectId { get; set; }
 
         public string name;
         public bool vikingZoneCreated => isVikingHomeland || vikingResources > 0;
         public bool isVikingHomeland;
-        public int vikingResources;
-        public float vikingOccupyingPercent;
-        public int hostResources;
-        public float vikingChristianization;
+
+        int _vikingResources;
+        public int vikingResources
+        {
+            get => _vikingResources;
+            set
+            {
+                _vikingResources = Math.Clamp(value, 0, baseMaxResources);
+            }
+        }
+
+        float _vikingOccupyingPercent;
+        public float vikingOccupyingPercent
+        {
+            get => _vikingOccupyingPercent;
+            set
+            {
+                _vikingOccupyingPercent = Math.Clamp(value, 0, 1);
+            }
+        }
+
+        int _hostResources;
+        public int hostResources
+        {
+            get => _hostResources;
+            set
+            {
+                _hostResources = Math.Clamp(value, 0, baseMaxResources);   
+            }
+        }
+
+        float _vikingChristianization;
+        public float vikingChristianization
+        {
+            get => _vikingChristianization;
+            set
+            {
+                _vikingChristianization = Math.Clamp(value, 0, 1);
+            }
+        }
+
         public float christianizationCoef = 1f;
         public int baseMaxResources = 50;
         public bool isColony;
@@ -33,6 +70,14 @@ namespace GameCore
         {
             yield break;
         }
+
+        // public void Clamp()
+        // {
+        //     vikingResources = Math.Clamp(vikingResources, 0, baseMaxResources);
+        //     hostResources = Math.Clamp(hostResources, 0, 50);
+        //     vikingOccupyingPercent = Math.Clamp(vikingOccupyingPercent, 0, 1);
+        //     christianizationCoef = Math.Clamp(christianizationCoef, 0, 1);
+        // }
 
         public int GetRaidAssignedResourceLimit()
         {

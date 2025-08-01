@@ -26,6 +26,18 @@ namespace GameCore
             {
                 state.cards = new()
                 {
+                    new Card(){cardClassId="Varangian Guard"},
+                    new Card(){cardClassId="Raid on Paris"},
+                    new Card(){cardClassId="Erik the Red"},
+                    new Card(){cardClassId="Settlement of Iceland"},
+                    new Card(){cardClassId="Raid on Lisbon"},
+
+                    new Card(){cardClassId="Great Heathen Army"},
+                    new Card(){cardClassId="Danelaw"},
+                    new Card(){cardClassId="North Sea Empire"},
+                    new Card(){cardClassId="Sweyn Forkbeard"},
+                    new Card(){cardClassId="Danegeld"},
+
                     new Card(){cardClassId="Raid on Lindisfarne"},
                     new Card(){cardClassId="Raid on Luni"},
                     new Card(){cardClassId="Sack of Thessalonica"},

@@ -27,6 +27,37 @@ namespace GameCore
         }
     }
 
+    public partial class Area
+    {
+        [CreateProperty]
+        public int vikingResourcesProp
+        {
+            get => vikingResources;
+            set => vikingResources = value;
+        }
+
+        [CreateProperty]
+        public float vikingOccupyingPercentProp
+        {
+            get => vikingOccupyingPercent;
+            set => vikingOccupyingPercent = value;
+        }
+
+        [CreateProperty]
+        public int hostResourcesProp
+        {
+            get => hostResources;
+            set => hostResources = value;
+        }
+
+        [CreateProperty]
+        public float vikingChristianizationProp
+        {
+            get => vikingChristianization;
+            set => vikingChristianization = value;
+        }
+    }
+
     public partial class CardClass
     {
         [CreateProperty]

@@ -114,7 +114,7 @@ public static class Utils
         // var pos = Input.mousePosition;
         // var pos = PlaneCameraController.Instance.cam.WorldToViewportPoint(Input.mousePosition);
         // var pos = PlaneCameraController.Instance.cam.WorldToScreenPoint(Input.mousePosition);
-        Debug.Log($"pos={pos}");
+        // Debug.Log($"pos={pos}");
         SetAbsoluteXY(el, pos.x, pos.y);
         // SetAbsoluteXY(el, 100, 100);
         // SetAbsoluteXY(el, Input.mousePosition.x, Screen.height - Input.mousePosition.y);

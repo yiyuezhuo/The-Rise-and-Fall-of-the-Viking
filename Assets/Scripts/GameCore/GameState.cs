@@ -53,6 +53,11 @@ namespace GameCore
         // Colonization
         // Counter Influence
 
+        public Area FindAreaByName(string name)
+        {
+            return areas.FirstOrDefault(area => area.name == name);
+        }
+
         public void AddUserLog(string message)
         {
             userLogs.Insert(0, message); // TODO: Temp Hack to simplify data binding

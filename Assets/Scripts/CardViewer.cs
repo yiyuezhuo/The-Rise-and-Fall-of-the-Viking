@@ -31,7 +31,7 @@ public class CardViewer : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log($"{currentCard} was clicked!");
+        // Debug.Log($"{currentCard} was clicked!");
 
         if (GameManager.Instance.selectedObjectId != currentCard.objectId) // First click => select
         {

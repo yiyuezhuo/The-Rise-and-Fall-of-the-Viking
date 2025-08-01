@@ -32,7 +32,7 @@ public class Overlay : SingletonDocument<Overlay>
 
         root.Q<Button>("NextPhaseButton").clicked += () =>
         {
-            Debug.Log("NextPhaseButton clicked");
+            // Debug.Log("NextPhaseButton clicked");
 
             var gameState = GameState.current;
 
