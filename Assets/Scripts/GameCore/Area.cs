@@ -46,7 +46,7 @@ namespace GameCore
             get => _hostResources;
             set
             {
-                _hostResources = Math.Clamp(value, 0, baseMaxResources);   
+                _hostResources = Math.Clamp(value, 0, baseMaxResources);
             }
         }
 
@@ -101,6 +101,28 @@ namespace GameCore
                     (int)Math.Round((1 - vikingChristianization) * 0.5f * vikingResources),
                 2),
             vikingResources);
+        }
+
+        public bool IsTransitivityLordTo(Area other)
+        {
+            var closeSet = new HashSet<string>();
+            while (other.lord.objectId != null && other.lord.objectId != "")
+            {
+                if (other.lord.objectId == objectId)
+                    return true;
+                
+                if (closeSet.Contains(other.lord.objectId))
+                    return false;
+                closeSet.Add(other.objectId);
+
+                other = EntityManager.current.Get<Area>(other.lord.objectId);
+            }
+            return false;
+        }
+
+        public bool IsRelatedTo(Area other)
+        {
+            return IsTransitivityLordTo(other) || other.IsTransitivityLordTo(this);
         }
     }
 }

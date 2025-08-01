@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -59,6 +60,82 @@ namespace GameCore
                     }
                 }
             }
+
+            if (eventCode == CardClassEventCode.RaidOnParis)
+            {
+                InitiateRaid("France", 2f);
+            }
+
+            if (eventCode == CardClassEventCode.ErikTheRed)
+            {
+                var greenland = GameState.current.FindAreaByName("Greenland");
+                greenland.vikingResources += 2;
+            }
+
+            if (eventCode == CardClassEventCode.SettlementOfIceland)
+            {
+                var iceland = GameState.current.FindAreaByName("Iceland");
+                iceland.vikingResources += 2;
+            }
+
+            if (eventCode == CardClassEventCode.RaidOnLisbon)
+            {
+                InitiateRaid("Lisbon", 2f);
+            }
+
+            if (eventCode == CardClassEventCode.SweynForkbeard)
+            {
+                var england = GameState.current.FindAreaByName("England");
+                var denmark = GameState.current.FindAreaByName("Denmark");
+                var norway = GameState.current.FindAreaByName("Norway");
+
+                england.lord.objectId = denmark.objectId;
+                norway.lord.objectId = denmark.objectId;
+                england.vikingResources += 5;
+                england.hostResources -= 5;
+                england.vikingOccupyingPercent += 0.5f;
+                denmark.vikingResources += 3;
+                norway.vikingResources -= 2;
+                GameState.current.victoryPoint += 5;
+            }
+
+            if (eventCode == CardClassEventCode.NorthSeaEmpire)
+            {
+                GameState.current.isFreeTransfer = true;
+                GameState.current.lordSetPoint += 1;
+            }
+
+            if (eventCode == CardClassEventCode.Danelaw)
+            {
+                var gameState = GameState.current;
+                gameState.victoryPoint += 30;
+                var england = gameState.FindAreaByName("England");
+                england.vikingResources += 3;
+                england.hostResources += 3;
+                england.vikingChristianization += 0.1f;
+                england.lord.objectId = null;
+            }
+        }
+
+        public void InitiateRaid(string areaName, float modifierCoef)
+        {
+            GameManager.Instance.PrepareSelectingAreaCallback(area =>
+            {
+                var france = GameState.current.FindAreaByName(areaName);
+                var p = new ResourceAssignParameter()
+                {
+                    from = new AreaReference() { objectId = area.objectId },
+                    to = new AreaReference() { objectId = france.objectId },
+                    assignResource = area.GetRaidAssignedResourceLimit(),
+                    assignResourceLimit = area.GetRaidAssignedResourceLimit(),
+                    modifierCoef = modifierCoef
+                };
+
+                DialogRoot.Instance.PopupResourceAssignParameterDialog(p, "Raid", p =>
+                {
+                    GameState.current.DoRaid(p, new() { skipActionPoint = true, skipPhaseCheck = true });
+                });
+            });
         }
 
         public static Dictionary<CardClassEventCode, string> eventCodeDescription = new()
@@ -136,15 +213,17 @@ namespace GameCore
             {
                 name = "Danelaw",
                 imagePath = "Cards/Danelaw.png",
-                cardDescription = "Danelaw",
-                actionPoints = 2,
+                cardDescription = @"Danelaw was part of eastern and northern England which originated in the conquest of Danish Viking from 878. After reconquest, those area are subject to England again but be able to keep thier Danish law.
+Can only be activated if England has >= 50% Viking Occupation. +30 VP, +10% Christianization, +3 Viking/Host resource in England, England is released from its lord (if any).",
+                actionPoints = 1,
                 eventCode = CardClassEventCode.Danelaw
             }},
             {"North Sea Empire", new()
             {
                 name = "North Sea Empire",
                 imagePath = "Cards/North Sea Empire.png",
-                cardDescription = "North Sea Empire",
+                cardDescription = @"North Sea Empire, or Anglo-Scandinavian Empire, was the personal union of the kingdoms of Denmark, Norway and England (1013-1042). It's most powerful entity in western Europe after the Holy Roman Empire.
+For this turn, 1 Lord set point is available and transfers are free.",
                 actionPoints = 2,
                 eventCode = CardClassEventCode.NorthSeaEmpire
             }},
@@ -152,8 +231,9 @@ namespace GameCore
             {
                 name = "Sweyn Forkbeard",
                 imagePath = "Cards/Sweyn Forkbeard.jpg",
-                cardDescription = "Sweyn Forkbeard",
-                actionPoints = 1,
+                cardDescription = @"Sweyn Forkbeard (963–1014), King of Denmark, conquered Norway in 999–1000. After some small-scale campaigns in response to the St. Brice's Day Massacre (1002), his forces launched a full-scale invasion of England and conquered it in 1013–1014, though his son later carried out a reconquest.
+Denmark become lord of Norway and England, England's host force -5, Viking force+5, Controlled percentage +50%, Denmark's resource+3, Norway's ressource -2, VP+5",
+                actionPoints = 3,
                 eventCode = CardClassEventCode.SweynForkbeard
             }},
             { "Danegeld", new()
@@ -162,7 +242,7 @@ namespace GameCore
                 imagePath = "Cards/Danegeld.png",
                 cardDescription = @"Danegeld, or Danish gold, was the tribute paid by regions threatened by Vikings to avoid being plundered.
 Every area which host resource is larger than viking resource and lower than Denmark transfer 1 resource to Denmark.",
-                actionPoints = 2,
+                actionPoints = 3,
                 eventCode = CardClassEventCode.Danegeld
             }},
             //
@@ -172,14 +252,15 @@ Every area which host resource is larger than viking resource and lower than Den
                 imagePath = "Cards/Varangian Guard.jpg",
                 cardDescription = @"The Varangian Guard was an elite guard unit composed of Northmen in the Byzantine Empire. It provide the emperor with a powerful tool, while it brought wealth back the Nordic regions.
 Norway + 6 resources, Constantinople + 3 resources",
-                actionPoints = 2,
+                actionPoints = 1,
                 eventCode = CardClassEventCode.VarangianGuard
             }},
             { "Raid on Paris", new()
             {
                 name = "Raid on Paris",
                 imagePath = "Cards/Raid on Paris.png",
-                cardDescription = "Raid on Paris",
+                cardDescription = @"In 845, Ragnar led 120 Viking ships carrying thousands of warriors, plundered and occupied Paris, and withdrew after Charles the Bald paid 2,570 kg of gold and silver.
+Select an area to initiate a raid (ignoring the distance), with the assigned strength calculated at a x2 modifier.",
                 actionPoints = 2,
                 eventCode = CardClassEventCode.RaidOnParis
             }},
@@ -187,15 +268,17 @@ Norway + 6 resources, Constantinople + 3 resources",
             {
                 name = "Erik the Red",
                 imagePath = "Cards/Erik the Red.png",
-                cardDescription = "Erik the Red",
-                actionPoints = 2,
+                cardDescription = @"Erik the Red (c. 950 - c. 1003) was a Norse explorer who explored Greenland and eventually established a settlement.
+Greenland +2 Resources.",
+                actionPoints = 1,
                 eventCode = CardClassEventCode.ErikTheRed
             }},
             { "Settlement of Iceland", new()
             {
                 name = "Settlement of Iceland",
                 imagePath = "Cards/Settlement of Iceland.png",
-                cardDescription = "Settlement of Iceland",
+                cardDescription = @"Beginning around 870, numerous Norse settlers migrated to Iceland across the North Atlantic. By 930, the island had been 'fully settled'
+Iceland + 2 Resources",
                 actionPoints = 2,
                 eventCode = CardClassEventCode.SettlementOfIceland
             }},
@@ -203,12 +286,21 @@ Norway + 6 resources, Constantinople + 3 resources",
             {
                 name = "Raid on Lisbon",
                 imagePath = "Cards/Raid on Lisbon.png",
-                cardDescription = "Raid on Lisbon",
-                actionPoints = 2,
+                cardDescription = @"Beginning from August 844, a raid party reached Galicia and then raid Lisbon and Seville.
+Select an area to initiate a raid to Lisbon (ignoring distance), with the assigned strength calculated at a x2 modifier.",
+                actionPoints = 1,
                 eventCode = CardClassEventCode.RaidOnLisbon
             }},
         };
 
         public static CardClass GetByCardClassId(string cardClassId) => classMap[cardClassId];
+
+        public static Dictionary<CardClassEventCode, Func<bool>> eventActivatedConditionMap = new()
+        {
+            {CardClassEventCode.Danelaw, () => {
+                var england = GameState.current.FindAreaByName("England");
+                return england.vikingOccupyingPercent >= 0.5f;
+            }},
+        };
     }
 }

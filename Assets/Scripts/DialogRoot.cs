@@ -242,6 +242,32 @@ public class DialogRoot : SingletonDocument<DialogRoot>
                     });
                 });
             };
+
+            el.Q<Button>("TransferButton").clicked += () =>
+            {
+                ((TempDialog)sender).RemoveSelf();
+
+                GameManager.Instance.PrepareSelectingAreaCallback(area =>
+                {
+                    var selectedArea = GameManager.Instance.selectedArea;
+                    if (selectedArea == null)
+                        return;
+
+                    var p = new ResourceAssignParameter()
+                    {
+                        from = new AreaReference() { objectId = selectedArea.objectId },
+                        to = new AreaReference() { objectId = area.objectId },
+                        assignResourceLimit = selectedArea.vikingResources,
+                        assignResource = selectedArea.vikingResources
+                        // TODO: Make some discount and attribution? Though 1 AP cost may had made enough penalty.
+                    };
+
+                    PopupResourceAssignParameterDialog(p, "Transfer", p =>
+                    {
+                        GameState.current.DoTransfer(p);
+                    });
+                });
+            };
         };
 
 

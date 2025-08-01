@@ -23,7 +23,7 @@ namespace GameCore
         [CreateProperty]
         public string name
         {
-            get => GetArea()?.name ?? "[Not Specified or Invalid]";
+            get => GetArea()?.name ?? " ";
         }
     }
 
@@ -56,6 +56,15 @@ namespace GameCore
             get => vikingChristianization;
             set => vikingChristianization = value;
         }
+
+        [CreateProperty]
+        public bool lordSetAvailable => GameState.current.lordSetPoint > 0;
+    }
+
+    public partial class ResourceAssignParameter
+    {
+        [CreateProperty]
+        public bool editable => GameManager.Instance.editMode; // Temp workaround
     }
 
     public partial class CardClass
@@ -100,6 +109,10 @@ namespace GameCore
 
         [CreateProperty]
         public bool isConquerAvailable => IsConquerAvailable(GameManager.Instance.selectedArea);
+
+        [CreateProperty]
+        public bool isTransferAvailable => IsTransferAvailable(GameManager.Instance.selectedArea);
+
 
 
         // [CreateProperty]

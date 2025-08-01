@@ -37,6 +37,9 @@ namespace GameCore
 
         public int availableActionPoints;
         public int victoryPoint;
+        public int lordSetPoint;
+
+        public bool isFreeTransfer;
 
         public List<Area> areas = new();
         public List<Card> cards = new();
@@ -226,7 +229,7 @@ namespace GameCore
                         var occupyDelta = -Math.Min(RandomUtils.NextFloat(), area.vikingOccupyingPercent);
                         area.vikingOccupyingPercent += occupyDelta;
 
-                        summaryBody = $" Host Victory => Host: ({hostDelta}), Viking: ({vikingDelta}), Occupy: {occupyDelta}";
+                        summaryBody = $" Host Victory => Host: ({hostDelta}), Viking: ({vikingDelta}), Occupy: {occupyDelta:P0}";
                     }
                     else
                     {
@@ -236,7 +239,7 @@ namespace GameCore
                         area.vikingResources += vikingDelta;
                         area.hostResources += hostDelta;
 
-                        summaryBody = $"Host Defeat => Host: ({hostDelta}), Viking: ({vikingDelta})";
+                        summaryBody = $" Host Defeat => Host: ({hostDelta}), Viking: ({vikingDelta})";
                     }
 
                     summary.Add(summaryHead + summaryBody);
@@ -246,6 +249,8 @@ namespace GameCore
 
         public void TurnEndHousekeeping()
         {
+            lordSetPoint = 0;
+            isFreeTransfer = false;
 
             List<string> turnEndSummary = new() { $"Turn Year {currentYear} Housekeeping:" };
 
@@ -324,17 +329,17 @@ namespace GameCore
             availableCardPlay = 1;
         }
 
-        public bool CheckGenericActionCondition()
+        public bool CheckGenericActionCondition(ResolutionContext ctx = null)
         {
-            if (availableActionPoints == 0)
+            if (availableActionPoints == 0 && !(ctx?.skipActionPoint ?? false))
             {
-                ServiceLocator.Get<IUserMessageService>().ShowMessage("No action point left");
+                Prompt("No action point left");
                 return false;
             }
 
-            if (phase != GamePhase.DoingAction)
+            if (phase != GamePhase.DoingAction && !(ctx?.skipPhaseCheck ?? false))
             {
-                ServiceLocator.Get<IUserMessageService>().ShowMessage("Action can only do in the action phase");
+                Prompt("Action can only do in the action phase");
                 return false;
             }
 
@@ -378,6 +383,33 @@ namespace GameCore
             Prompt($"Trade: {fromArea.name} +{add}, {toArea.name} +{add}");
         }
 
+        public void DoTransfer(ResourceAssignParameter p)
+        {
+            if (!isFreeTransfer && !CheckGenericActionCondition())
+                return;
+
+            var fromArea = p.from.GetArea();
+            var toArea = p.to.GetArea();
+
+            if (!fromArea.IsRelatedTo(toArea))
+            {
+                Prompt("Can't transfer resource between areas which don't have any lord/vassal relationship.");
+                return;
+            }
+
+            if (!toArea.vikingZoneCreated)
+            {
+                Prompt("Can't transfer to an area which viking zone is not created yet");
+                return;
+            }
+
+            if (!isFreeTransfer)
+                availableActionPoints -= 1;
+
+            fromArea.vikingResources -= p.assignResource;
+            toArea.vikingResources += p.assignResource;
+        }
+
         public void DoConquer(ResourceAssignParameter p)
         {
             if (!CheckGenericActionCondition())
@@ -410,7 +442,7 @@ namespace GameCore
             var attackStrength = RandomUtils.RandomRound(p.assignResource);
             var defPower = RandomUtils.RandomRound(defStrength * RandomUtils.NextFloat());
             var attackPower = RandomUtils.RandomRound(attackStrength * RandomUtils.NextFloat());
-            
+
             var baseLoss = Math.Min(defStrength, attackStrength);
 
             if (attackPower >= defPower * 2)
@@ -428,7 +460,7 @@ namespace GameCore
                 var occupyDelta = Math.Min(RandomUtils.NextFloat() * 0.25f, 1 - toArea.vikingOccupyingPercent);
                 toArea.vikingOccupyingPercent += occupyDelta;
 
-                Prompt($"Attacker Pwr ({attackStrength} => {attackPower})  vs Def Pwr ({defStrength} => {defPower}) => Critical Success => Attacker: ({vikingFromDelta}, {vikingToDelta}), Host: {hostDelta} Resources, VP: {-hostDelta}, Occupy: {occupyDelta}");
+                Prompt($"Attacker Pwr ({attackStrength} => {attackPower})  vs Def Pwr ({defStrength} => {defPower}) => Critical Success => Attacker: ({vikingFromDelta}, {vikingToDelta}), Host: {hostDelta} Resources, VP: {-hostDelta}, Occupy: {occupyDelta:P0}");
             }
             else if (attackPower >= defPower)
             {
@@ -445,7 +477,7 @@ namespace GameCore
                 var occupyDelta = Math.Min(RandomUtils.NextFloat() * 0.25f, 1 - toArea.vikingOccupyingPercent);
                 toArea.vikingOccupyingPercent += occupyDelta;
 
-                Prompt($"Attacker Pwr ({attackStrength} => {attackPower})  vs Def Pwr ({defStrength} => {defPower}) => Success => Attacker: ({vikingFromDelta}, {vikingToDelta}), Host: {hostDelta} Resources, VP: {-hostDelta}, Occupy: {occupyDelta}");
+                Prompt($"Attacker Pwr ({attackStrength} => {attackPower})  vs Def Pwr ({defStrength} => {defPower}) => Success => Attacker: ({vikingFromDelta}, {vikingToDelta}), Host: {hostDelta} Resources, VP: {-hostDelta}, Occupy: {occupyDelta:P0}");
             }
             else
             {
@@ -460,9 +492,17 @@ namespace GameCore
             }
         }
 
-        public void DoRaid(ResourceAssignParameter p)
+        public class ResolutionContext
         {
-            if (!CheckGenericActionCondition())
+            public bool skipActionPoint;
+            public bool skipPhaseCheck;
+        }
+
+        static ResolutionContext defaultCtx = new();
+
+        public void DoRaid(ResourceAssignParameter p, ResolutionContext ctx = null)
+        {
+            if (!CheckGenericActionCondition(ctx))
                 return;
 
             var fromArea = p.from.GetArea();
@@ -480,16 +520,19 @@ namespace GameCore
                 return;
             }
 
-            availableActionPoints -= 1;
+            if (!(ctx?.skipActionPoint ?? false))
+            {
+                availableActionPoints -= 1;
+            }
 
             var defStrength = RandomUtils.RandomRound(toArea.hostResources * 0.2f);
             var raidStrength = RandomUtils.RandomRound(p.assignResource);
             var defPower = RandomUtils.RandomRound(defStrength * RandomUtils.NextFloat());
-            var raidPower = RandomUtils.RandomRound(raidStrength * RandomUtils.NextFloat());
+            var raidPower = RandomUtils.RandomRound(raidStrength * RandomUtils.NextFloat()) * p.modifierCoef;
 
             if (raidPower >= defPower * 2)
             {
-                var transfer = Math.Min(p.assignResource * 2, toArea.hostResources);
+                var transfer = Math.Min(RandomUtils.RandomRound(p.assignResource * 2 * p.modifierCoef), toArea.hostResources);
                 var vikingDelta = transfer - p.assignResource;
                 var hostDelta = -transfer;
 
@@ -503,7 +546,7 @@ namespace GameCore
             }
             else if (raidPower >= defPower)
             {
-                var transfer = Math.Min(p.assignResource * 1, toArea.hostResources);
+                var transfer = Math.Min(RandomUtils.RandomRound(p.assignResource * 1 * p.modifierCoef), toArea.hostResources);
                 var vikingDelta = transfer - p.assignResource;
                 var hostDelta = -transfer;
 
@@ -556,13 +599,28 @@ namespace GameCore
         }
 
         public bool IsPlayingCardForActionPointAvaliable(Card card) => phase == GamePhase.PlayingCard;
-        public bool IsPlayingCardForEventEffectAvailable(Card card) => phase == GamePhase.PlayingCard && card != null && card.cardClass.eventCode != CardClassEventCode.None;
+        public bool IsPlayingCardForEventEffectAvailable(Card card)
+        {
+            if (phase != GamePhase.PlayingCard)
+                return false;
+            if (card == null)
+                return false;
+            if (card.cardClass.eventCode == CardClassEventCode.None)
+                return false;
+            if (CardClass.eventActivatedConditionMap.TryGetValue(card.cardClass.eventCode, out var condition))
+            {
+                if (!condition())
+                    return false;
+            }
+            return true;
+        }
 
         public bool IsTradeAvailable(Area area) => phase == GamePhase.DoingAction;
         public bool IsCounterInfluenceAvailable(Area area) => phase == GamePhase.DoingAction;
         public bool IsColonizationAvailable(Area area) => phase == GamePhase.DoingAction;
         public bool IsRaidAvailable(Area area) => phase == GamePhase.DoingAction;
         public bool IsConquerAvailable(Area area) => phase == GamePhase.DoingAction;
+        public bool IsTransferAvailable(Area area) => phase == GamePhase.DoingAction;
 
         public static GameState current => CoreManager.Instance.state;
 

@@ -16,6 +16,8 @@ public class AreaViewer : MonoBehaviour
     public GameObject occupationField;
     public GameObject christianizationField;
 
+    public SpriteRenderer boxSpriteRenderer;
+
     public void Update()
     {
         var area = EntityManager.current.Get<Area>(areaObjectId);
@@ -29,8 +31,16 @@ public class AreaViewer : MonoBehaviour
 
             hostResourceField.SetActive(!area.isVikingHomeland);
             vikingResourceField.SetActive(area.vikingZoneCreated);
-            occupationField.SetActive(area.vikingZoneCreated && !area.isVikingHomeland);
+            occupationField.SetActive(area.vikingZoneCreated && !area.isVikingHomeland && !area.isColony);
             christianizationField.SetActive(area.vikingZoneCreated);
+
+            var occupyingPercent = area.vikingOccupyingPercent;
+            if (area.isColony && area.vikingResources > 0)
+                occupyingPercent = 1;
+            
+            var christianization = (1 - occupyingPercent) * 1 + occupyingPercent * area.vikingChristianization;
+
+            boxSpriteRenderer.color = new Color(1, 1 - occupyingPercent, christianization);
         }
     }
 }

@@ -75,6 +75,19 @@ public class Overlay : SingletonDocument<Overlay>
             }
         };
 
+        root.Q<Button>("SetLordButton").clicked += () =>
+        {
+            GameManager.Instance.PrepareSelectingAreaCallback(area =>
+            {
+                var selectedArea = GameManager.Instance.selectedArea;
+                if (selectedArea != null)
+                {
+                    selectedArea.lord.objectId = area.objectId; // TODO: Add counter-recursive check?
+                    GameState.current.lordSetPoint -= 1;
+                }
+            });
+        };
+
         // userLogListView.bindItem = (item, index) =>
         // {
         //     var userLogs = GameState.current.userLogs;

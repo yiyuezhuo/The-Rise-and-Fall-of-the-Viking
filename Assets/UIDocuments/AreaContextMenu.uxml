@@ -31,5 +31,10 @@
                 <ui:DataBinding property="style.display" data-source-path="gameState.isCounterInfluenceAvailable" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
             </Bindings>
         </ui:Button>
+        <ui:Button text="Transfer" name="TransferButton">
+            <Bindings>
+                <ui:DataBinding property="style.display" data-source-path="gameState.isTransferAvailable" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
+            </Bindings>
+        </ui:Button>
     </ui:VisualElement>
 </ui:UXML>

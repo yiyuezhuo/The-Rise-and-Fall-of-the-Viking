@@ -98,6 +98,17 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         }
     }
 
+    [CreateProperty]
+    public bool managedIsFreeTransfer
+    {
+        get => gameState.isFreeTransfer;
+        set
+        {
+            if (editMode)
+                gameState.isFreeTransfer = value;
+        }
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

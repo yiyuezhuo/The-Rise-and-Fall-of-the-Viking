@@ -1,65 +1,82 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement data-source-type="GameManager, Assembly-CSharp" style="flex-grow: 1; position: absolute; right: 0; width: 200px; background-color: rgb(204, 204, 204); border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px;">
-        <ui:VisualElement style="flex-grow: 1;">
-            <ui:VisualElement data-source-path="selectedArea" style="flex-grow: 1;">
-                <ui:TextField readonly="true" value="Area name">
+    <ui:VisualElement data-source-type="GameManager, Assembly-CSharp" picking-mode="Ignore" style="flex-grow: 1; position: absolute; right: 0; width: 200px; top: 0; bottom: 0;">
+        <ui:ScrollView>
+            <ui:VisualElement style="flex-grow: 1; background-color: rgb(204, 204, 204); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255);">
+                <ui:VisualElement style="flex-grow: 1;">
+                    <ui:VisualElement data-source-path="selectedArea" style="flex-grow: 1;">
+                        <ui:TextField readonly="true" value="Area name">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="name" binding-mode="ToTarget" />
+                            </Bindings>
+                        </ui:TextField>
+                        <ui:IntegerField label="Viking Resource" readonly="true">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="vikingResources" binding-mode="ToTarget" />
+                            </Bindings>
+                        </ui:IntegerField>
+                        <ui:IntegerField label="Host Resource" readonly="true">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="hostResources" binding-mode="ToTarget" />
+                            </Bindings>
+                        </ui:IntegerField>
+                        <ui:ProgressBar title="Viking Occupation" high-value="1">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="vikingOccupyingPercent" binding-mode="ToTarget" />
+                            </Bindings>
+                        </ui:ProgressBar>
+                        <ui:ProgressBar title="Christianization" high-value="1">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="vikingChristianization" binding-mode="ToTarget" />
+                            </Bindings>
+                        </ui:ProgressBar>
+                        <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+                            <ui:Label text="Lord" />
+                            <ui:TextField enabled="false" style="flex-grow: 1;">
+                                <Bindings>
+                                    <ui:DataBinding property="value" data-source-path="lord.name" binding-mode="ToTarget" />
+                                </Bindings>
+                            </ui:TextField>
+                        </ui:VisualElement>
+                        <ui:Button text="Set Lord" name="SetLordButton">
+                            <Bindings>
+                                <ui:DataBinding property="enabledSelf" data-source-path="lordSetAvailable" binding-mode="ToTarget" />
+                            </Bindings>
+                        </ui:Button>
+                    </ui:VisualElement>
                     <Bindings>
-                        <ui:DataBinding property="value" data-source-path="name" binding-mode="ToTarget" />
+                        <ui:DataBinding property="style.display" data-source-path="isSelectedAreaAvailable" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
                     </Bindings>
-                </ui:TextField>
-                <ui:IntegerField label="Viking Resource" readonly="true">
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-grow: 1;">
+                    <ui:VisualElement data-source-path="selectedCard" style="flex-grow: 1;">
+                        <ui:TextField readonly="true" value="Card Name">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="cardClassProp.name" binding-mode="ToTarget" />
+                            </Bindings>
+                        </ui:TextField>
+                        <ui:IntegerField label="Action Point" readonly="true">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="cardClassProp.actionPoints" binding-mode="ToTarget" />
+                            </Bindings>
+                        </ui:IntegerField>
+                        <ui:Label text="Description" />
+                        <ui:TextField readonly="true" multiline="true" value="Card Description" style="white-space: normal;">
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="cardClassProp.cardDescription" binding-mode="ToTarget" />
+                            </Bindings>
+                        </ui:TextField>
+                        <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Textures/No_Image_Fallback.png?fileID=2800000&amp;guid=1b98a6b7601155545bc68ddb8bc17cde&amp;type=3#No_Image_Fallback&quot;); height: 200px; -unity-background-scale-mode: scale-to-fit;">
+                            <Bindings>
+                                <ui:DataBinding property="style.backgroundImage" data-source-path="cardClassProp.styleBackground" binding-mode="ToTarget" />
+                            </Bindings>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
                     <Bindings>
-                        <ui:DataBinding property="value" data-source-path="vikingResources" binding-mode="ToTarget" />
-                    </Bindings>
-                </ui:IntegerField>
-                <ui:IntegerField label="Host Resource" readonly="true">
-                    <Bindings>
-                        <ui:DataBinding property="value" data-source-path="hostResources" binding-mode="ToTarget" />
-                    </Bindings>
-                </ui:IntegerField>
-                <ui:ProgressBar title="Viking Occupation" high-value="1">
-                    <Bindings>
-                        <ui:DataBinding property="value" data-source-path="vikingOccupyingPercent" binding-mode="ToTarget" />
-                    </Bindings>
-                </ui:ProgressBar>
-                <ui:ProgressBar title="Christianization" high-value="1">
-                    <Bindings>
-                        <ui:DataBinding property="value" data-source-path="vikingChristianization" binding-mode="ToTarget" />
-                    </Bindings>
-                </ui:ProgressBar>
-            </ui:VisualElement>
-            <Bindings>
-                <ui:DataBinding property="style.display" data-source-path="isSelectedAreaAvailable" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
-            </Bindings>
-        </ui:VisualElement>
-        <ui:VisualElement style="flex-grow: 1;">
-            <ui:VisualElement data-source-path="selectedCard" style="flex-grow: 1;">
-                <ui:TextField readonly="true" value="Card Name">
-                    <Bindings>
-                        <ui:DataBinding property="value" data-source-path="cardClassProp.name" binding-mode="ToTarget" />
-                    </Bindings>
-                </ui:TextField>
-                <ui:IntegerField label="Action Point" readonly="true">
-                    <Bindings>
-                        <ui:DataBinding property="value" data-source-path="cardClassProp.actionPoints" binding-mode="ToTarget" />
-                    </Bindings>
-                </ui:IntegerField>
-                <ui:Label text="Description" />
-                <ui:TextField readonly="true" multiline="true" value="Card Description" style="white-space: normal;">
-                    <Bindings>
-                        <ui:DataBinding property="value" data-source-path="cardClassProp.cardDescription" binding-mode="ToTarget" />
-                    </Bindings>
-                </ui:TextField>
-                <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Textures/No_Image_Fallback.png?fileID=2800000&amp;guid=1b98a6b7601155545bc68ddb8bc17cde&amp;type=3#No_Image_Fallback&quot;); height: 200px; -unity-background-scale-mode: scale-to-fit;">
-                    <Bindings>
-                        <ui:DataBinding property="style.backgroundImage" data-source-path="cardClassProp.styleBackground" binding-mode="ToTarget" />
+                        <ui:DataBinding property="style.display" data-source-path="isSelectedCardAvailable" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
                     </Bindings>
                 </ui:VisualElement>
             </ui:VisualElement>
-            <Bindings>
-                <ui:DataBinding property="style.display" data-source-path="isSelectedCardAvailable" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
-            </Bindings>
-        </ui:VisualElement>
+        </ui:ScrollView>
     </ui:VisualElement>
     <ui:VisualElement data-source-type="GameManager, Assembly-CSharp" picking-mode="Ignore">
         <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
@@ -67,21 +84,21 @@
                 <ui:Tab label="Game" picking-mode="Ignore">
                     <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;">
                         <ui:Button text="Next Phase" name="NextPhaseButton" />
-                        <ui:Label text="Current" />
+                        <ui:Label text="A.D." />
                         <ui:IntegerField>
                             <Bindings>
                                 <ui:DataBinding property="value" data-source-path="gameState.currentYear" binding-mode="TwoWay" />
                                 <ui:DataBinding property="isReadOnly" data-source-path="isNotEditMode" binding-mode="ToTarget" />
                             </Bindings>
                         </ui:IntegerField>
-                        <ui:Label text="End" />
+                        <ui:Label text="/" />
                         <ui:IntegerField>
                             <Bindings>
                                 <ui:DataBinding property="value" data-source-path="gameState.endYear" binding-mode="ToTarget" />
                                 <ui:DataBinding property="isReadOnly" data-source-path="isNotEditMode" binding-mode="ToTarget" />
                             </Bindings>
                         </ui:IntegerField>
-                        <ui:Label text="Phase" />
+                        <ui:Label text="Phase" style="display: none;" />
                         <ui:EnumField value="Center" type="GameCore.GamePhase, Assembly-CSharp">
                             <Bindings>
                                 <ui:DataBinding property="value" data-source-path="managedGamePhase" binding-mode="TwoWay" />
@@ -111,6 +128,19 @@
                                 <ui:DataBinding property="isReadOnly" data-source-path="isNotEditMode" binding-mode="ToTarget" />
                             </Bindings>
                         </ui:IntegerField>
+                        <ui:VisualElement tooltip="Lord Set Point" style="width: 30px; background-image: url(&quot;project://database/Assets/Textures/Crown.png?fileID=2800000&amp;guid=450573c5f25e78647b210708cf488711&amp;type=3#Crown&quot;);" />
+                        <ui:IntegerField>
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="gameState.lordSetPoint" binding-mode="TwoWay" />
+                                <ui:DataBinding property="isReadOnly" data-source-path="editMode" binding-mode="ToTarget" />
+                            </Bindings>
+                        </ui:IntegerField>
+                        <ui:VisualElement tooltip="Free Transfer" style="width: 30px; background-image: url(&quot;project://database/Assets/Textures/Massive%20Movement.png?fileID=2800000&amp;guid=1964839f07026174aa752c851d7c9aa8&amp;type=3#Massive Movement&quot;);" />
+                        <ui:Toggle>
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="managedIsFreeTransfer" binding-mode="TwoWay" />
+                            </Bindings>
+                        </ui:Toggle>
                     </ui:VisualElement>
                 </ui:Tab>
                 <ui:Tab label="File">
