@@ -24,7 +24,9 @@ namespace GameCore
         RaidOnLisbon,
         Ragnarok,
         Rurik,
-        Valkyrie
+        Valkyrie,
+        TheVolgaAndDnieperTradeRoutes,
+        England1066Campaign
     }
 
     public partial class CardClass
@@ -104,6 +106,7 @@ namespace GameCore
             {
                 GameState.current.isFreeTransfer = true;
                 GameState.current.lordSetPoint += 1;
+                GameState.current.victoryPoint += 10;
             }
 
             if (eventCode == CardClassEventCode.Danelaw)
@@ -165,7 +168,7 @@ namespace GameCore
             {
                 GameManager.Instance.PrepareSelectingAreaCallback(area =>
                 {
-                    area.vikingChristianization -= 0.2f;
+                    area.vikingChristianization -= 0.4f;
                 });
             }
 
@@ -173,7 +176,7 @@ namespace GameCore
             {
                 GameManager.Instance.PrepareSelectingAreaCallback(area =>
                 {
-                    area.vikingChristianization -= 0.1f;
+                    area.vikingChristianization -= 0.2f;
                     area.vikingResources += 3;
                 });
             }
@@ -211,6 +214,24 @@ namespace GameCore
             if (eventCode == CardClassEventCode.RaidOnLindisfarne)
             {
                 InitiateRaid("England", 2f);
+            }
+
+            if (eventCode == CardClassEventCode.TheVolgaAndDnieperTradeRoutes)
+            {
+                var sweden = GameState.current.FindAreaByName("Sweden");
+                var atil = GameState.current.FindAreaByName("Atil");
+                var constantinople = GameState.current.FindAreaByName("Constantinople");
+
+                sweden.vikingResources += 10;
+                atil.hostResources += 5;
+                constantinople.hostResources += 5;
+            }
+
+            if (eventCode == CardClassEventCode.England1066Campaign)
+            {
+                GameState.current.isFreeTransfer = true;
+                GameState.current.lordSetPoint += 1;
+                GameState.current.victoryPoint += 10;
             }
         }
 
@@ -349,7 +370,7 @@ Can only be activated if England has >= 50% Viking Occupation. +30 VP, +10% Chri
                 name = "North Sea Empire",
                 imagePath = "Cards/North Sea Empire.png",
                 cardDescription = @"North Sea Empire, or Anglo-Scandinavian Empire, was the personal union of the kingdoms of Denmark, Norway and England (1013-1042). It's most powerful entity in western Europe after the Holy Roman Empire.
-For this turn, 1 Lord set point is available and transfers are free.",
+Effect can only be played if England has >50% control. For this turn, 1 Lord set point is available and transfers are free. +10 VP",
                 actionPoints = 2,
                 eventCode = CardClassEventCode.NorthSeaEmpire
             }},
@@ -405,7 +426,7 @@ Greenland +2 Resources.",
                 imagePath = "Cards/Settlement of Iceland.png",
                 cardDescription = @"Beginning around 870, numerous Norse settlers migrated to Iceland across the North Atlantic. By 930, the island had been 'fully settled'
 Iceland + 2 Resources",
-                actionPoints = 2,
+                actionPoints = 1,
                 eventCode = CardClassEventCode.SettlementOfIceland
             }},
             { "Raid on Lisbon", new()
@@ -432,7 +453,7 @@ No Event Effect",
                 name = "Valkyrie",
                 imagePath = "Cards/Valkyrie.jpg",
                 cardDescription = @"In Norse mythology, the Valkyries are female figures tasked with selecting the souls of fallen warriors and guiding them to Valhalla, Odin's hall. Beyond their role as psychopomps, they sometimes have romantic relationship with heroes and mortals.
-Select an area, christianization is reduced by 10%, +3 Viking resource",
+Select an area, christianization is reduced by 20%, +3 Viking resource",
                 actionPoints = 1,
                 eventCode = CardClassEventCode.Valkyrie
             }},
@@ -441,7 +462,7 @@ Select an area, christianization is reduced by 10%, +3 Viking resource",
                 name = "Ragnarok",
                 imagePath = "Cards/Ragnarok.jpg",
                 cardDescription = @"Ragnarok
-Select an area and decrease its christianization by 20%",
+Select an area and decrease its christianization by 40%",
                 actionPoints = 1,
                 eventCode = CardClassEventCode.Ragnarok
             }},
@@ -454,7 +475,42 @@ Novgorod +50% control, +5 resources, -5 host resource, Polotsk +25% control, +3 
                 actionPoints = 2,
                 eventCode = CardClassEventCode.Rurik
             }},
-
+            { "Berserker", new()
+            {
+                name = "Berserker",
+                imagePath = "Cards/Berserker.jpg",
+                cardDescription = @"Berserkers were Scandinavian warriors who were said to have fought in trance-like fury.
+No Event Effect",
+                actionPoints = 1,
+                eventCode = CardClassEventCode.None
+            }},
+            { "Normans", new()
+            {
+                name = "Normans",
+                imagePath = "Cards/Normans.jpg",
+                cardDescription = @"The Normans were a population arising in the Duchy of Normandy from the intermingling between Norse Viking settlers and locals of West Francia. The population adapted language, religion, social customs and martial doctrine of the West Franks while mercenary tendencies and fervor for adventures are introduced from Norse culture.
+No Event Effect",
+                actionPoints = 1,
+                eventCode = CardClassEventCode.None
+            }},
+            { "The Volga and Dnieper Trade Routes", new()
+            {
+                name = "Volga and Dnieper Trade Routes",
+                imagePath = "Cards/The Volga and Dnieper Trade Routes.jpg",
+                cardDescription = @"The Volga and Dnieper Trade Routes were the two main Viking trade routes that connected Northern Europe with Constantinople, Jerusalem, Baghdad, and the Caspian Sea, and the end of the Silk Road.
+Sweden +10 Resources, Constantinople +5 Resources, Atil +5 Resources",
+                actionPoints = 1,
+                eventCode = CardClassEventCode.TheVolgaAndDnieperTradeRoutes
+            }},
+            { "England 1066 Campaign", new()
+            {
+                name = "England 1066 Campaign",
+                imagePath = "Cards/England 1066 Campaign.jpg",
+                cardDescription = @"In 1066, William the Conqueror, Duke of Normandy, and Harald Hardrada, King of Norway, attacked Harold Godwinson, King of England, independently. Harold defeated Harald first but was later defeated by William, who then conquered England.
+Effect can only be played if France has >20% control. +1 lord set point and transfer is free at this turn. VP +10",
+                actionPoints = 2,
+                eventCode = CardClassEventCode.England1066Campaign
+            }},
         };
 
         public static CardClass GetByCardClassId(string cardClassId) => classMap[cardClassId];
@@ -478,6 +534,14 @@ Novgorod +50% control, +5 resources, -5 host resource, Polotsk +25% control, +3 
             {CardClassEventCode.DuchyOfNormandy, () => {
                 var france = GameState.current.FindAreaByName("France");
                 return france.vikingOccupyingPercent > 0;
+            }},
+            {CardClassEventCode.England1066Campaign, () => {
+                var france = GameState.current.FindAreaByName("France");
+                return france.vikingOccupyingPercent > 0.2f;
+            }},
+            {CardClassEventCode.NorthSeaEmpire, () =>{
+                var england = GameState.current.FindAreaByName("England");
+                return england.vikingOccupyingPercent >= 0.5f;
             }}
         };
     }

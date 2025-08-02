@@ -63,6 +63,12 @@ namespace GameCore
         {
             cards = new()
             {
+                new Card(){cardClassId="Berserker"},
+                new Card(){cardClassId="Berserker"},
+                new Card(){cardClassId="Normans"},
+                new Card(){cardClassId="The Volga and Dnieper Trade Routes"},
+                new Card(){cardClassId="England 1066 Campaign"},
+
                 new Card(){cardClassId="Raid on Lindisfarne"},
                 new Card(){cardClassId="Raid on Luna"},
                 new Card(){cardClassId="Sack of Thessalonica"},
@@ -262,8 +268,14 @@ namespace GameCore
                 area.vikingResources += RandomUtils.RandomRound(area.vikingOccupyingPercent);
             }
 
-            area.hostResources = Math.Clamp(area.hostResources, 0, area.baseMaxResources);
-            area.vikingResources = Math.Clamp(area.vikingResources, 0, area.baseMaxResources);
+            // "External" affiars: 10% => -50% Host Sources
+            if (RandomUtils.NextFloat() < 0.1f)
+            {
+                area.hostResources = RandomUtils.RandomRound(area.hostResources / 2f);
+            }
+            
+            // area.hostResources = Math.Clamp(area.hostResources, 0, area.baseMaxResources);
+            // area.vikingResources = Math.Clamp(area.vikingResources, 0, area.baseMaxResources);
         }
 
         public void ProcessCounterAttackWar(Area area, ref List<string> summary)
@@ -281,7 +293,7 @@ namespace GameCore
                     string summaryBody;
 
                     var baseLoss = Math.Min(attackPower, defPower);
-                    if (attackPower >= defPower)
+                    if (attackPower > defPower)
                     {
                         var vikingDelta = -baseLoss;
                         var hostDelta = -RandomUtils.RandomRound(baseLoss / 2f);
@@ -289,7 +301,7 @@ namespace GameCore
                         area.vikingResources += vikingDelta;
                         area.hostResources += hostDelta;
 
-                        var occupyDelta = -Math.Min(RandomUtils.NextFloat(), area.vikingOccupyingPercent);
+                        var occupyDelta = -RandomUtils.NextFloat() * Math.Min(area.vikingOccupyingPercent * 1.5f, 0.75f);
                         area.vikingOccupyingPercent += occupyDelta;
 
                         summaryBody = $" Host Victory => Host: ({hostDelta}), Viking: ({vikingDelta}), Occupy: {occupyDelta:P0}";
