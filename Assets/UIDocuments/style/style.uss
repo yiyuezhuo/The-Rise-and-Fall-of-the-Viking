@@ -163,3 +163,8 @@
     margin-top: 1px;
     margin-right: 1px;
 }
+
+.short > .unity-base-field__label {
+    width: 120px;
+    min-width: 120px;
+}

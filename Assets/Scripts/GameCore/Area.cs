@@ -110,7 +110,7 @@ namespace GameCore
             {
                 if (other.lord.objectId == objectId)
                     return true;
-                
+
                 if (closeSet.Contains(other.lord.objectId))
                     return false;
                 closeSet.Add(other.objectId);
@@ -123,6 +123,16 @@ namespace GameCore
         public bool IsRelatedTo(Area other)
         {
             return IsTransitivityLordTo(other) || other.IsTransitivityLordTo(this);
+        }
+
+        public void SetLord(Area other)
+        {
+            lord.objectId = other.objectId;
+        }
+
+        public void ReleaseFromLord()
+        {
+            lord.objectId = null;
         }
     }
 }

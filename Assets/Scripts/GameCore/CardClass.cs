@@ -7,7 +7,7 @@ namespace GameCore
     {
         None,
         RaidOnLindisfarne,
-        RaidOnLuni,
+        RaidOnLuna,
         SackOfThessalonica,
         DuchyOfNormandy,
         NormanConquestOfSouthernItaly,
@@ -126,8 +126,91 @@ namespace GameCore
             if (eventCode == CardClassEventCode.KyivanRus)
             {
                 var gameState = GameState.current;
+
                 gameState.victoryPoint += 30;
 
+                var kyiv = GameState.current.FindAreaByName("Kyiv");
+                var novgorod = GameState.current.FindAreaByName("Novgorod");
+                var polotsk = GameState.current.FindAreaByName("Polotsk");
+
+                kyiv.ReleaseFromLord();
+                novgorod.SetLord(kyiv);
+                polotsk.SetLord(kyiv);
+
+                kyiv.vikingResources += 3;
+                novgorod.vikingResources += 3;
+                polotsk.vikingResources += 3;
+            }
+
+            if (eventCode == CardClassEventCode.Rurik)
+            {
+                var kyiv = GameState.current.FindAreaByName("Kyiv");
+                var novgorod = GameState.current.FindAreaByName("Novgorod");
+                var polotsk = GameState.current.FindAreaByName("Polotsk");
+
+                novgorod.vikingOccupyingPercent += 0.5f;
+                novgorod.vikingResources += 5;
+                novgorod.hostResources -= 5;
+
+                kyiv.vikingOccupyingPercent += 0.25f;
+                kyiv.vikingResources += 3;
+                kyiv.hostResources -= 3;
+
+                polotsk.vikingOccupyingPercent += 0.25f;
+                polotsk.vikingResources += 3;
+                polotsk.hostResources -= 3;
+            }
+
+            if (eventCode == CardClassEventCode.Ragnarok)
+            {
+                GameManager.Instance.PrepareSelectingAreaCallback(area =>
+                {
+                    area.vikingChristianization -= 0.2f;
+                });
+            }
+
+            if (eventCode == CardClassEventCode.Valkyrie)
+            {
+                GameManager.Instance.PrepareSelectingAreaCallback(area =>
+                {
+                    area.vikingChristianization -= 0.1f;
+                    area.vikingResources += 3;
+                });
+            }
+
+            if (eventCode == CardClassEventCode.NormanConquestOfSouthernItaly)
+            {
+                var naples = GameState.current.FindAreaByName("Naples");
+                naples.vikingOccupyingPercent += 0.5f;
+                naples.vikingResources += 5;
+                naples.hostResources -= 5;
+            }
+
+            if (eventCode == CardClassEventCode.DuchyOfNormandy)
+            {
+                var france = GameState.current.FindAreaByName("France");
+                france.vikingOccupyingPercent += 0.25f;
+                france.vikingResources += 5;
+                france.hostResources -= 5;
+                france.vikingChristianization += 0.25f;
+                GameState.current.victoryPoint += 10;
+            }
+
+            if (eventCode == CardClassEventCode.SackOfThessalonica)
+            {
+                var constantinople = GameState.current.FindAreaByName("Constantinople");
+                constantinople.hostResources -= 10;
+                InitiateConquest("Constantinople", 2f);
+            }
+
+            if (eventCode == CardClassEventCode.RaidOnLuna)
+            {
+                InitiateRaid("Luna", 2f);
+            }
+
+            if (eventCode == CardClassEventCode.RaidOnLindisfarne)
+            {
+                InitiateRaid("England", 2f);
             }
         }
 
@@ -193,31 +276,35 @@ No Event Effect",
             {
                 name = "Raid on Lindisfarne",
                 imagePath = "Cards/Raid on Lindisfarne.png",
-                cardDescription = "Raid on Lindisfarne",
-                actionPoints = 2,
+                cardDescription = @"The Sacking of Lindisfarne (793), targeting the monastery on Lindisfarne, is considered the beginning of the Viking age.
+Select an area to initiate a raid to England with x2 modifier",
+                actionPoints = 1,
                 eventCode = CardClassEventCode.RaidOnLindisfarne
             }},
-            {"Raid on Luni", new()
+            {"Raid on Luna", new()
             {
-                name = "Action",
-                imagePath = "Cards/Raid on Luni.png",
-                cardDescription = "Raid on Luni",
-                actionPoints = 2,
-                eventCode = CardClassEventCode.RaidOnLuni
+                name = "Raid on Luna",
+                imagePath = "Cards/Raid on Luna.png",
+                cardDescription = @"In 860, Hastein's Vikings mistakenly believed Luna (Luni) to be the Roma. They pretended to convert to Christianity to gain entry, then plundered the city extensively.
+Select an area to initiate a raid to Luna with x2 modifier",
+                actionPoints = 1,
+                eventCode = CardClassEventCode.RaidOnLuna
             }},
             {"Sack of Thessalonica", new()
             {
                 name = "Sack of Thessalonica",
                 imagePath = "Cards/Sack of Thessalonica.png",
-                cardDescription = "Sack of Thessalonica",
-                actionPoints = 2,
+                cardDescription = @"In 1185, the Normans conquered and sacked Thessalonica from Byzantine control, and unleashing a full-scale massacre. However, they were forced to abandon the city after their defeat at the Battle of Demetritzes.
+Constantinople -10 resources, and then select an area to initiate a raid on it with x2 modifier",
+                actionPoints = 1,
                 eventCode = CardClassEventCode.SackOfThessalonica
             }},
             {"Duchy of Normandy", new()
             {
                 name = "Duchy of Normandy",
                 imagePath = "Cards/Duchy of Normandy.png",
-                cardDescription = "Duchy of Normandy",
+                cardDescription = @"By 911, after many raid of Viking, Charles III, king of the West Franks, granted Viking leader Rollo some lands along the lower Seine that were already under Danish control. For his part, Rollo agreed to defend the territory from other Vikings and convert to Christianity.
+Can only be played for effect if Viking control in France > 0%. Control in France +25%, Chritianization +25%, Viking Resource +5, Host resource -5, VP +10",
                 actionPoints = 2,
                 eventCode = CardClassEventCode.DuchyOfNormandy
             }},
@@ -225,7 +312,8 @@ No Event Effect",
             {
                 name = "Norman conquest of Southern Italy",
                 imagePath = "Cards/Norman conquest of Southern Italy.png",
-                cardDescription = "Norman conquest of Southern Italy",
+                cardDescription = @"From 999, Norman started conquest of southern Italy. Sicily, the southern third of the Italian Peninsula, Malta are conquered independently.
+Can only be played if France have at least 20% control. Naples +50% control, host -5 resource, viking +5 resources",
                 actionPoints = 2,
                 eventCode = CardClassEventCode.NormanConquestOfSouthernItaly
             }},
@@ -234,7 +322,7 @@ No Event Effect",
                 name = "Kyivan Rus",
                 imagePath = "Cards/Kyivan Rus.png",
                 cardDescription = @"The Kyivan Rus' (880–1240) was a state established by Varangian ruler Oleg the Wise, ruling over Kyiv, Novgorod, and the areas along the Dnieper River. The state continued to expand until Mongols invasion.
-Can only be played if Novgorod and Kyiv have at least 50% control percentage. +30 VP, Kyiv become lord of Novgorod, Kyiv & Novgorod +3 resources",
+Can only be played if Kyiv, Novgorod and Polotsk have at least 50% control percentage. +30 VP, Kyiv is released from lord and become lord of Novgorod and Polotsk, three areas +3 resources",
                 actionPoints = 2,
                 eventCode = CardClassEventCode.KyivanRus
             }},
@@ -343,7 +431,8 @@ No Event Effect",
             {
                 name = "Valkyrie",
                 imagePath = "Cards/Valkyrie.jpg",
-                cardDescription = @"Valkyrie",
+                cardDescription = @"In Norse mythology, the Valkyries are female figures tasked with selecting the souls of fallen warriors and guiding them to Valhalla, Odin's hall. Beyond their role as psychopomps, they sometimes have romantic relationship with heroes and mortals.
+Select an area, christianization is reduced by 10%, +3 Viking resource",
                 actionPoints = 1,
                 eventCode = CardClassEventCode.Valkyrie
             }},
@@ -351,15 +440,17 @@ No Event Effect",
             {
                 name = "Ragnarok",
                 imagePath = "Cards/Ragnarok.jpg",
-                cardDescription = @"Ragnarok",
+                cardDescription = @"Ragnarok
+Select an area and decrease its christianization by 20%",
                 actionPoints = 1,
-                eventCode = CardClassEventCode.RaidOnLisbon
+                eventCode = CardClassEventCode.Ragnarok
             }},
             { "Rurik", new()
             {
                 name = "Rurik",
                 imagePath = "Cards/Rurik.jpg",
-                cardDescription = @"Rurik",
+                cardDescription = @"In 862, following the 'Calling of the Varangians,' Rurik and his brothers were 'invited' to rule Novgorod, while some of their subordinates extended Varangians's control as far as Kyiv.
+Novgorod +50% control, +5 resources, -5 host resource, Polotsk +25% control, +3 resource, -3 host resource, Kyiv +25% control, +3 viking resource, -3 host resource",
                 actionPoints = 2,
                 eventCode = CardClassEventCode.Rurik
             }},
@@ -375,11 +466,19 @@ No Event Effect",
                 return england.vikingOccupyingPercent >= 0.5f;
             }},
             {CardClassEventCode.KyivanRus, () => {
-                var kivy = GameState.current.FindAreaByName("Kivy");
+                var kyiv = GameState.current.FindAreaByName("Kyiv");
                 var novgorod = GameState.current.FindAreaByName("Novgorod");
-                return kivy.vikingOccupyingPercent >= 0.5f && novgorod.vikingOccupyingPercent >= 0.5f;
+                var polotsk = GameState.current.FindAreaByName("Polotsk");
+                return kyiv.vikingOccupyingPercent >= 0.5f && novgorod.vikingOccupyingPercent >= 0.5f && polotsk.vikingOccupyingPercent >= 0.5f;
             }},
-
+            {CardClassEventCode.NormanConquestOfSouthernItaly, () =>{
+                var france = GameState.current.FindAreaByName("France");
+                return france.vikingOccupyingPercent >= 0.2f;
+            }},
+            {CardClassEventCode.DuchyOfNormandy, () => {
+                var france = GameState.current.FindAreaByName("France");
+                return france.vikingOccupyingPercent > 0;
+            }}
         };
     }
 }

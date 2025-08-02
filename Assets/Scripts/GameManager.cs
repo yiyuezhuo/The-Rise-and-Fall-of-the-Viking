@@ -35,6 +35,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public State state = State.Idle;
 
     public bool editMode = false;
+    
 
     [CreateProperty]
     public bool isNotEditMode => !editMode;
@@ -109,8 +110,23 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         }
     }
 
+    [CreateProperty]
+    public bool disableReshuffle
+    {
+        get => CoreManager.Instance.disableReshuffle;
+        set
+        {
+            CoreManager.Instance.disableReshuffle = value;
+        }
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
+    {
+        RestartGame();
+    }
+
+    public void RestartGame()
     {
         StartCoroutine(Utils.FetchStreamingAssetFile(initGameStatePath, OnInitGameStateLoaded));
     }
@@ -118,6 +134,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     void OnInitGameStateLoaded(string xml)
     {
         CoreManager.Instance.LoadFromXml(xml);
+        // gameState.EnsureSetup();
     }
 
     // Update is called once per frame

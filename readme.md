@@ -4,3 +4,7 @@ Submission to [Historically Accurate Game Jam 11](https://itch.io/jam/historical
 
 ## Screenshots
 
+## Credits
+
+- BGM: Dream-Protocol's Norse Runes: https://pixabay.com/music/ambient-norse-runes-331151/
+- Public Field Historical images: Wikipedia

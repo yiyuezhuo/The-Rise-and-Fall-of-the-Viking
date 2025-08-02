@@ -48,6 +48,9 @@ namespace GameCore
         public List<CardReference> handCardReferences = new();
         public List<CardReference> discardCardReferences = new();
 
+        public bool cardHasSetup = false;
+        public bool reshuffled = false;
+
         public List<string> userLogs = new();
 
         // Conquer
@@ -55,6 +58,66 @@ namespace GameCore
         // Trade
         // Colonization
         // Counter Influence
+
+        public void CreateDefaultDecks()
+        {
+            cards = new()
+            {
+                new Card(){cardClassId="Raid on Lindisfarne"},
+                new Card(){cardClassId="Raid on Luna"},
+                new Card(){cardClassId="Sack of Thessalonica"},
+                new Card(){cardClassId="Duchy of Normandy"},
+                new Card(){cardClassId="Norman conquest of Southern Italy"},
+
+                new Card(){cardClassId="Kyivan Rus"},
+                new Card(){cardClassId="Rurik"},
+                new Card(){cardClassId="Shield Maiden"},
+                new Card(){cardClassId="Valkyrie"},
+                new Card(){cardClassId="Ragnarok"},
+
+                new Card(){cardClassId="Great Heathen Army"},
+                new Card(){cardClassId="Danelaw"},
+                new Card(){cardClassId="North Sea Empire"},
+                new Card(){cardClassId="Sweyn Forkbeard"},
+                new Card(){cardClassId="Danegeld"},
+
+                new Card(){cardClassId="Varangian Guard"},
+                new Card(){cardClassId="Raid on Paris"},
+                new Card(){cardClassId="Erik the Red"},
+                new Card(){cardClassId="Settlement of Iceland"},
+                new Card(){cardClassId="Raid on Lisbon"},
+
+                new Card(){cardClassId="Longship"},
+                new Card(){cardClassId="Longship"},
+                new Card(){cardClassId="Longship"},
+                new Card(){cardClassId="Longship"},
+                new Card(){cardClassId="Longship"},
+            };
+
+            ResetAndRegisterAll();
+
+            deckCardReferences = cards.Select(card => new CardReference() { objectId = card.objectId }).ToList();
+        }
+
+        public void EnsureSetup()
+        {
+            if (!cardHasSetup)
+            {
+                cardHasSetup = true;
+
+                CreateDefaultDecks();
+
+                if (!CoreManager.Instance.disableReshuffle && !reshuffled)
+                {
+                    reshuffled = true;
+                    RandomUtils.Shuffle(deckCardReferences);
+                }
+
+                var firstDraw = cardLimit + 1;
+                handCardReferences = deckCardReferences.Take(firstDraw).ToList();
+                deckCardReferences = deckCardReferences.Skip(firstDraw).ToList();
+            }
+        }
 
         public Area FindAreaByName(string name)
         {
@@ -382,7 +445,8 @@ namespace GameCore
                 return;
             }
 
-            var add = Math.Max(1, Math.Min(fromArea.vikingResources, toArea.hostResources) / 10);
+            // var add = Math.Max(1, Math.Min(fromArea.vikingResources, toArea.hostResources) / 10);
+            var add = RandomUtils.D6() + Math.Min(fromArea.vikingResources, toArea.hostResources) / 10;
 
             fromArea.vikingResources = Math.Clamp(fromArea.vikingResources + add, 0, fromArea.baseMaxResources);
             toArea.hostResources = Math.Clamp(toArea.hostResources + add, 0, toArea.baseMaxResources);
@@ -572,7 +636,7 @@ namespace GameCore
             }
             else
             {
-                fromArea.vikingResources -= fromArea.vikingResources;
+                fromArea.vikingResources -= p.assignResource;
                 Prompt($"Raider Pwr ({raidStrength} => {raidPower})  vs Def Pwr ({defStrength} => {defPower}) => Failure => Raider -{p.assignResource} Resources");
             }
         }
@@ -633,6 +697,18 @@ namespace GameCore
         public bool IsRaidAvailable(Area area) => phase == GamePhase.DoingAction;
         public bool IsConquerAvailable(Area area) => phase == GamePhase.DoingAction;
         public bool IsTransferAvailable(Area area) => phase == GamePhase.DoingAction;
+
+        public GameState DetachCardStates()
+        {
+            var detached = XmlUtils.FromXML<GameState>(XmlUtils.ToXML(this));
+            detached.cards = new();
+            detached.deckCardReferences = new();
+            detached.handCardReferences = new();
+            detached.discardCardReferences = new();
+            detached.cardHasSetup = false;
+            detached.reshuffled = false;
+            return detached;
+        }
 
         public static GameState current => CoreManager.Instance.state;
 

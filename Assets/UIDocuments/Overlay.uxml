@@ -1,4 +1,5 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UIDocuments/style/style.uss?fileID=7433441132597879392&amp;guid=82351cc1ac26793419f143cb8bae0f4e&amp;type=3#style" />
     <ui:VisualElement data-source-type="GameManager, Assembly-CSharp" picking-mode="Ignore" style="flex-grow: 1; position: absolute; right: 0; width: 200px; top: 0; bottom: 0;">
         <ui:ScrollView>
             <ui:VisualElement style="flex-grow: 1; background-color: rgb(204, 204, 204); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255);">
@@ -9,12 +10,12 @@
                                 <ui:DataBinding property="value" data-source-path="name" binding-mode="ToTarget" />
                             </Bindings>
                         </ui:TextField>
-                        <ui:IntegerField label="Viking Resource" readonly="true">
+                        <ui:IntegerField label="Viking Resource" readonly="true" class="short">
                             <Bindings>
                                 <ui:DataBinding property="value" data-source-path="vikingResources" binding-mode="ToTarget" />
                             </Bindings>
                         </ui:IntegerField>
-                        <ui:IntegerField label="Host Resource" readonly="true">
+                        <ui:IntegerField label="Host Resource" readonly="true" class="short">
                             <Bindings>
                                 <ui:DataBinding property="value" data-source-path="hostResources" binding-mode="ToTarget" />
                             </Bindings>
@@ -54,7 +55,7 @@
                                 <ui:DataBinding property="value" data-source-path="cardClassProp.name" binding-mode="ToTarget" />
                             </Bindings>
                         </ui:TextField>
-                        <ui:IntegerField label="Action Point" readonly="true">
+                        <ui:IntegerField label="Action Point" readonly="true" class="short">
                             <Bindings>
                                 <ui:DataBinding property="value" data-source-path="cardClassProp.actionPoints" binding-mode="ToTarget" />
                             </Bindings>
@@ -147,11 +148,13 @@
                     <ui:VisualElement style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;">
                         <ui:Button text="Save" name="SaveButton" />
                         <ui:Button text="Load" name="LoadButton" />
+                        <ui:Button text="Restart" name="RestartButton" />
+                        <ui:Button text="Save without Cards" name="SaveWithoutCardsButton" />
                         <ui:Button text="Exit" name="ExitButton" />
                     </ui:VisualElement>
                 </ui:Tab>
                 <ui:Tab label="Edit &amp; Debug">
-                    <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;">
                         <ui:Label text="In Edit Mode" />
                         <ui:Toggle name="EditModeToggle">
                             <Bindings>
@@ -172,6 +175,24 @@
                                 <ui:DataBinding property="value" data-source-path="gameState.turnLengthYear" binding-mode="TwoWay" />
                             </Bindings>
                         </ui:IntegerField>
+                        <ui:Label text="Disable Setup Reshuffle" />
+                        <ui:Toggle>
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="disableReshuffle" binding-mode="TwoWay" />
+                            </Bindings>
+                        </ui:Toggle>
+                        <ui:Label text="Had Setup" />
+                        <ui:Toggle>
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="gameState.cardHasSetup" binding-mode="TwoWay" />
+                            </Bindings>
+                        </ui:Toggle>
+                        <ui:Label text="Reshuffled" />
+                        <ui:Toggle>
+                            <Bindings>
+                                <ui:DataBinding property="value" data-source-path="gameState.reshuffled" binding-mode="TwoWay" />
+                            </Bindings>
+                        </ui:Toggle>
                     </ui:VisualElement>
                 </ui:Tab>
                 <ui:Tab label="Help">

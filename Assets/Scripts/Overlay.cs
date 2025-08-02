@@ -21,11 +21,24 @@ public class Overlay : SingletonDocument<Overlay>
             IOManager.Instance.SaveTextFile(xml, "gameState", "xml");
         };
 
+        root.Q<Button>("SaveWithoutCardsButton").clicked += () =>
+        {
+            Debug.Log("SaveWithoutCardsButton clicked");
+
+            var state = CoreManager.Instance.state.DetachCardStates();
+            var xml = XmlUtils.ToXML(state);
+            IOManager.Instance.SaveTextFile(xml, "gameState", "xml");
+        };
+
         root.Q<Button>("LoadButton").clicked += () =>
         {
             Debug.Log("LoadButton clicked");
 
-            IOManager.Instance.LoadTextFile(CoreManager.Instance.LoadFromXml, "xml");
+            IOManager.Instance.LoadTextFile(xml =>
+            {
+                CoreManager.Instance.LoadFromXml(xml);
+                // GameState.current.EnsureSetup();
+            }, "xml");
         };
 
         root.Q<Button>("ExitButton").clicked += Application.Quit;
@@ -86,6 +99,11 @@ public class Overlay : SingletonDocument<Overlay>
                     GameState.current.lordSetPoint -= 1;
                 }
             });
+        };
+
+        root.Q<Button>("RestartButton").clicked += () =>
+        {
+            GameManager.Instance.RestartGame();
         };
 
         // userLogListView.bindItem = (item, index) =>
