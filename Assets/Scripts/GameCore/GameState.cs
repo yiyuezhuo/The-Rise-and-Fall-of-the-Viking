@@ -242,6 +242,13 @@ namespace GameCore
                         summaryBody = $" Host Defeat => Host: ({hostDelta}), Viking: ({vikingDelta})";
                     }
 
+                    if (area.vikingOccupyingPercent == 0)
+                    {
+                        area.vikingChristianization = 0;
+                        area.vikingResources = 0;
+                        summary.Add("Viking Zone Destroyed");
+                    }
+
                     summary.Add(summaryHead + summaryBody);
                 }
             }
@@ -410,9 +417,9 @@ namespace GameCore
             toArea.vikingResources += p.assignResource;
         }
 
-        public void DoConquer(ResourceAssignParameter p)
+        public void DoConquest(ResourceAssignParameter p, ResolutionContext ctx = null)
         {
-            if (!CheckGenericActionCondition())
+            if (!CheckGenericActionCondition(ctx))
                 return;
 
             var fromArea = p.from.GetArea();
@@ -420,7 +427,7 @@ namespace GameCore
 
             if (toArea.vikingZoneCreated && toArea != fromArea)
             {
-                Prompt("If Viking zone is created, conquer can only launched from the same zone.");
+                Prompt("If Viking zone had been created, conquest can only launched from the same zone.");
                 return;
             }
 
@@ -436,12 +443,13 @@ namespace GameCore
                 return;
             }
 
-            availableActionPoints -= 1;
+            if(!(ctx?.skipActionPoint ?? false))
+                availableActionPoints -= 1;
 
             var defStrength = RandomUtils.RandomRound(toArea.hostResources * 0.5f);
             var attackStrength = RandomUtils.RandomRound(p.assignResource);
             var defPower = RandomUtils.RandomRound(defStrength * RandomUtils.NextFloat());
-            var attackPower = RandomUtils.RandomRound(attackStrength * RandomUtils.NextFloat());
+            var attackPower = RandomUtils.RandomRound(attackStrength * RandomUtils.NextFloat() * p.modifierCoef);
 
             var baseLoss = Math.Min(defStrength, attackStrength);
 
@@ -460,6 +468,8 @@ namespace GameCore
                 var occupyDelta = Math.Min(RandomUtils.NextFloat() * 0.25f, 1 - toArea.vikingOccupyingPercent);
                 toArea.vikingOccupyingPercent += occupyDelta;
 
+                toArea.lord.objectId = fromArea.objectId;
+
                 Prompt($"Attacker Pwr ({attackStrength} => {attackPower})  vs Def Pwr ({defStrength} => {defPower}) => Critical Success => Attacker: ({vikingFromDelta}, {vikingToDelta}), Host: {hostDelta} Resources, VP: {-hostDelta}, Occupy: {occupyDelta:P0}");
             }
             else if (attackPower >= defPower)
@@ -477,6 +487,8 @@ namespace GameCore
                 var occupyDelta = Math.Min(RandomUtils.NextFloat() * 0.25f, 1 - toArea.vikingOccupyingPercent);
                 toArea.vikingOccupyingPercent += occupyDelta;
 
+                toArea.lord.objectId = fromArea.objectId;
+
                 Prompt($"Attacker Pwr ({attackStrength} => {attackPower})  vs Def Pwr ({defStrength} => {defPower}) => Success => Attacker: ({vikingFromDelta}, {vikingToDelta}), Host: {hostDelta} Resources, VP: {-hostDelta}, Occupy: {occupyDelta:P0}");
             }
             else
@@ -488,7 +500,7 @@ namespace GameCore
                 toArea.hostResources += hostDelta;
                 victoryPoint += -hostDelta;
 
-                Prompt($"Attacker Pwr ({attackStrength} => {attackPower})  vs Def Pwr ({defStrength} => {defPower}) => Success => Attacker: {vikingDelta}, Host: {hostDelta} Resources, VP: {-hostDelta}");
+                Prompt($"Attacker Pwr ({attackStrength} => {attackPower})  vs Def Pwr ({defStrength} => {defPower}) => Failure => Attacker: {vikingDelta}, Host: {hostDelta} Resources, VP: {-hostDelta}");
             }
         }
 
@@ -528,7 +540,7 @@ namespace GameCore
             var defStrength = RandomUtils.RandomRound(toArea.hostResources * 0.2f);
             var raidStrength = RandomUtils.RandomRound(p.assignResource);
             var defPower = RandomUtils.RandomRound(defStrength * RandomUtils.NextFloat());
-            var raidPower = RandomUtils.RandomRound(raidStrength * RandomUtils.NextFloat()) * p.modifierCoef;
+            var raidPower = RandomUtils.RandomRound(raidStrength * RandomUtils.NextFloat() * p.modifierCoef);
 
             if (raidPower >= defPower * 2)
             {

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Windows.Forms;
 
 namespace GameCore
 {
@@ -13,7 +11,7 @@ namespace GameCore
         SackOfThessalonica,
         DuchyOfNormandy,
         NormanConquestOfSouthernItaly,
-        KievanRus,
+        KyivanRus,
         GreatHeathenArmy,
         Danelaw,
         NorthSeaEmpire,
@@ -23,7 +21,10 @@ namespace GameCore
         RaidOnParis,
         ErikTheRed,
         SettlementOfIceland,
-        RaidOnLisbon
+        RaidOnLisbon,
+        Ragnarok,
+        Rurik,
+        Valkyrie
     }
 
     public partial class CardClass
@@ -108,12 +109,25 @@ namespace GameCore
             if (eventCode == CardClassEventCode.Danelaw)
             {
                 var gameState = GameState.current;
+
                 gameState.victoryPoint += 30;
                 var england = gameState.FindAreaByName("England");
                 england.vikingResources += 3;
                 england.hostResources += 3;
                 england.vikingChristianization += 0.1f;
                 england.lord.objectId = null;
+            }
+
+            if (eventCode == CardClassEventCode.GreatHeathenArmy)
+            {
+                InitiateConquest("England", 2f);
+            }
+
+            if (eventCode == CardClassEventCode.KyivanRus)
+            {
+                var gameState = GameState.current;
+                gameState.victoryPoint += 30;
+
             }
         }
 
@@ -138,6 +152,27 @@ namespace GameCore
             });
         }
 
+        public void InitiateConquest(string areaName, float modifierCoef)
+        {
+            GameManager.Instance.PrepareSelectingAreaCallback(area =>
+            {
+                var france = GameState.current.FindAreaByName(areaName);
+                var p = new ResourceAssignParameter()
+                {
+                    from = new AreaReference() { objectId = area.objectId },
+                    to = new AreaReference() { objectId = france.objectId },
+                    assignResource = area.GetConquerAssignedResourceLimit(),
+                    assignResourceLimit = area.GetConquerAssignedResourceLimit(),
+                    modifierCoef = modifierCoef
+                };
+
+                DialogRoot.Instance.PopupResourceAssignParameterDialog(p, "Conquest", p =>
+                {
+                    GameState.current.DoConquest(p, new() { skipActionPoint = true, skipPhaseCheck = true });
+                });
+            });
+        }
+
         public static Dictionary<CardClassEventCode, string> eventCodeDescription = new()
         {
             { CardClassEventCode.None, "None" },
@@ -145,11 +180,12 @@ namespace GameCore
 
         static Dictionary<string, CardClass> classMap = new()
         {
-            {"Action", new()
+            {"Longship", new()
             {
-                name = "Action",
+                name = "Longship",
                 imagePath = "Cards/Long Boat Placeholder.png",
-                cardDescription = "No Event Effect",
+                cardDescription = @"Longship is long slender ship used by Norsemen for commerce, exploration and warfare during the Viking age.
+No Event Effect",
                 actionPoints = 1,
                 eventCode = CardClassEventCode.None
             }},
@@ -193,19 +229,21 @@ namespace GameCore
                 actionPoints = 2,
                 eventCode = CardClassEventCode.NormanConquestOfSouthernItaly
             }},
-            {"Kievan Rus", new()
+            {"Kyivan Rus", new()
             {
-                name = "Kievan Rus",
-                imagePath = "Cards/Kievan Rus.png",
-                cardDescription = "Kievan Rus",
+                name = "Kyivan Rus",
+                imagePath = "Cards/Kyivan Rus.png",
+                cardDescription = @"The Kyivan Rus' (880–1240) was a state established by Varangian ruler Oleg the Wise, ruling over Kyiv, Novgorod, and the areas along the Dnieper River. The state continued to expand until Mongols invasion.
+Can only be played if Novgorod and Kyiv have at least 50% control percentage. +30 VP, Kyiv become lord of Novgorod, Kyiv & Novgorod +3 resources",
                 actionPoints = 2,
-                eventCode = CardClassEventCode.KievanRus
+                eventCode = CardClassEventCode.KyivanRus
             }},
             {"Great Heathen Army", new()
             {
                 name = "Great Heathen Army",
                 imagePath = "Cards/Great Heathen Army.png",
-                cardDescription = "Great Heathen Army",
+                cardDescription = @"The Great Heathen Army (865–878) was a massive Viking force led by the Ragnar's sons—Halfdan Ragnarsson, Ivar the Boneless, and Ubba—in their invasion of England. Although their conquest was halted by Alfred the Great, the campaigns led to the creation of the Danelaw, a region under Viking control.
+Select an area to initiate conquest to England (ignoring distance), the strength is calculated as x2.",
                 actionPoints = 2,
                 eventCode = CardClassEventCode.GreatHeathenArmy
             }},
@@ -291,6 +329,41 @@ Select an area to initiate a raid to Lisbon (ignoring distance), with the assign
                 actionPoints = 1,
                 eventCode = CardClassEventCode.RaidOnLisbon
             }},
+            // ...
+            { "Shield Maiden", new()
+            {
+                name = "Shield Maiden",
+                imagePath = "Cards/Shield Maiden.jpg",
+                cardDescription = @"Shield-maiden refer to female warriors in Viking culture.
+No Event Effect",
+                actionPoints = 1,
+                eventCode = CardClassEventCode.None
+            }},
+            { "Valkyrie", new()
+            {
+                name = "Valkyrie",
+                imagePath = "Cards/Valkyrie.jpg",
+                cardDescription = @"Valkyrie",
+                actionPoints = 1,
+                eventCode = CardClassEventCode.Valkyrie
+            }},
+            { "Ragnarok", new()
+            {
+                name = "Ragnarok",
+                imagePath = "Cards/Ragnarok.jpg",
+                cardDescription = @"Ragnarok",
+                actionPoints = 1,
+                eventCode = CardClassEventCode.RaidOnLisbon
+            }},
+            { "Rurik", new()
+            {
+                name = "Rurik",
+                imagePath = "Cards/Rurik.jpg",
+                cardDescription = @"Rurik",
+                actionPoints = 2,
+                eventCode = CardClassEventCode.Rurik
+            }},
+
         };
 
         public static CardClass GetByCardClassId(string cardClassId) => classMap[cardClassId];
@@ -301,6 +374,12 @@ Select an area to initiate a raid to Lisbon (ignoring distance), with the assign
                 var england = GameState.current.FindAreaByName("England");
                 return england.vikingOccupyingPercent >= 0.5f;
             }},
+            {CardClassEventCode.KyivanRus, () => {
+                var kivy = GameState.current.FindAreaByName("Kivy");
+                var novgorod = GameState.current.FindAreaByName("Novgorod");
+                return kivy.vikingOccupyingPercent >= 0.5f && novgorod.vikingOccupyingPercent >= 0.5f;
+            }},
+
         };
     }
 }

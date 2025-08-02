@@ -238,7 +238,7 @@ public class DialogRoot : SingletonDocument<DialogRoot>
 
                     PopupResourceAssignParameterDialog(p, "Conquer", p =>
                     {
-                        GameState.current.DoConquer(p);
+                        GameState.current.DoConquest(p);
                     });
                 });
             };

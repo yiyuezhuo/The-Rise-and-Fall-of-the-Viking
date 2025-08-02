@@ -142,15 +142,17 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
                         if (state == State.Idle)
                         {
-                            if (areaViewer.areaObjectId == selectedObjectId) // double click to enter command
-                            {
-                                Debug.Log("Popuping...");
-                                DialogRoot.Instance.PopupAreaContextMenu();
-                            }
-                            else // re-select
-                            {
-                                selectedObjectId = areaViewer.areaObjectId;
-                            }
+                            // if (areaViewer.areaObjectId == selectedObjectId) // double click to enter command
+                            // {
+                            //     Debug.Log("Popuping...");
+                            //     DialogRoot.Instance.PopupAreaContextMenu();
+                            // }
+                            // else // re-select
+                            // {
+                            //     selectedObjectId = areaViewer.areaObjectId;
+                            // }
+                            selectedObjectId = areaViewer.areaObjectId;
+                            DialogRoot.Instance.PopupAreaContextMenu();
                         }
                         else if (state == State.SelectingAreaForCallback)
                         {
@@ -161,7 +163,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
                             {
                                 callback(EntityManager.current.Get<Area>(areaViewer.areaObjectId));
                             }
-                            
+
                         }
                     }
                 }

@@ -33,15 +33,16 @@ public class CardViewer : MonoBehaviour, IPointerClickHandler
     {
         // Debug.Log($"{currentCard} was clicked!");
 
-        if (GameManager.Instance.selectedObjectId != currentCard.objectId) // First click => select
-        {
-            GameManager.Instance.selectedObjectId = currentCard.objectId;
-        }
-        else //  Double click => open the context menu
-        {
-            DialogRoot.Instance.PopupCardContextMenu();
-        }
-        
+        // if (GameManager.Instance.selectedObjectId != currentCard.objectId) // First click => select
+        // {
+        //     GameManager.Instance.selectedObjectId = currentCard.objectId;
+        // }
+        // else //  Double click => open the context menu
+        // {
+        //     DialogRoot.Instance.PopupCardContextMenu();
+        // }
+        GameManager.Instance.selectedObjectId = currentCard.objectId;
+        DialogRoot.Instance.PopupCardContextMenu();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

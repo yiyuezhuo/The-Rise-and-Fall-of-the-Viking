@@ -26,6 +26,12 @@ namespace GameCore
             {
                 state.cards = new()
                 {
+                    new Card(){cardClassId="Kyivan Rus"},
+                    new Card(){cardClassId="Rurik"},
+                    new Card(){cardClassId="Shield Maiden"},
+                    new Card(){cardClassId="Valkyrie"},
+                    new Card(){cardClassId="Ragnarok"},
+
                     new Card(){cardClassId="Great Heathen Army"},
                     new Card(){cardClassId="Danelaw"},
                     new Card(){cardClassId="North Sea Empire"},
@@ -43,15 +49,12 @@ namespace GameCore
                     new Card(){cardClassId="Sack of Thessalonica"},
                     new Card(){cardClassId="Duchy of Normandy"},
                     new Card(){cardClassId="Norman conquest of Southern Italy"},
-                    new Card(){cardClassId="Kievan Rus"},
 
-                    new Card(){cardClassId="Action"},
-                    new Card(){cardClassId="Action"},
-                    new Card(){cardClassId="Action"},
-                    new Card(){cardClassId="Action"},
-                    new Card(){cardClassId="Action"},
-                    new Card(){cardClassId="Action"},
-                    new Card(){cardClassId="Action"},
+                    new Card(){cardClassId="Longship"},
+                    new Card(){cardClassId="Longship"},
+                    new Card(){cardClassId="Longship"},
+                    new Card(){cardClassId="Longship"},
+                    new Card(){cardClassId="Longship"},
                 };
 
                 GameState.current.ResetAndRegisterAll();
