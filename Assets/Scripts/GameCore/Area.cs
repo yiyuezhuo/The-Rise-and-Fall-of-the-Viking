@@ -120,7 +120,7 @@ namespace GameCore
 
             return Math.Min(
                 Math.Max(
-                    (int)Math.Round((1 - vikingChristianization) * 0.2f * vikingResources),
+                    (int)Math.Round((1 - vikingChristianization) * 0.5f * vikingResources),
                 2),
             vikingResources);
         }
@@ -132,7 +132,7 @@ namespace GameCore
 
             return Math.Min(
                 Math.Max(
-                    (int)Math.Round((1 - vikingChristianization) * 0.5f * vikingResources),
+                    (int)Math.Round((1 - vikingChristianization) * vikingResources),
                 2),
             vikingResources);
         }

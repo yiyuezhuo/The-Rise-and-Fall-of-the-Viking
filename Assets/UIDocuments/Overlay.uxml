@@ -5,29 +5,29 @@
             <ui:VisualElement style="flex-grow: 1; background-color: rgb(204, 204, 204); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255);">
                 <ui:VisualElement style="flex-grow: 1;">
                     <ui:VisualElement data-source-path="selectedArea" style="flex-grow: 1;">
-                        <ui:TextField readonly="true" value="Area name 114514 114514 114514" multiline="true" style="white-space: normal;">
+                        <ui:TextField readonly="true" value="Area name 114514 114514 114514" style="white-space: normal;">
                             <Bindings>
                                 <ui:DataBinding property="value" data-source-path="name" binding-mode="ToTarget" />
                             </Bindings>
                         </ui:TextField>
                         <ui:IntegerField label="Viking Resource" readonly="true" class="short">
                             <Bindings>
-                                <ui:DataBinding property="value" data-source-path="vikingResources" binding-mode="ToTarget" />
+                                <ui:DataBinding property="value" data-source-path="vikingResourcesProp" binding-mode="ToTarget" />
                             </Bindings>
                         </ui:IntegerField>
                         <ui:IntegerField label="Host Resource" readonly="true" class="short">
                             <Bindings>
-                                <ui:DataBinding property="value" data-source-path="hostResources" binding-mode="ToTarget" />
+                                <ui:DataBinding property="value" data-source-path="hostResourcesProp" binding-mode="ToTarget" />
                             </Bindings>
                         </ui:IntegerField>
                         <ui:ProgressBar title="Viking Occupation" high-value="1">
                             <Bindings>
-                                <ui:DataBinding property="value" data-source-path="vikingOccupyingPercent" binding-mode="ToTarget" />
+                                <ui:DataBinding property="value" data-source-path="vikingOccupyingPercentProp" binding-mode="ToTarget" />
                             </Bindings>
                         </ui:ProgressBar>
                         <ui:ProgressBar title="Christianization" high-value="1">
                             <Bindings>
-                                <ui:DataBinding property="value" data-source-path="vikingChristianization" binding-mode="ToTarget" />
+                                <ui:DataBinding property="value" data-source-path="vikingChristianizationProp" binding-mode="ToTarget" />
                             </Bindings>
                         </ui:ProgressBar>
                         <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
@@ -89,7 +89,7 @@
             <ui:TabView picking-mode="Ignore" style="background-color: rgb(204, 204, 204); flex-grow: 1; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px;">
                 <ui:Tab label="Game" picking-mode="Ignore">
                     <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;">
-                        <ui:Button text="Next Phase" name="NextPhaseButton" />
+                        <ui:Button text="Next Phase" name="NextPhaseButton" style="-unity-font-style: bold;" />
                         <ui:Label text="A.D." />
                         <ui:IntegerField>
                             <Bindings>
@@ -160,7 +160,7 @@
                 </ui:Tab>
                 <ui:Tab label="Edit &amp; Debug">
                     <ui:VisualElement style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;">
-                        <ui:Label text="In Edit Mode" />
+                        <ui:Label text="Edit Mode" />
                         <ui:Toggle name="EditModeToggle">
                             <Bindings>
                                 <ui:DataBinding property="value" data-source-path="editMode" binding-mode="TwoWay" />

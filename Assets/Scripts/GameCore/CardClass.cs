@@ -47,8 +47,8 @@ namespace GameCore
             {
                 var norway = GameState.current.FindAreaByName("Norway");
                 var constantinople = GameState.current.FindAreaByName("Constantinople");
-                norway.vikingResources += 6;
-                constantinople.hostResources += 3;
+                norway.vikingResources += RandomUtils.D20();
+                constantinople.hostResources += RandomUtils.D10();
             }
 
             if (eventCode == CardClassEventCode.Danegeld)
@@ -73,12 +73,20 @@ namespace GameCore
             {
                 var greenland = GameState.current.FindAreaByName("Greenland");
                 greenland.vikingResources += 2;
+                GameManager.Instance.PrepareSelectingAreaCallback(area =>
+                {
+                    greenland.SetLord(area);
+                });
             }
 
             if (eventCode == CardClassEventCode.SettlementOfIceland)
             {
                 var iceland = GameState.current.FindAreaByName("Iceland");
                 iceland.vikingResources += 2;
+                GameManager.Instance.PrepareSelectingAreaCallback(area =>
+                {
+                    iceland.SetLord(area);
+                });
             }
 
             if (eventCode == CardClassEventCode.RaidOnLisbon)
@@ -152,16 +160,16 @@ namespace GameCore
                 var polotsk = GameState.current.FindAreaByName("Polotsk");
 
                 novgorod.vikingOccupyingPercent += 0.5f;
-                novgorod.vikingResources += 5;
-                novgorod.hostResources -= 5;
+                novgorod.vikingResources += RandomUtils.RandomRound(novgorod.hostResources / 2f);
+                novgorod.hostResources -= RandomUtils.RandomRound(novgorod.hostResources / 2f);
 
                 kyiv.vikingOccupyingPercent += 0.25f;
-                kyiv.vikingResources += 3;
-                kyiv.hostResources -= 3;
+                kyiv.vikingResources += RandomUtils.RandomRound(kyiv.hostResources / 4f);
+                kyiv.hostResources -= RandomUtils.RandomRound(kyiv.hostResources / 4f);
 
                 polotsk.vikingOccupyingPercent += 0.25f;
-                polotsk.vikingResources += 3;
-                polotsk.hostResources -= 3;
+                polotsk.vikingResources += RandomUtils.RandomRound(polotsk.hostResources / 4f);
+                polotsk.hostResources -= RandomUtils.RandomRound(polotsk.hostResources / 4f);
             }
 
             if (eventCode == CardClassEventCode.Ragnarok)
@@ -222,9 +230,9 @@ namespace GameCore
                 var atil = GameState.current.FindAreaByName("Atil");
                 var constantinople = GameState.current.FindAreaByName("Constantinople");
 
-                sweden.vikingResources += 10;
-                atil.hostResources += 5;
-                constantinople.hostResources += 5;
+                sweden.vikingResources += RandomUtils.D20();
+                atil.hostResources += RandomUtils.D10();
+                constantinople.hostResources += RandomUtils.D10();
             }
 
             if (eventCode == CardClassEventCode.England1066Campaign)
@@ -398,7 +406,7 @@ namespace GameCore
                 name = "Varangian Guard",
                 imagePath = "Cards/Varangian Guard.jpg",
                 cardDescription = @"The Varangian Guard was an elite guard unit composed of Northmen in the Byzantine Empire. It provide the emperor with a powerful tool, while it brought wealth back the Nordic regions.
-> Norway + 6 resources, Constantinople + 3 resources",
+> Norway +D20 resources, Constantinople +D10 resources",
                 actionPoints = 1,
                 eventCode = CardClassEventCode.VarangianGuard
             }},
@@ -416,7 +424,7 @@ namespace GameCore
                 name = "Erik the Red",
                 imagePath = "Cards/Erik the Red.png",
                 cardDescription = @"Erik the Red (c. 950 - c. 1003) was a Norse explorer who explored Greenland and eventually established a settlement.
-> Greenland +2 Resources.",
+> Greenland +2 Resources. Select an area to be lord of Greenland.",
                 actionPoints = 1,
                 eventCode = CardClassEventCode.ErikTheRed
             }},
@@ -425,7 +433,7 @@ namespace GameCore
                 name = "Settlement of Iceland",
                 imagePath = "Cards/Settlement of Iceland.png",
                 cardDescription = @"Beginning around 870, numerous Norse settlers migrated to Iceland across the North Atlantic. By 930, the island had been 'fully settled'
-> Iceland + 2 Resources",
+> Iceland + 2 Resources. Select an area to be lord of Iceland",
                 actionPoints = 1,
                 eventCode = CardClassEventCode.SettlementOfIceland
             }},
@@ -471,8 +479,8 @@ namespace GameCore
                 name = "Rurik",
                 imagePath = "Cards/Rurik.jpg",
                 cardDescription = @"In 862, following the 'Calling of the Varangians,' Rurik and his brothers were 'invited' to rule Novgorod, while some of their subordinates extended Varangians's control as far as Kyiv.
-> Novgorod +50% control, +5 resources, -5 host resource, Polotsk +25% control, +3 resource, -3 host resource, Kyiv +25% control, +3 viking resource, -3 host resource",
-                actionPoints = 2,
+> Novgorod +50% control, 50% host resource is converted to Viking, Polotsk, Kyiv +25% control, 25% Host resource is converted to Viking",
+                actionPoints = 3,
                 eventCode = CardClassEventCode.Rurik
             }},
             { "Berserker", new()
@@ -498,7 +506,7 @@ namespace GameCore
                 name = "Volga and Dnieper Trade Routes",
                 imagePath = "Cards/The Volga and Dnieper Trade Routes.jpg",
                 cardDescription = @"The Volga and Dnieper Trade Routes were the two main Viking trade routes that connected Northern Europe with Constantinople, Jerusalem, Baghdad, and the Caspian Sea, and the end of the Silk Road.
-> Sweden +10 Resources, Constantinople +5 Resources, Atil +5 Resources",
+> Sweden +D20 Resources, Constantinople +D10 Resources, Atil +D10 Resources",
                 actionPoints = 1,
                 eventCode = CardClassEventCode.TheVolgaAndDnieperTradeRoutes
             }},

@@ -11,5 +11,10 @@
                 <ui:DataBinding property="style.display" data-source-path="gameState.isPlayingCardForEventEffectAvailable" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
             </Bindings>
         </ui:Button>
+        <ui:Button text="Discard Card" name="DiscardCardButton">
+            <Bindings>
+                <ui:DataBinding property="style.display" data-source-path="gameState.isDiscardCardAvaiable" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
+            </Bindings>
+        </ui:Button>
     </ui:VisualElement>
 </ui:UXML>

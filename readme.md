@@ -4,11 +4,28 @@ Submission to [Historically Accurate Game Jam 11](https://itch.io/jam/historical
 
 ## Screenshots
 
+<img src="https://img.itch.zone/aW1hZ2UvMzc3ODczMS8yMjQ5MTYyNS5wbmc=/original/gcGjwZ.png">
+
 ## Gameplay
 
-### Game Overview
+### Overview
 
 You assume the role of "Viking Spirit," striving to maximize Viking impact during the Viking Age (793-1066). This era begins with the rise of Viking power and concludes with its decline due to Christianization. Your success is measured by Victory Points (VP), so your goal is to accumulate as many as possible by the game's end.
+
+### How to play
+
+#### Basic
+
+- In card playing phase (current phase is displayed in the game tab of topbar), press on card to open context menu, then check or play it to use its card effect or action point (point is increased and can be used in the action phase).
+- Press "Next Phase" in the Game tab of topbar to go to the next phase.
+- Click areas to open the context menu to check or used a action point to do an action (conquer, raid, trade, etc. Some actions require to select a target area), until action point is used up.
+- Press "Next Phase" to go to the next turn and check housekeeping report and receive new card.
+
+Game end when 1066+ year is reached (28 turns).
+
+#### Advanced
+
+For TTS/Vassal enjoyers who like manipulate board freely without much constrait, you can enable Edit Mode in the "Edit & Debug" tab in the topbar to enable almost editing for every component (read only fields become editable and an edit item appear in area context to open advanced area editor).
 
 ### Mechanics
 
@@ -28,7 +45,7 @@ This is a card-driven game where each turn consists of two key phases:
    - Trade – Increase resources (roughly representing economic and military strength) for both involved areas.  
    - Counter Influence Campaign – Resist Christianization in a selected area.  
    - Transfer – Move resources between areas with a lord/vassal relationship.  
-   - Colonization – Establish control over uninhabited or vulnerable lands.  
+   - Colonization – Establish control over uninhabited or vulnerable lands.
 
 Some cards trigger immediate effects, such as altering area stats or launching raids/conquests from a chosen area.  
 

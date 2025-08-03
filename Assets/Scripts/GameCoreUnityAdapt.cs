@@ -107,6 +107,9 @@ namespace GameCore
         public bool isPlayingCardForEventEffectAvailable => IsPlayingCardForEventEffectAvailable(GameManager.Instance.selectedCard);
 
         [CreateProperty]
+        public bool isDiscardCardAvaiable => IsDiscardCardAvaiable(GameManager.Instance.selectedCard);
+
+        [CreateProperty]
         public bool isTradeAvailable => IsTradeAvailable(GameManager.Instance.selectedArea);
 
         [CreateProperty]

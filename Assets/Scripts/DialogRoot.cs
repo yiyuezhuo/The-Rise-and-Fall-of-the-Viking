@@ -341,6 +341,18 @@ public class DialogRoot : SingletonDocument<DialogRoot>
                     gameState.PlayCardForEventEffect(selectedCard);
                 }
             };
+
+            el.Q<Button>("DiscardCardButton").clicked += () =>
+            {
+                ((TempDialog)sender).RemoveSelf();
+
+                var selectedCard = GameManager.Instance.selectedCard;
+                var gameState = GameState.current;
+                if (selectedCard != null)
+                {
+                    gameState.DiscardCard(selectedCard);
+                }
+            };
         };
 
         tempDialog.Popup();

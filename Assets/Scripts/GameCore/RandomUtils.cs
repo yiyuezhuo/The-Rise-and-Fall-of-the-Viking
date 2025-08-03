@@ -10,6 +10,8 @@ namespace GameCore
         public static float NextFloat() => (float)rand.NextDouble();
         public static int Next(int n) => rand.Next(n);
         public static int D6() => Next(6) + 1;
+        public static int D10() => Next(10) + 1;
+        public static int D20() => Next(20) + 1;
         public static T Sample<T>(List<T> list) => list[rand.Next(list.Count)];
         public static int RandomRound(float x)
         {

@@ -14,6 +14,11 @@ namespace GameCore
             var path = fromArea.paths.First(p => p.toAreaObjectId == to.objectId);
             return path.cost;
         }
+
+        public bool IsToSelf()
+        {
+            return from.objectId == to.objectId;
+        }
     }
 
     public partial class ResourceAssignParameter : FromToAreaReferenceParameter
