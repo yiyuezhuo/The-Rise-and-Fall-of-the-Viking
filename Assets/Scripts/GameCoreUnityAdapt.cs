@@ -27,6 +27,17 @@ namespace GameCore
         }
     }
 
+    public partial class PathRecord
+    {
+        [CreateProperty]
+        public string toAreaName => EntityManager.current.Get<Area>(toAreaObjectId)?.name ?? "[Not Set or invalid]";
+
+        [CreateProperty]
+        public string prevAreaName => EntityManager.current.Get<Area>(prevAreaObjectId)?.name ?? "[Not Set or invalid]";
+
+        // Don't provide edit now
+    }
+
     public partial class Area
     {
         [CreateProperty]

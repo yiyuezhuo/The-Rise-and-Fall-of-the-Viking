@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
 
 namespace GameCore
 {
@@ -10,6 +12,13 @@ namespace GameCore
         {
             return CoreManager.Instance.entityManager.Get<Area>(objectId);
         }
+    }
+
+    public partial class PathRecord
+    {
+        public string toAreaObjectId;
+        public string prevAreaObjectId;
+        public int cost;
     }
 
     public partial class Area : IObjectIdLabeled
@@ -65,19 +74,44 @@ namespace GameCore
         public bool isColony;
         public AreaReference lord = new();
         public List<AreaReference> neighborReferences = new();
+        public List<PathRecord> paths = new();
 
         public IEnumerable<IObjectIdLabeled> GetSubObjects()
         {
             yield break;
         }
 
-        // public void Clamp()
-        // {
-        //     vikingResources = Math.Clamp(vikingResources, 0, baseMaxResources);
-        //     hostResources = Math.Clamp(hostResources, 0, 50);
-        //     vikingOccupyingPercent = Math.Clamp(vikingOccupyingPercent, 0, 1);
-        //     christianizationCoef = Math.Clamp(christianizationCoef, 0, 1);
-        // }
+        public void RebuildPaths()
+        {
+            // BFS, since all edge cost == 1
+            var pathMap = new Dictionary<string, PathRecord>()
+            {
+                {objectId, new(){toAreaObjectId = objectId, prevAreaObjectId=null, cost=0}}
+            };
+            var openSet = new HashSet<string>() { objectId };
+
+            while (openSet.Count > 0)
+            {
+                var newOpenSet = new HashSet<string>();
+                foreach (var areaId in openSet)
+                {
+                    var area = EntityManager.current.Get<Area>(areaId);
+                    var areaPath = pathMap[areaId];
+
+                    foreach (var neiRef in area.neighborReferences)
+                    {
+                        var neiId = neiRef.objectId;
+                        if (pathMap.ContainsKey(neiId))
+                            continue;
+                        pathMap[neiId] = new() { toAreaObjectId = neiId, prevAreaObjectId = areaId, cost = areaPath.cost + 1 };
+                        newOpenSet.Add(neiId);
+                    }
+                }
+                openSet = newOpenSet;
+            }
+
+            paths = pathMap.Values.ToList();
+        }
 
         public int GetRaidAssignedResourceLimit()
         {

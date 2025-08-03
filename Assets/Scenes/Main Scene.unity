@@ -6736,6 +6736,8 @@ MonoBehaviour:
   confirmDialogTemplate: {fileID: 9197481963319205126, guid: ea5c3ea322aa5e14ab8d6da89b190217, type: 3}
   fromToAreaReferenceParameterTemplate: {fileID: 9197481963319205126, guid: 69cbd242cdea3a34dbca86482b3197a2, type: 3}
   resourceAssignParameterTemplate: {fileID: 9197481963319205126, guid: b80f6b5815e9fc7468a302d40179571d, type: 3}
+  endGameStatisticTemplate: {fileID: 9197481963319205126, guid: fdcc382b26f81a2428d6ca2297e475ac, type: 3}
+  helpDialogTemplate: {fileID: 9197481963319205126, guid: 8e1b53420407def43a8bce4f43c11184, type: 3}
 --- !u!1001 &976354712
 PrefabInstance:
   m_ObjectHideFlags: 0

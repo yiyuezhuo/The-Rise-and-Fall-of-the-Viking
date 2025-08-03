@@ -49,17 +49,27 @@ public class Overlay : SingletonDocument<Overlay>
 
             var gameState = GameState.current;
 
-            if (gameState.phase == GamePhase.PlayingCard && gameState.availableCardPlay > 0)
+            if (gameState.phase == GamePhase.GameEnd)
             {
-                DialogRoot.Instance.PopupConfirmDialog("It's possible to play more card, confirm to continue?", gameState.NextPhase);
-            }
-            else if (gameState.phase == GamePhase.DoingAction && gameState.availableActionPoints > 0)
-            {
-                DialogRoot.Instance.PopupConfirmDialog("There're unused action point, confirm to continue?", gameState.NextPhase);
+                DialogRoot.Instance.PopupEndGameStatisticDialog(gameState.GetEndGameSummary());
             }
             else
             {
-                gameState.NextPhase();
+                if (gameState.phase == GamePhase.PlayingCard && gameState.availableCardPlay > 0)
+                {
+                    DialogRoot.Instance.PopupConfirmDialog("There are playable cards remaining. Confirm to proceed?", gameState.NextPhase);
+                }
+                else if (gameState.phase == GamePhase.DoingAction && gameState.availableActionPoints > 0)
+                {
+                    DialogRoot.Instance.PopupConfirmDialog("There're unused action points. Confirm to proceed?", gameState.NextPhase);
+                }
+                else
+                {
+                    gameState.NextPhase();
+                }
+
+                if (gameState.phase == GamePhase.GameEnd)
+                    DialogRoot.Instance.PopupEndGameStatisticDialog(gameState.GetEndGameSummary());
             }
         };
 
@@ -70,7 +80,8 @@ public class Overlay : SingletonDocument<Overlay>
 
         root.Q<Button>("HelpButton").clicked += () =>
         {
-            DialogRoot.Instance.PopupMessageDialog("Help WIP \n 114514");
+            // DialogRoot.Instance.PopupMessageDialog("Help WIP \n 114514");
+            DialogRoot.Instance.PopupHelpDialog();
         };
 
         var userLogListView = root.Q<ListView>("UserLogListView");
@@ -104,6 +115,12 @@ public class Overlay : SingletonDocument<Overlay>
         root.Q<Button>("RestartButton").clicked += () =>
         {
             GameManager.Instance.RestartGame();
+        };
+
+        root.Q<Button>("RebuildPathfindingButton").clicked += () =>
+        {
+            Debug.Log("RebuildPathfindingButton clicked");
+            GameState.current.RebuildPathfindng();
         };
 
         // userLogListView.bindItem = (item, index) =>

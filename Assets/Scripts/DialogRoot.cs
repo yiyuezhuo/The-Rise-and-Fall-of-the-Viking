@@ -16,6 +16,37 @@ public class DialogRoot : SingletonDocument<DialogRoot>
     public VisualTreeAsset confirmDialogTemplate;
     public VisualTreeAsset fromToAreaReferenceParameterTemplate;
     public VisualTreeAsset resourceAssignParameterTemplate;
+    public VisualTreeAsset endGameStatisticTemplate;
+    public VisualTreeAsset helpDialogTemplate;
+
+    public void PopupHelpDialog()
+    {
+        var tempDialog = new TempDialog()
+        {
+            root = root,
+            template = helpDialogTemplate,
+            draggable = true
+        };
+
+        tempDialog.Popup();
+    }
+
+    public void PopupEndGameStatisticDialog(string summaryContent)
+    {
+        var tempDialog = new TempDialog()
+        {
+            root = root,
+            template = endGameStatisticTemplate,
+            draggable = true
+        };
+
+        tempDialog.onCreated += (sender, el) =>
+        {
+            el.Q<Label>("SummaryLabel").text = summaryContent;
+        };
+
+        tempDialog.Popup();
+    }
 
     public void PopupFromToAreaReferenceParameterDialog(FromToAreaReferenceParameter p, string title, Action<FromToAreaReferenceParameter> callback)
     {

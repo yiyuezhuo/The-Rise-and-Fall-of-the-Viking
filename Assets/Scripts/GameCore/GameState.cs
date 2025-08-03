@@ -53,11 +53,13 @@ namespace GameCore
 
         public List<string> userLogs = new();
 
-        // Conquer
-        // Raid
-        // Trade
-        // Colonization
-        // Counter Influence
+        public void RebuildPathfindng()
+        {
+            foreach (var area in areas)
+            {
+                area.RebuildPaths();
+            }
+        }
 
         public void CreateDefaultDecks()
         {
@@ -198,6 +200,7 @@ namespace GameCore
         {
             if (phase == GamePhase.GameEnd)
             {
+                Prompt("Game is over.");
                 return;
             }
 
@@ -720,6 +723,18 @@ namespace GameCore
             detached.cardHasSetup = false;
             detached.reshuffled = false;
             return detached;
+        }
+
+        public string GetEndGameSummary()
+        {
+            var vikingZoneMaintained = areas.Where(x => x.vikingZoneCreated).Count();
+
+            var lines = new List<string>()
+            {
+                $"Victory Points: {victoryPoint}",
+                $"Viking Zone Maintained: {vikingZoneMaintained}"
+            };
+            return string.Join("\n", lines);
         }
 
         public static GameState current => CoreManager.Instance.state;

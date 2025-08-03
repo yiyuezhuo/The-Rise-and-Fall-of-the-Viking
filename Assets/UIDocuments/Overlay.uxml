@@ -5,7 +5,7 @@
             <ui:VisualElement style="flex-grow: 1; background-color: rgb(204, 204, 204); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255);">
                 <ui:VisualElement style="flex-grow: 1;">
                     <ui:VisualElement data-source-path="selectedArea" style="flex-grow: 1;">
-                        <ui:TextField readonly="true" value="Area name">
+                        <ui:TextField readonly="true" value="Area name 114514 114514 114514" multiline="true" style="white-space: normal;">
                             <Bindings>
                                 <ui:DataBinding property="value" data-source-path="name" binding-mode="ToTarget" />
                             </Bindings>
@@ -95,7 +95,7 @@
                         <ui:Label text="/" />
                         <ui:IntegerField>
                             <Bindings>
-                                <ui:DataBinding property="value" data-source-path="gameState.endYear" binding-mode="ToTarget" />
+                                <ui:DataBinding property="value" data-source-path="gameState.endYear" binding-mode="TwoWay" />
                                 <ui:DataBinding property="isReadOnly" data-source-path="isNotEditMode" binding-mode="ToTarget" />
                             </Bindings>
                         </ui:IntegerField>
@@ -193,6 +193,7 @@
                                 <ui:DataBinding property="value" data-source-path="gameState.reshuffled" binding-mode="TwoWay" />
                             </Bindings>
                         </ui:Toggle>
+                        <ui:Button text="Rebuild Pathfinding" name="RebuildPathfindingButton" />
                     </ui:VisualElement>
                 </ui:Tab>
                 <ui:Tab label="Help">
