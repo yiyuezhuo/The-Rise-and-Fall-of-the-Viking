@@ -443,9 +443,12 @@ namespace GameCore
             area.vikingChristianization = newValue;
         }
 
-        public void DoTrade(FromToAreaReferenceParameter p)
+        public void DoTrade(FromToAreaReferenceParameter p, ResolutionContext ctx = null)
         {
             if (!CheckGenericActionCondition())
+                return;
+
+            if (!CheckDistanceLimit(p, 3, ctx))
                 return;
 
             availableActionPoints -= 1;
@@ -499,6 +502,9 @@ namespace GameCore
         public void DoConquest(ResourceAssignParameter p, ResolutionContext ctx = null)
         {
             if (!CheckGenericActionCondition(ctx))
+                return;
+
+            if (!CheckDistanceLimit(p, 1, ctx))
                 return;
 
             var fromArea = p.from.GetArea();
@@ -587,13 +593,30 @@ namespace GameCore
         {
             public bool skipActionPoint;
             public bool skipPhaseCheck;
+            public bool skipDistanceCheck;
         }
 
-        static ResolutionContext defaultCtx = new();
+        // static ResolutionContext defaultCtx = new();
+
+        public bool CheckDistanceLimit(FromToAreaReferenceParameter p, int limit, ResolutionContext ctx = null)
+        {
+            if (ctx?.skipDistanceCheck ?? false)
+                return true;
+            var dist = p.GetDistance();
+            var passed = dist <= limit;
+            if (!passed)
+            {
+                Prompt($"Distance limit exceeded: {dist} > {limit}");
+            }
+            return passed;
+        }
 
         public void DoRaid(ResourceAssignParameter p, ResolutionContext ctx = null)
         {
             if (!CheckGenericActionCondition(ctx))
+                return;
+
+            if (!CheckDistanceLimit(p, 2, ctx))
                 return;
 
             var fromArea = p.from.GetArea();
@@ -658,10 +681,19 @@ namespace GameCore
 
         void Prompt(string message) => ServiceLocator.Get<IUserMessageService>().ShowMessage(message);
 
-        public void DoColonization(FromToAreaReferenceParameter p)
+        public void DoColonization(FromToAreaReferenceParameter p, ResolutionContext ctx = null)
         {
             if (!CheckGenericActionCondition())
                 return;
+
+            if (!CheckDistanceLimit(p, 1, ctx))
+                return;
+
+            if (!p.to.GetArea().isColony)
+            {
+                Prompt("This area is not a colonizable (only 4 areas in the west-north are colonizable)");
+                return;
+            }
 
             var fromArea = p.from.GetArea();
             var toArea = p.to.GetArea();
@@ -686,7 +718,7 @@ namespace GameCore
                 toArea.lord.objectId = fromArea.objectId;
             }
 
-            Prompt($"Trade: {fromArea.name} -{transfer}, {toArea.name} +{transfer}");
+            Prompt($"Colonization: {fromArea.name} -{transfer}, {toArea.name} +{transfer}");
         }
 
         public bool IsPlayingCardForActionPointAvaliable(Card card) => phase == GamePhase.PlayingCard;

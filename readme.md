@@ -61,6 +61,14 @@ Resources cannot be freely moved between Viking-held areas unless they have a lo
 - Card event effects
 - Lord Set Points (a rare resource given by certain card effects, enabling the "Set Lord" Button in the right UI).
 
+#### Action Distance Limit
+
+- Trade: 3
+- Conquer: 1
+- Raid: 2
+- Colonization: 1
+- Transfer: Unlimited
+
 ## Credits
 
 - BGM: Dream-Protocol's Norse Runes: https://pixabay.com/music/ambient-norse-runes-331151/

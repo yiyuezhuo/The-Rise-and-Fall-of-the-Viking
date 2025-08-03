@@ -251,7 +251,7 @@ namespace GameCore
 
                 DialogRoot.Instance.PopupResourceAssignParameterDialog(p, "Raid", p =>
                 {
-                    GameState.current.DoRaid(p, new() { skipActionPoint = true, skipPhaseCheck = true });
+                    GameState.current.DoRaid(p, new() { skipActionPoint = true, skipPhaseCheck = true, skipDistanceCheck=true});
                 });
             });
         }
@@ -272,7 +272,7 @@ namespace GameCore
 
                 DialogRoot.Instance.PopupResourceAssignParameterDialog(p, "Conquest", p =>
                 {
-                    GameState.current.DoConquest(p, new() { skipActionPoint = true, skipPhaseCheck = true });
+                    GameState.current.DoConquest(p, new() { skipActionPoint = true, skipPhaseCheck = true, skipDistanceCheck=true});
                 });
             });
         }

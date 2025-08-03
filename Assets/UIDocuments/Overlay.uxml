@@ -43,6 +43,11 @@
                                 <ui:DataBinding property="enabledSelf" data-source-path="lordSetAvailable" binding-mode="ToTarget" />
                             </Bindings>
                         </ui:Button>
+                        <ui:Label text="Colonizable">
+                            <Bindings>
+                                <ui:DataBinding property="style.display" data-source-path="isColony" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
+                            </Bindings>
+                        </ui:Label>
                     </ui:VisualElement>
                     <Bindings>
                         <ui:DataBinding property="style.display" data-source-path="isSelectedAreaAvailable" binding-mode="ToTarget" source-to-ui-converters="Bool to DisplayStyle" />
