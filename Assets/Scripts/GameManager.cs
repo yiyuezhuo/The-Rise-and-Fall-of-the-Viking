@@ -5,6 +5,7 @@ using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using System;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
@@ -120,9 +121,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         }
     }
 
+    InputAction clickAction;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        clickAction = InputSystem.actions.FindAction("Click");
+
         RestartGame();
     }
 
@@ -142,10 +147,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (Input.GetMouseButtonDown(0))
+            // if (Input.GetMouseButtonDown(0))
+            if (clickAction.IsPressed())
             {
                 var cam = PlaneCameraController.Instance.cam;
-                var worldPoint = cam.ScreenToWorldPoint(Input.mousePosition);
+                // var worldPoint = cam.ScreenToWorldPoint(Input.mousePosition);
+                var worldPoint = cam.ScreenToWorldPoint(Utils.mousePosition);
 
                 var hit = Physics2D.Raycast(worldPoint, Vector2.zero);
                 if (hit.collider != null)

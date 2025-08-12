@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using Unity.Properties;
 
 using GameCore;
-using Unity.VisualScripting;
+using UnityEngine.InputSystem;
 
 public static class Utils
 {
@@ -110,7 +110,9 @@ public static class Utils
     public static void SetMousePosition(VisualElement el)
     {
         // var pos = DialogRoot.Instance.root.WorldToLocal(Input.mousePosition);
-        var pos = new Vector3(Input.mousePosition.x / Screen.width, (Screen.height - Input.mousePosition.y) / Screen.height, 0);
+        // var pos = new Vector3(Input.mousePosition.x / Screen.width, (Screen.height - Input.mousePosition.y) / Screen.height, 0);
+        var mousePosition = Utils.mousePosition;
+        var pos = new Vector3(mousePosition.x / Screen.width, (Screen.height - mousePosition.y) / Screen.height, 0);
         // var pos = Input.mousePosition;
         // var pos = PlaneCameraController.Instance.cam.WorldToViewportPoint(Input.mousePosition);
         // var pos = PlaneCameraController.Instance.cam.WorldToScreenPoint(Input.mousePosition);
@@ -120,7 +122,7 @@ public static class Utils
         // SetAbsoluteXY(el, Input.mousePosition.x, Screen.height - Input.mousePosition.y);
     }
 
-    public static bool TryResolveCurrentValueForBinding<T>(VisualElement el, out T ret) where T: class
+    public static bool TryResolveCurrentValueForBinding<T>(VisualElement el, out T ret) where T : class
     {
         var ctx = el.GetHierarchicalDataSourceContext();
         var succ = PropertyContainer.TryGetValue(ctx.dataSource, ctx.dataSourcePath, out ret);
@@ -130,5 +132,26 @@ public static class Utils
             succ = true;
         }
         return succ;
+    }
+
+    public static Vector3 mousePosition
+    {
+        get
+        {
+            return Input.mousePosition;
+
+            // return Mouse.current.position.ReadValue();
+
+            // if (Mouse.current != null)
+            // {
+            //     return Mouse.current.position.ReadValue();
+            // }
+            // else if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
+            // {
+            //     return Touchscreen.current.primaryTouch.position.ReadValue();
+            // }
+            // Debug.LogError("mousePosition is not available.");
+            // return Vector2.zero;
+        }
     }
 }
