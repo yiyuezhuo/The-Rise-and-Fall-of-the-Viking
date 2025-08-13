@@ -90,3 +90,4 @@ Resources cannot be freely moved between Viking-held areas unless they have a lo
 
 - BGM: Dream-Protocol's Norse Runes: https://pixabay.com/music/ambient-norse-runes-331151/
 - Public Field Historical images: Wikipedia
+- [Standalone File Browser](https://github.com/gkngkc/UnityStandaloneFileBrowser) and [Unity Native File Picker](https://github.com/yasirkula/UnityNativeFilePicker) for cross-platform file browser support.
